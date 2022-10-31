@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(24, 32, 32);
+  color: aliceblue;
+  padding: 1rem;
+  max-width: 100%;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.header_icon {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.title_text {
+  font-size: 22px;
+  font-weight: 600;
+  margin-left: 0.75rem;
+}

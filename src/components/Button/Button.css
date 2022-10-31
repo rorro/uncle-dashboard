@@ -1,0 +1,22 @@
+.btn {
+  text-decoration: none;
+  font-size: 1.1rem;
+  border: none;
+  background: none;
+  color: white;
+}
+
+.btn:hover {
+  cursor: pointer;
+  color: lightblue;
+}
+
+/* border: none;
+    background: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0; */
+
+.bold {
+  font-weight: bold;
+}
