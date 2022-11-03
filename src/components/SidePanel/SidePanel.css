@@ -1,25 +1,59 @@
-.sidebar {
-  float: left;
-  font-size: .9em;
-  background-color: rgb(24, 32, 32);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.bm-item {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  background: none;
+  margin-bottom: 10px;
   color: white;
+  transition: color 0.2s;
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 0;
+  font-size: 0.9em;
 }
 
-.sidebar_list {
-  list-style-type: none;
-  padding-right: 10px;
-  padding-left: 10px;
+.bm-item:hover {
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
 }
 
-.sidebar li {
-  padding-bottom: 10px;
+.bm-item:nth-child(odd) {
+  background-color: #1b1b1b;
 }
 
-.sidebar p {
-  font-weight: 700;
-  text-decoration: underline;
+.bm-burger-button {
+  position: fixed;
+  width: 25px;
+  height: 25px;
+  left: 10px;
+  top: 60px;
+}
+
+.bm-burger-bars {
+  background: white;
+}
+
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+  margin-top: -7px;
+}
+
+.bm-cross {
+  background: white;
+}
+
+.bm-menu {
+  background: #1e1e1e;
+  padding: 1.5em 0em 0;
+  font-size: 1em;
+  
+}
+
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
 }

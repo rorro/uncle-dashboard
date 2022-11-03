@@ -30,7 +30,41 @@ export interface Button {
   handleClick: MouseEventHandler;
 }
 
-export interface OptionProps {
-  label: string;
-  index: number;
+export interface MenuOptionProp {
+  key: string;
+  value: string;
+}
+
+export interface DashboardData {
+  guild: {
+    id: string;
+    name: string;
+    icon: string;
+    channels: string[];
+    roles: string[];
+    memberCount: number;
+    iconURL: string;
+  };
+  channels: [
+    {
+      configuredChannel: {
+        id: number;
+        channel: string;
+        channel_id: String;
+      };
+      channel: {
+        type: number;
+        guild: string;
+        guildId: string;
+      };
+    }
+  ];
+  messages: MessagesResponse[];
+  configs: [
+    {
+      id: number;
+      config_key: string;
+      config_value: string;
+    }
+  ];
 }
