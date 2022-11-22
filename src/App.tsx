@@ -5,9 +5,17 @@ import NavBar from './components/NavBar';
 import uncleLogo from './logo.png';
 import { Home, Dashboard, NotFound, Login } from './pages';
 import { getCookie, removeCookie } from './utils/cookie';
+import useFetch from './hooks/useFetch';
+import { DashboardData } from './types';
 
 function App() {
+  // TODO: store this in .env
+  const apiUrl = 'http://localhost:7373/dashboard';
+  const cookie = getCookie('access_token');
+
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const { data } = useFetch<DashboardData>(`${apiUrl}?accessToken=${cookie}`);
+  console.log(data);
 
   const handleLogin = () => {
     const loginUrl =
@@ -36,9 +44,9 @@ function App() {
 
   useEffect(() => {
     const cookie = getCookie('access_token');
-    if (!cookie) setLoggedIn(false);
+    if (!cookie || !data) setLoggedIn(false);
     else setLoggedIn(true);
-  }, []);
+  }, [data]);
 
   return (
     <Router>
@@ -51,7 +59,7 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={loggedIn ? <Dashboard /> : <Home />} />
+        <Route path="/" element={loggedIn ? <Dashboard data={data} /> : <Home />} />
         <Route path="/login/:access_token" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,0 +1,21 @@
+.table {
+  border-radius: .5em;
+  overflow: hidden;
+  border-collapse: collapse;
+  margin: 0 auto 0 auto;
+  text-align: left;
+  width: 90%;
+}
+
+th {
+  background-color: #272727;
+  padding: 0 0 0 5px;
+}
+
+tr {
+  background-color: #1e1e1e;
+}
+
+td {
+  padding: 0 0 10px 5px;
+}

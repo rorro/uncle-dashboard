@@ -1,0 +1,40 @@
+.card {
+  background-color: #1e1e1e;
+  border-radius: .2em;
+  width: 95%;
+  margin: 0 0 10px 0;
+}
+
+.card_header {
+  font-size: 13px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+.card_header:hover {
+  cursor: pointer;
+}
+
+.card_header span {
+  padding: 3px;
+  border-radius: .3em;
+  margin-right: .4em;
+}
+
+.arrow {
+  color: #2f2f2f;
+  font-weight: bold;
+}
+
+.card_content {
+  font-size: 13px;
+  width: 100%;
+  padding: 0 0 5px 0;
+}
+
+.info {
+  background-color: #2f2f2f;
+  font-size: 11px;
+}

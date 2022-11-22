@@ -1,0 +1,89 @@
+.config_form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.save_btn {
+  display: inline-block;
+  border-radius: 4px;
+  /* background-color: #04AA6D; */
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 1.3em;
+  width: 5em;
+  height: 2.5em;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  pointer-events: none;
+  background-color: #444444;
+}
+
+.save_btn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.save_btn span:after {
+  content: '\1F4BE';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -1em;
+  transition: 0.5s;
+}
+
+.save_btn:hover span {
+  padding-right: 1.5em;
+}
+
+.save_btn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.item_box {
+  border-width: 2px 0 0 0;
+  border-color: #b587c5;
+  border-style: solid;
+  border-radius: .5em .5em 0 0;
+  padding: 10px;
+  margin: 0 0 1em 1em;
+  background-color: #1e1e1e;
+  width: fit-content;
+}
+
+.item_box img {
+  width: 75px;
+}
+
+.item_box img:hover {
+  cursor: pointer;
+}
+
+.information {
+  width: 15em;
+  word-wrap: normal;
+  font-size: small;
+}
+
+.input {
+  background: 0 0;
+  border: none;
+  border-radius: .2em;
+  padding: .2em;
+  border: 1px #2f2f2f solid;
+  color: #ffffff;
+  width: 80%;
+}
+
+.input:focus {
+  outline: none;
+}

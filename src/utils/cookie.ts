@@ -8,7 +8,7 @@ const setCookie = (name: string, value: string) => {
 
 const getCookie = (name: string) => {
   const cookie = Cookie.get(name);
-  return cookie;
+  return cookie ? encodeURIComponent(cookie) : undefined;
 };
 
 const removeCookie = (name: string) => {
