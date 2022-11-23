@@ -28,3 +28,20 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+.save_embed {
+  border-radius: .2em;
+  border: none;
+  color: #FFFFFF;
+  font-size: 1em;
+  transition: all 0.2s;
+  cursor: pointer;
+  margin: 5px;
+  padding: .3em .6em;
+  font-weight: bold;
+  background-color: #04AA6D;
+}
+
+.save_embed:active {
+  background-color: #026d46;
+}

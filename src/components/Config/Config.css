@@ -6,14 +6,13 @@
 .save_btn {
   display: inline-block;
   border-radius: 4px;
-  /* background-color: #04AA6D; */
   border: none;
   color: #FFFFFF;
   text-align: center;
   font-size: 1.3em;
   width: 5em;
   height: 2.5em;
-  transition: all 0.5s;
+  transition: all 0.2s;
   cursor: pointer;
   margin: 5px;
   font-weight: bold;
@@ -28,7 +27,7 @@
   cursor: pointer;
   display: inline-block;
   position: relative;
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 .save_btn span:after {
@@ -37,7 +36,7 @@
   opacity: 0;
   top: 0;
   right: -1em;
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 .save_btn:hover span {

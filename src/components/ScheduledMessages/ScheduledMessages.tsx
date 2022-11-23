@@ -1,12 +1,9 @@
-import { useForm } from '../../hooks/useForm';
+import { useState, MouseEvent, FormEvent } from 'react';
+import { APIEmbed } from 'discord.js';
+import './ScheduledMessages.css';
 import { GuildChannelEntry, ScheduledMessageEntry } from '../../types';
 import Collapsible from '../Collapsible';
-import './ScheduledMessages.css';
-import { APIEmbed, APIEmbedField } from 'discord.js';
-import { faImage, faRemove, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GUI from './GUI';
-import { useState, MouseEvent } from 'react';
 
 function ScheduledMessages({
   scheduledMessages,
@@ -53,16 +50,58 @@ function ScheduledMessages({
 
     const parentMessage = messages[+parentId];
 
-    const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(parentMessage.message);
+    const { embed }: { content: string; embed: APIEmbed } = JSON.parse(parentMessage.message);
     embed.fields ? embed.fields.push(newField) : (embed.fields = [newField]);
 
+    updateMessages(parentMessage, { embed: embed });
+  }
+
+  function removeField(e: MouseEvent<HTMLLabelElement>) {
+    const parent = e.currentTarget.parentElement;
+
+    const messageId = parent?.getAttribute('data-messageid');
+    if (!parent || !messageId) return;
+
+    const message = messages[+messageId];
+    const { embed }: { content: string; embed: APIEmbed } = JSON.parse(message.message);
+    const fieldsContainer = document.querySelector(`[id='${messageId}']`);
+    const fields = fieldsContainer?.querySelectorAll('.field');
+
+    if (!fields) return;
+
+    let clickedField: number | null = null;
+    for (const [i, f] of Object.entries(fields)) {
+      if (f === parent) {
+        clickedField = +i;
+        break;
+      }
+    }
+
+    if (clickedField === null) return;
+    embed.fields?.splice(clickedField, 1);
+
+    updateMessages(message, { embed: embed });
+  }
+
+  function updateMessages(
+    message: ScheduledMessageEntry,
+    options: {
+      id?: number;
+      content?: string | undefined;
+      embed?: APIEmbed | undefined;
+      date?: string;
+      channel?: string;
+      type?: number;
+    }
+  ) {
+    const { id, content, embed, date, channel, type } = options;
     const updatedMessage = {
-      [parentMessage.id]: {
-        id: parentMessage.id,
+      [message.id]: {
+        id: id ? id : message.id,
         message: JSON.stringify({ content: content, embed: embed }),
-        date: parentMessage.date,
-        channel: parentMessage.channel,
-        type: parentMessage.type
+        date: date ? date : message.date,
+        channel: channel ? channel : message.channel,
+        type: type ? type : message.type
       }
     };
 
@@ -72,22 +111,17 @@ function ScheduledMessages({
     }));
   }
 
-  function removeField(e: MouseEvent<HTMLLabelElement>) {
-    const parent = e.currentTarget.parentElement;
-    const messageId = parent?.getAttribute('data-messageid');
-    if (!parent || !messageId) return;
-
-    const message = messages[+messageId];
-    const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(message.message);
-    const field = parent.children;
-    console.log(field);
-
-    e.currentTarget.parentElement?.remove();
+  async function onSubmitCallback() {
+    console.log(`Saving embed to database!`);
   }
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await onSubmitCallback();
+  };
 
   return (
     <div>
-      messages count: {0}
       {Object.keys(messages).map(oId => {
         const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(
           messages[+oId].message
@@ -109,8 +143,9 @@ function ScheduledMessages({
                   embed={embed}
                   handleRemoveField={removeField}
                   handleAddField={addField}
+                  handleSubmit={onSubmit}
                 />
-                <div className="preview">bla bla preview</div>
+                <div className="preview">PREVIEW GOES HERE</div>
               </div>
             </Collapsible>
           </div>

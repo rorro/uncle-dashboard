@@ -1,8 +1,7 @@
 import { faImage, faPlusSquare, faRemove } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APIEmbed, APIEmbedField } from 'discord.js';
-import React, { MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
-import { ScheduledMessageEntry } from '../../types';
+import { APIEmbed } from 'discord.js';
+import { FormEventHandler, MouseEventHandler } from 'react';
 import Collapsible from '../Collapsible';
 
 interface IProps {
@@ -11,15 +10,16 @@ interface IProps {
   embed: APIEmbed;
   handleRemoveField: MouseEventHandler;
   handleAddField: MouseEventHandler;
+  handleSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-function GUI({ messageId, content, embed, handleRemoveField, handleAddField }: IProps) {
+function GUI({ messageId, content, embed, handleRemoveField, handleAddField, handleSubmit }: IProps) {
   function renderFields() {
     return (
       embed.fields &&
       embed.fields.map((f, index) => {
         return (
-          <div key={index} data-messageid={messageId}>
+          <div key={index} data-messageid={messageId} className="field">
             <input
               type="text"
               className="input"
@@ -55,12 +55,12 @@ function GUI({ messageId, content, embed, handleRemoveField, handleAddField }: I
   }
 
   return (
-    <div className="gui">
-      <Collapsible title="Message Content">
+    <form onSubmit={handleSubmit} className="gui">
+      <Collapsible title="Message Content" id={messageId}>
         <textarea className="input" defaultValue={content} placeholder={'Message content'} />
       </Collapsible>
 
-      <Collapsible title="Author">
+      <Collapsible title="Author" id={messageId}>
         <FontAwesomeIcon icon={faImage} className="icon" />
         <input
           type="text"
@@ -76,24 +76,57 @@ function GUI({ messageId, content, embed, handleRemoveField, handleAddField }: I
         />
       </Collapsible>
 
-      <Collapsible title={'Title'}>
+      <Collapsible title={'Title'} id={messageId}>
         <input type="text" className="input" defaultValue={embed.title} placeholder={'Title'} />
       </Collapsible>
 
-      <Collapsible title="Description">
+      <Collapsible title="Description" id={messageId}>
         <textarea className="input" defaultValue={embed.description} placeholder={'Embed description'} />
       </Collapsible>
 
-      <Collapsible title={'Fields'}>
-        <div id={messageId.toString()}>
-          {renderFields()}
-          <label className="add_field" onClick={handleAddField}>
-            Add field
-            <FontAwesomeIcon icon={faPlusSquare} className="margin" />
-          </label>
-        </div>
+      <Collapsible title={'Fields'} id={messageId}>
+        {renderFields()}
+        <label className="add_field" onClick={handleAddField}>
+          Add field
+          <FontAwesomeIcon icon={faPlusSquare} className="margin" />
+        </label>
       </Collapsible>
-    </div>
+
+      <Collapsible title={'Thumbnail'} id={messageId}>
+        <FontAwesomeIcon icon={faImage} className="icon" />
+        <input
+          type="text"
+          className="input"
+          defaultValue={embed.thumbnail?.url}
+          placeholder={'Thumbnail URL'}
+        />
+      </Collapsible>
+
+      <Collapsible title={'Image'} id={messageId}>
+        <FontAwesomeIcon icon={faImage} className="icon" />
+        <input type="text" className="input" defaultValue={embed.image?.url} placeholder={'Image URL'} />
+      </Collapsible>
+
+      <Collapsible title="Footer" id={messageId}>
+        <FontAwesomeIcon icon={faImage} className="icon" />
+        <input
+          type="text"
+          className="input"
+          defaultValue={embed.footer?.icon_url}
+          placeholder={`Icon URL`}
+        />
+        <input
+          type="text"
+          className="input"
+          defaultValue={embed.footer?.text}
+          placeholder={'Footer text'}
+        />
+      </Collapsible>
+
+      <button className="save_embed">
+        <span>Save</span>
+      </button>
+    </form>
   );
 }
 
