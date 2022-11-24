@@ -1,7 +1,7 @@
 import { useState, MouseEvent, FormEvent } from 'react';
 import { APIEmbed } from 'discord.js';
 import './ScheduledMessages.css';
-import { GuildChannelEntry, ScheduledMessageEntry } from '../../types';
+import { GuildChannelEntry, ScheduledMessageEntry, ScheduledMessageType } from '../../types';
 import Collapsible from '../Collapsible';
 import GUI from './GUI';
 
@@ -12,26 +12,6 @@ function ScheduledMessages({
   scheduledMessages: ScheduledMessageEntry[];
   guildChannels: GuildChannelEntry[];
 }) {
-  // async function handleSave() {
-  //   console.log(values);
-  //   // const cookie = getCookie('access_token');
-  //   // console.log(`cookie: ${cookie}`);
-
-  //   // await fetch(`http://localhost:7373/dashboard/savedata?accessToken=${cookie}&category=configs`, {
-  //   //   method: 'POST',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json'
-  //   //   },
-  //   //   body: JSON.stringify(values)
-  //   // })
-  //   //   .then(response => response.json())
-  //   //   .then((data: { message: string }) => console.log(data.message));
-  // }
-
-  // const { onChange, onSubmit, values, valuesChanged } = useForm<ScheduledMessageEntry[]>(
-  //   handleSave,
-  //   scheduledMessages
-  // );
   interface T {
     [id: number]: ScheduledMessageEntry;
   }
@@ -83,32 +63,29 @@ function ScheduledMessages({
     updateMessages(message, { embed: embed });
   }
 
-  function updateMessages(
+  async function updateMessages(
     message: ScheduledMessageEntry,
     options: {
-      id?: number;
       content?: string | undefined;
       embed?: APIEmbed | undefined;
       date?: string;
       channel?: string;
-      type?: number;
     }
   ) {
-    const { id, content, embed, date, channel, type } = options;
+    const { content, embed, date, channel } = options;
+
     const updatedMessage = {
-      [message.id]: {
-        id: id ? id : message.id,
-        message: JSON.stringify({ content: content, embed: embed }),
-        date: date ? date : message.date,
-        channel: channel ? channel : message.channel,
-        type: type ? type : message.type
-      }
+      id: message.id,
+      message: JSON.stringify({ content: content, embed: embed }),
+      date: date ? date : message.date,
+      channel: channel ? channel : message.channel,
+      type: message.type
     };
 
-    setMessages(prevMessages => ({
-      ...prevMessages,
-      ...updatedMessage
-    }));
+    setMessages({
+      ...messages,
+      [message.id]: updatedMessage
+    });
   }
 
   async function onSubmitCallback() {
@@ -149,16 +126,6 @@ function ScheduledMessages({
               </div>
             </Collapsible>
           </div>
-          // <form key={m.id} onSubmit={onSubmit} className="scheduled_message_form">
-          //     {/* Message content: input area */}
-          //     {/* Author: icon url, author name */}
-          //     {/* Title: input */}
-          //     {/* Description: input area */}
-          //     {/* Fields: New field [+] -> field name: input, field value: input area */}
-          //     {/* Thumbnail: url: input */}
-          //     {/* Image: url: input*/}
-          //     {/* Footer: input url, footer text: input*/}
-          // </form>
         );
       })}
     </div>

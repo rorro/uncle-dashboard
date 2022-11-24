@@ -1,5 +1,4 @@
 import { MouseEventHandler } from 'react';
-import { APIEmbed } from 'discord.js';
 
 export interface OpenApplicationsResponse {
   id: number;
