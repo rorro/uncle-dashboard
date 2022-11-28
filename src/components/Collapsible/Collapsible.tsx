@@ -3,7 +3,7 @@ import './Collapsible.css';
 
 interface IProps {
   title: string;
-  id: number;
+  id?: number;
   date?: string;
   channel?: string;
   children?: React.ReactNode;
@@ -18,6 +18,10 @@ function Collapsible({ id, title, date, channel, children }: IProps) {
     return !!date && !!channel;
   };
 
+  const isFields = (): boolean => {
+    return !!id && !date && !channel;
+  };
+
   return (
     <div className="card">
       <div className="card_header" onClick={handleFilterOpening}>
@@ -29,11 +33,14 @@ function Collapsible({ id, title, date, channel, children }: IProps) {
         <span className="arrow">{isOpen ? '⯅' : '⯆'}</span>
       </div>
 
-      {isOpen && (
-        <div className="card_content" id={`${id}`}>
-          {children}
-        </div>
-      )}
+      {isOpen &&
+        (isFields() ? (
+          <div className="card_content" id={`${id}`}>
+            {children}
+          </div>
+        ) : (
+          <div className="card_content">{children}</div>
+        ))}
     </div>
   );
 }

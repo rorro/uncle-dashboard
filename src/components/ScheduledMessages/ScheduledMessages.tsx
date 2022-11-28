@@ -1,7 +1,7 @@
-import { useState, MouseEvent, FormEvent } from 'react';
-import { APIEmbed } from 'discord.js';
+import { useState, MouseEvent, FormEvent, ChangeEvent } from 'react';
+import { APIEmbed, EmbedBuilder } from 'discord.js';
 import './ScheduledMessages.css';
-import { GuildChannelEntry, ScheduledMessageEntry, ScheduledMessageType } from '../../types';
+import { GuildChannelEntry, ScheduledMessageEntry } from '../../types';
 import Collapsible from '../Collapsible';
 import GUI from './GUI';
 
@@ -22,28 +22,24 @@ function ScheduledMessages({
 
   const [messages, setMessages] = useState<T>(newObject);
 
-  function addField(e: MouseEvent<HTMLLabelElement>) {
+  function addField(messageId: number) {
     const newField = { name: '', value: '', inline: false };
-    const parentId = e.currentTarget.parentElement?.id;
 
-    if (!parentId) return;
+    const message = messages[messageId];
 
-    const parentMessage = messages[+parentId];
-
-    const { embed }: { content: string; embed: APIEmbed } = JSON.parse(parentMessage.message);
+    const { embed }: { embed: APIEmbed } = JSON.parse(message.message);
     embed.fields ? embed.fields.push(newField) : (embed.fields = [newField]);
 
-    updateMessages(parentMessage, { embed: embed });
+    updateMessages(message, { embed: embed });
   }
 
-  function removeField(e: MouseEvent<HTMLLabelElement>) {
+  function removeField(messageId: number, e: MouseEvent<HTMLLabelElement>) {
     const parent = e.currentTarget.parentElement;
 
-    const messageId = parent?.getAttribute('data-messageid');
     if (!parent || !messageId) return;
 
     const message = messages[+messageId];
-    const { embed }: { content: string; embed: APIEmbed } = JSON.parse(message.message);
+    const { embed }: { embed: APIEmbed } = JSON.parse(message.message);
     const fieldsContainer = document.querySelector(`[id='${messageId}']`);
     const fields = fieldsContainer?.querySelectorAll('.field');
 
@@ -59,24 +55,71 @@ function ScheduledMessages({
 
     if (clickedField === null) return;
     embed.fields?.splice(clickedField, 1);
+    console.log(embed.fields);
 
     updateMessages(message, { embed: embed });
   }
 
-  async function updateMessages(
-    message: ScheduledMessageEntry,
-    options: {
-      content?: string | undefined;
-      embed?: APIEmbed | undefined;
-      date?: string;
-      channel?: string;
+  function onChange(messageId: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const [name, key] = e.currentTarget.name.split(' ');
+    console.log(name, key);
+
+    const value = e.currentTarget.value;
+    const scheduledMessage = messages[messageId];
+    let { embed }: Record<string, any> = JSON.parse(scheduledMessage.message);
+
+    let options: UpdateMessageOptions = {};
+    switch (name as APIEmbed) {
+      case 'content':
+        options.content = value;
+        break;
+      case 'title':
+        embed.title = value;
+        break;
+      case 'description':
+        embed.description = value;
+        break;
+      case 'field':
+        //possible keys: name, value
+        break;
+      case 'thumbnail':
+      case 'image':
+      case 'footer':
+      case 'author':
+        embed[name] = { ...embed[name], ...{ [key]: value } };
+        break;
+      case 'url':
+        //TODO: add url in the gui
+        break;
+      case 'color':
+        //TODO: add color picker in the gui
+        break;
+
+      default:
+        break;
     }
-  ) {
+
+    options.embed = embed;
+    updateMessages(scheduledMessage, options);
+  }
+
+  interface UpdateMessageOptions {
+    content?: string | undefined;
+    embed?: APIEmbed | undefined;
+    date?: string;
+    channel?: string;
+  }
+
+  function updateMessages(message: ScheduledMessageEntry, options: UpdateMessageOptions) {
     const { content, embed, date, channel } = options;
+    const { content: originalContent, embed: originalEmbed } = JSON.parse(message.message);
 
     const updatedMessage = {
       id: message.id,
-      message: JSON.stringify({ content: content, embed: embed }),
+      message: JSON.stringify({
+        content: content ? content : originalContent,
+        embed: embed ? embed : originalEmbed
+      }),
       date: date ? date : message.date,
       channel: channel ? channel : message.channel,
       type: message.type
@@ -103,12 +146,13 @@ function ScheduledMessages({
         const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(
           messages[+oId].message
         );
+
         const { id, date, channel } = messages[+oId];
 
         return (
           <div className="container" key={id}>
             <Collapsible
-              title={embed.title || 'empty title'}
+              title={embed.title || '[empty title]'}
               id={id}
               date={date}
               channel={guildChannels.filter(c => c.id === channel)[0].name}
@@ -121,6 +165,7 @@ function ScheduledMessages({
                   handleRemoveField={removeField}
                   handleAddField={addField}
                   handleSubmit={onSubmit}
+                  handleChange={onChange}
                 />
                 <div className="preview">PREVIEW GOES HERE</div>
               </div>
