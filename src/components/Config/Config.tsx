@@ -7,9 +7,7 @@ import { getCookie } from '../../utils/cookie';
 
 function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: GuildChannelEntry[] }) {
   async function handleSave() {
-    console.log(values);
     const cookie = getCookie('access_token');
-    console.log(`cookie: ${cookie}`);
 
     await fetch(`http://localhost:7373/dashboard/savedata?accessToken=${cookie}&category=configs`, {
       method: 'POST',
@@ -20,11 +18,10 @@ function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: Gui
     })
       .then(response => response.json())
       .then((data: { message: string }) => console.log(data.message));
+    // TODO: do something better with the response than just logging it
   }
 
   const { onChange, onSubmit, values, valuesChanged } = useForm<ConfigEntry>(handleSave, data);
-  console.log(`valuesChanged: ${valuesChanged}`);
-  console.log(`data: ${data}`);
 
   return (
     <form onSubmit={onSubmit} className="config_form">

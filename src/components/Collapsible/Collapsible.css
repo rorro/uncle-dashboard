@@ -1,7 +1,7 @@
 .card {
   background-color: #1e1e1e;
   border-radius: .2em;
-  width: 95%;
+  width: 100%;
   margin: 0 0 10px 0;
 }
 
@@ -11,10 +11,12 @@
   display: flex;
   justify-content: center;
   padding: 5px;
+  border-radius: .2em;
 }
 
 .card_header:hover {
   cursor: pointer;
+  background-color: rgba(45, 45, 45, 0.2);
 }
 
 .card_header span {
@@ -24,14 +26,18 @@
 }
 
 .arrow {
-  color: #2f2f2f;
+  color: #6f6f6f;
   font-weight: bold;
+  right: 0;
+  margin-left: auto;
+  order: 2;
 }
 
 .card_content {
   font-size: 13px;
   width: 100%;
   padding: 0 0 5px 0;
+  grid-area: auto / 1 / auto / 5;
 }
 
 .info {

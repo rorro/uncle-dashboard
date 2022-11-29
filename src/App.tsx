@@ -15,7 +15,6 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const { data } = useFetch<DashboardData>(`${apiUrl}?accessToken=${cookie}`);
-  console.log(data);
 
   const handleLogin = () => {
     const loginUrl =

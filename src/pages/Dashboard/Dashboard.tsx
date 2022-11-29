@@ -28,8 +28,6 @@ function Dashboard({ data }: { data: DashboardData | undefined }) {
       case 'messages':
         return data ? <MessagesTable messages={data.messages} /> : <p>You need to log in</p>;
       case 'config':
-        console.log(`data in dashboard: ${data?.configs}`);
-
         return data && data.configs ? (
           <Config data={data.configs} guildChannels={data.guildChannels} />
         ) : (

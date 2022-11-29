@@ -1,3 +1,9 @@
+.wrapper {
+  width: 95%;
+  margin: 3em auto 0 auto;
+
+}
+
 .gui {
   width: 40%;
   float: left;
@@ -12,12 +18,19 @@
 }
 
 .icon {
-  margin-left: -18px;
+  position: absolute;
+  margin: 5px 0 0 -18px;
   padding: 0 5px 0 0;
+  width: 15px;
+  height: 15px;
 }
 
 .inline {
   margin-right: 10px;
+}
+
+.checkbox:hover {
+  cursor: pointer;
 }
 
 .margin {
@@ -29,6 +42,10 @@
   font-weight: bold;
 }
 
+.add_field:hover {
+  cursor: pointer;
+}
+
 .save_embed {
   border-radius: .2em;
   border: none;
@@ -36,12 +53,30 @@
   font-size: 1em;
   transition: all 0.2s;
   cursor: pointer;
-  margin: 5px;
-  padding: .3em .6em;
+  margin: 5px 5px 20px 30px;
+  padding: .4em .6em;
   font-weight: bold;
   background-color: #04AA6D;
+  float: left;
 }
 
 .save_embed:active {
   background-color: #026d46;
+}
+
+#new_message {
+  position: absolute;
+  right: 1.4em;
+  margin-top: -1.7em;
+  background: none;
+  border: none;
+  border-radius: .2em;
+  font-weight: bold;
+  font-size: .9em;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+#new_message:hover {
+  color: rgba(255, 255, 255, 0.5);
 }
