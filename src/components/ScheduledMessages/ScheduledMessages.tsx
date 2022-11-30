@@ -3,11 +3,17 @@ import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIEmbed } from 'discord.js';
 import './ScheduledMessages.css';
-import { ExtendedAPIEmbedField, GuildChannelEntry, ScheduledMessageEntry } from '../../types';
+import {
+  ExtendedAPIEmbedField,
+  GuildChannelEntry,
+  ScheduledMessageEntry,
+  UpdateMessageOptions
+} from '../../types';
 import Collapsible from '../Collapsible';
 import GUI from './GUI';
 import { v4 as uuidv4 } from 'uuid';
 import { getCookie } from '../../utils/cookie';
+import { ColorResult } from '@hello-pangea/color-picker';
 
 function ScheduledMessages({
   scheduledMessages,
@@ -80,6 +86,16 @@ function ScheduledMessages({
     updateMessages(message, { embed: embed });
   }
 
+  function onColorPicked(messageId: number, color: ColorResult) {
+    const col = parseInt(color.hex.substring(1), 16);
+
+    const scheduledMessage = messages[messageId];
+    let { embed }: Record<string, any> = JSON.parse(scheduledMessage.message);
+    embed['color'] = col;
+
+    updateMessages(scheduledMessage, { embed: embed });
+  }
+
   function onChange(messageId: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const [name, key] = e.currentTarget.name.split(' ');
 
@@ -99,7 +115,6 @@ function ScheduledMessages({
       case 'title':
       case 'description':
       case 'url':
-      case 'color':
         embed[name] = value;
         break;
 
@@ -119,13 +134,6 @@ function ScheduledMessages({
 
     options.embed = embed;
     updateMessages(scheduledMessage, options);
-  }
-
-  interface UpdateMessageOptions {
-    content?: string | undefined;
-    embed?: APIEmbed | undefined;
-    date?: string;
-    channel?: string;
   }
 
   function updateMessages(message: ScheduledMessageEntry, options: UpdateMessageOptions) {
@@ -184,9 +192,8 @@ function ScheduledMessages({
         <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
       </button>
       {Object.keys(messages).map(oId => {
-        const { content, embed } = JSON.parse(messages[+oId].message);
-
-        const { id, date, channel } = messages[+oId];
+        const { id, date, channel, message } = messages[+oId];
+        const { embed }: { embed: APIEmbed } = JSON.parse(message);
 
         return (
           <div className="container" key={id}>
@@ -197,13 +204,12 @@ function ScheduledMessages({
               channel={guildChannels.filter(c => c.id === channel)[0].name}
             >
               <GUI
-                messageId={id}
-                content={content}
-                embed={embed}
+                scheduledMessage={messages[+oId]}
                 handleRemoveField={removeField}
                 handleAddField={addField}
                 handleSubmit={onSubmit}
                 handleChange={onChange}
+                handleColorPicked={onColorPicked}
               />
               <div className="preview">PREVIEW GOES HERE</div>
             </Collapsible>

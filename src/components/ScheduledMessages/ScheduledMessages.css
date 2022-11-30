@@ -80,3 +80,7 @@
 #new_message:hover {
   color: rgba(255, 255, 255, 0.5);
 }
+
+.picker {
+  margin: 0 auto 0 auto;
+}

@@ -1,4 +1,4 @@
-import { APIEmbedField } from 'discord.js';
+import { APIEmbed, APIEmbedField } from 'discord.js';
 import { MouseEventHandler } from 'react';
 
 export interface OpenApplicationsResponse {
@@ -110,4 +110,11 @@ export interface ScheduledMessageEntry {
 
 export interface ExtendedAPIEmbedField extends APIEmbedField {
   key: string;
+}
+
+export interface UpdateMessageOptions {
+  content?: string | undefined;
+  embed?: APIEmbed | undefined;
+  date?: string;
+  channel?: string;
 }
