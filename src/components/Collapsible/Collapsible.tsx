@@ -25,7 +25,7 @@ function Collapsible({ id, title, date, channel, children }: IProps) {
   return (
     <div className="card">
       <div className="card_header" onClick={handleFilterOpening}>
-        <span>{title}</span>
+        <span title={title}>{title}</span>
         {isHeader() && <span className="info">ID: {id}</span>}
         {isHeader() && <span className="info">Date: {date}</span>}
         {isHeader() && <span className="info">Channel: #{channel}</span>}

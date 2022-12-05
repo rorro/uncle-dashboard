@@ -1,0 +1,330 @@
+:root {
+  --link: #00b0f4;
+  --embedTextColor: #dcddde;
+  --embedTextColor2: #72767d;
+  --embedBackground: #2f3136;
+  --fullEmbedBackground: #36393f;
+  --side1Background: #2c2e33;
+  --side1Background: #2f3136;
+  --background-secondary: #2f3136;
+  --background-tertiary: #202225;
+  --header-secondary: #b9bbbe;
+  --interactive-muted: #4f545c;
+}
+
+.side2 {
+  height: 100%;
+  width: 60%;
+  font-family: DsWhitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--fullEmbedBackground);
+  float: right;
+}
+
+.msgEmbed {
+  min-height: 2.75rem;
+  position: absolute;
+  overflow-wrap: break-word;
+  user-select: text;
+  padding-left: 45px;
+  width: inherit;
+}
+
+.contents {
+  position: static;
+  margin-left: 0px;
+  padding-left: 0px;
+  text-indent: 0px;
+  width: fit-content;
+}
+
+.avatar {
+  position: absolute;
+  left: 0px;
+  margin-top: calc(4px - 0.125rem);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+  flex: 0 0 auto;
+  z-index: 1;
+}
+
+.username {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.375rem;
+  color: #fff;
+  display: inline;
+  vertical-align: baseline;
+  position: relative;
+}
+
+.botTag {
+  padding-left: 0;
+}
+
+.botTag {
+  height: 0.9375rem;
+  padding: 0px 0.275rem;
+  margin-top: 0.075em;
+  border-radius: 0.1875rem;
+  background: #5961ec;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  vertical-align: top;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-indent: 0px;
+  position: relative;
+  top: 0.1rem;
+  margin-left: 0.25rem;
+  line-height: 1.375rem;
+  white-space: break-spaces;
+  overflow-wrap: break-word;
+}
+
+.botText {
+  position: relative;
+  font-size: 9px;
+  line-height: 15px;
+  text-transform: uppercase;
+  text-indent: 0px;
+  color: rgb(255, 255, 255);
+  font-weight: 550;
+}
+
+.timeText {
+  font-size: 0.7rem;
+  line-height: 1.375rem;
+  color: var(--embedTextColor2);
+  vertical-align: baseline;
+  margin-left: 0.25rem;
+  display: inline-block;
+  height: 1.25rem;
+  cursor: default;
+  pointer-events: none;
+  font-weight: 550;
+}
+
+.messageContent {
+  user-select: text;
+  text-align: start;
+  width: calc(100% - 100px);
+}
+
+.embed {
+  position: relative;
+  display: grid;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border-left: 4px solid var(--fullEmbedBackground);
+  background: var(--embedBackground);
+  border-color: #1e2327;
+  width: inherit;
+  
+}
+
+.embedAuthorName,
+.embedFieldName,
+.embedTitle {
+    color: #fff;
+}
+
+.embedTitle>* {
+  line-height: 1.375rem;
+}
+
+.messageContent.markup {
+  font-size: 1rem;
+  line-height: 1.375rem;
+  white-space: pre-wrap;
+  white-space: break-spaces;
+  word-wrap: break-word;
+  user-select: text;
+  font-weight: 400;
+}
+
+.markup em {
+  font-style: italic;
+}
+
+.markup strong {
+  font-weight: 700;
+}
+
+.markup {
+  font-size: 1rem;
+  line-height: 1.375rem;
+  user-select: text;
+  color: var(--embedTextColor);
+  font-weight: 400;
+}
+
+.markup a {
+  word-break: break-word;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.anchor {
+  color: var(--link);
+}
+
+.markup a:hover {
+  text-decoration: underline;
+}
+
+.markup code {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  text-indent: 0;
+  white-space: pre-wrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--background-tertiary) var(--background-secondary);
+  background: #2f3136;
+  border: 1px solid #202225;
+}
+
+.markup pre>code {
+  display: block;
+  overflow-x: auto;
+  padding: .5em;
+  border-radius: 4px;
+  color: var(--header-secondary);
+  text-size-adjust: none;
+}
+
+.markup code {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  text-indent: 0;
+  white-space: pre-wrap;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-tertiary);
+}
+
+.markup code.inline {
+  width: auto;
+  height: auto;
+  padding: .2em;
+  margin: -.2em 0;
+  border-radius: 3px;
+  font-size: 85%;
+  font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+  text-indent: 0;
+  border: none;
+  white-space: pre-wrap;
+}
+
+/* .markup>blockquote,
+.markup pre {
+  max-width: 90%;
+} */
+
+.markup pre {
+  border-radius: 4px;
+  padding: 0;
+  font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-top: 6px;
+  white-space: pre-wrap;
+  background-clip: border-box;
+}
+
+.embedContainer {
+  /* max-width: inherit; */
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 0.25rem;
+  text-indent: 0px;
+  min-height: 0px;
+  min-width: 0px;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  width: calc(100% - 45px);
+  max-width: 412px;
+}
+
+.embedContainer>* {
+  place-self: start;
+}
+
+.embedGrid {
+  overflow: hidden;
+  /* max-width: 520px; */
+  padding: 0.5rem 1rem 1rem 0.75rem;
+  display: inline-grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-columns: auto min-content;
+}
+
+.embedMargin {
+  word-break: break-all;
+  margin-top: 8px;
+}
+
+.embedAuthorName,
+.embedAuthorNameLink,
+.embedDescription,
+.embedFieldName,
+.embedFieldValue,
+.embedFooterText,
+.embedLink,
+.embedProvider-3k5pfl,
+.embedTitle,
+.embedTitleLink-1Zla9e {
+    unicode-bidi: plaintext;
+    text-align: left;
+}
+
+.embedAuthor {
+  display: flex;
+  align-items: center;
+  grid-column: 1 / 1;
+}
+
+.embedAuthorName {
+  font-size: 0.875rem;
+  font-weight: 550;
+}
+
+.embedAuthorIcon {
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.embedLink {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.embedTitle {
+  font-size: .8rem;
+  font-weight: bold;
+  display: inline-block;
+  grid-column: 1 / 1;
+}
+
+.anchor {
+  color: var(--link);
+}
+
+.embedDescription {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+  white-space: pre-line;
+  grid-column: 1 / 1;
+}
+
+.embedDescription,
+.embedFieldValue {
+    color: var(--embedTextColor);
+}

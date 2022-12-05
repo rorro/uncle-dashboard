@@ -118,3 +118,10 @@ export interface UpdateMessageOptions {
   date?: string;
   channel?: string;
 }
+
+export interface DeleteModalOptions {
+  messageId: number;
+  date: string;
+  channel: string;
+  embed: APIEmbed;
+}

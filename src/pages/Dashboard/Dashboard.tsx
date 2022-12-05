@@ -6,6 +6,8 @@ import { DashboardData } from '../../types';
 import MessagesTable from '../../components/MessagesTable';
 import Config from '../../components/Config';
 import ScheduledMessages from '../../components/ScheduledMessages';
+import useFetch from '../../hooks/useFetch';
+import { getCookie } from '../../utils/cookie';
 
 const menuItems = [
   { key: 'config', value: 'Config' },
@@ -16,7 +18,10 @@ const menuItems = [
   // { key: 'tickets', value: 'Support Tickets' }
 ];
 
-function Dashboard({ data }: { data: DashboardData | undefined }) {
+function Dashboard() {
+  const apiUrl = 'http://localhost:7373/dashboard';
+  const cookie = getCookie('access_token');
+  const { data } = useFetch<DashboardData>(`${apiUrl}?accessToken=${cookie}`);
   const [selectedOption, setSelectedOption] = useState<string>('config');
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,12 +1,15 @@
 import { useState, MouseEvent, FormEvent, ChangeEvent } from 'react';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APIEmbed } from 'discord.js';
+import { APIEmbed, Embed } from 'discord.js';
 import './ScheduledMessages.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import {
+  DeleteModalOptions,
   ExtendedAPIEmbedField,
   GuildChannelEntry,
   ScheduledMessageEntry,
+  ScheduledMessageType,
   UpdateMessageOptions
 } from '../../types';
 import Collapsible from '../Collapsible';
@@ -14,6 +17,10 @@ import GUI from './GUI';
 import { v4 as uuidv4 } from 'uuid';
 import { getCookie } from '../../utils/cookie';
 import { ColorResult } from '@hello-pangea/color-picker';
+import dayjs from 'dayjs';
+import ConfirmDeleteModal from '../ConfirmDeleteModal';
+import { ToastContainer, toast } from 'react-toastify';
+import Preview from './Preview';
 
 function ScheduledMessages({
   scheduledMessages,
@@ -25,15 +32,21 @@ function ScheduledMessages({
   interface T {
     [id: number]: ScheduledMessageEntry;
   }
+
   const initialMessages: T = {};
+  const initialMessagesChanged: Record<number, boolean> = {};
   scheduledMessages.forEach(m => {
     const { content, embed } = JSON.parse(m.message);
     const fields = embed.fields;
+    initialMessagesChanged[m.id] = false;
 
     // Add a unique key to each field so that rendering them works properly
     if (fields) {
       fields.forEach((f: Record<string, string | boolean>) => {
+        if (f['key']) return; // There has to be a better way of doing this
+
         f['key'] = uuidv4();
+        console.log('why is this happening now?', f);
       });
       m.message = JSON.stringify({ content: content, embed: embed });
     }
@@ -41,13 +54,21 @@ function ScheduledMessages({
   });
 
   const [messages, setMessages] = useState<T>(initialMessages);
+  const [previousMessages, setPreviousMessages] = useState<T>(initialMessages);
+  const [messageChanged, setMessageChanged] = useState<Record<number, boolean>>(initialMessagesChanged);
+  const [deleteModalOpen, setDeleteModelOpen] = useState<boolean>(false);
+  const [deleteModalData, setDeleteModelData] = useState<DeleteModalOptions | undefined>();
+
+  function toggleDeleteModal() {
+    setDeleteModelOpen(!deleteModalOpen);
+  }
 
   function addField(messageId: number) {
     const newField: ExtendedAPIEmbedField = { name: '', value: '', inline: false, key: uuidv4() };
 
     const message = messages[messageId];
 
-    const { embed }: { embed: APIEmbed } = JSON.parse(message.message);
+    const { embed } = JSON.parse(message.message);
     embed.fields ? embed.fields.push(newField) : (embed.fields = [newField]);
 
     updateMessages(message, { embed: embed });
@@ -55,7 +76,9 @@ function ScheduledMessages({
 
   function getClickedField(
     messageId: number,
-    e: MouseEvent<HTMLLabelElement> | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e:
+      | MouseEvent<HTMLLabelElement>
+      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ): number | null {
     const parent = e.currentTarget.parentElement;
 
@@ -96,7 +119,19 @@ function ScheduledMessages({
     updateMessages(scheduledMessage, { embed: embed });
   }
 
-  function onChange(messageId: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function onDatePicked(messageId: number, date: string | undefined) {
+    if (!date || date.toLowerCase().includes('invalid')) return;
+
+    const scheduledMessage = messages[messageId];
+    scheduledMessage.date = date;
+
+    updateMessages(scheduledMessage, {});
+  }
+
+  function onChange(
+    messageId: number,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) {
     const [name, key] = e.currentTarget.name.split(' ');
 
     const value =
@@ -105,26 +140,25 @@ function ScheduledMessages({
         : e.currentTarget.value;
 
     const scheduledMessage = messages[messageId];
-    let { embed }: Record<string, any> = JSON.parse(scheduledMessage.message);
+    let { embed } = JSON.parse(scheduledMessage.message);
 
     let options: UpdateMessageOptions = {};
     switch (name as APIEmbed) {
       case 'content':
-        options.content = value.toString();
+      case 'channel':
+        options[name as keyof UpdateMessageOptions] = value.toString();
         break;
       case 'title':
       case 'description':
       case 'url':
         embed[name] = value;
         break;
-
       case 'thumbnail':
       case 'image':
       case 'footer':
       case 'author':
         embed[name] = { ...embed[name], ...{ [key]: value } };
         break;
-
       case 'fields':
         const clickedField = getClickedField(messageId, e);
         if (clickedField === null) break;
@@ -136,14 +170,79 @@ function ScheduledMessages({
     updateMessages(scheduledMessage, options);
   }
 
+  function handleAddNewMessage() {
+    console.log('adding new message');
+    const newMessage: ScheduledMessageEntry = {
+      id: Math.random(),
+      message: `{"content": "", "embed": {"title": "⚠️ PLACEHOLDER TITLE ⚠️ ", "fields": []}}`,
+      date: dayjs().format('YYYY-MM-DD HH:mm'),
+      channel: guildChannels[1].id,
+      type: ScheduledMessageType.Embed
+    };
+
+    updateMessages(newMessage, {});
+  }
+
+  function removeMessage(modalData: DeleteModalOptions, e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+
+    setDeleteModelData(modalData);
+    toggleDeleteModal();
+  }
+
+  async function confirmDeleteMessage(messageId: number) {
+    console.log(`Removing scheduled message from database!`);
+    const cookie = getCookie('access_token');
+
+    await fetch(
+      `http://localhost:7373/dashboard/deletemessage?accessToken=${cookie}&messageId=${messageId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+      .then(response => response.json())
+      .then((data: { message: string }) => {
+        //TODO: only if successfully saved scheduled message set changed to false
+        console.log(data.message);
+        setMessageChanged({
+          ...messageChanged,
+          [messageId]: false
+        });
+
+        setPreviousMessages(messages);
+      });
+
+    const newMessages: T = {};
+    Object.entries(messages).forEach(([id, m]) => {
+      if (id !== messageId.toString()) {
+        newMessages[+id] = m;
+      }
+    });
+    setMessages(newMessages);
+
+    const newMessagesChanged: Record<number, boolean> = {};
+    Object.entries(messageChanged).forEach(([id, c]) => {
+      if (id !== messageId.toString()) {
+        newMessagesChanged[+id] = c;
+      }
+    });
+    setMessageChanged(newMessagesChanged);
+
+    toggleDeleteModal();
+  }
+
   function updateMessages(message: ScheduledMessageEntry, options: UpdateMessageOptions) {
     const { content, embed, date, channel } = options;
+
     const { content: originalContent, embed: originalEmbed } = JSON.parse(message.message);
 
     const updatedMessage = {
       id: message.id,
       message: JSON.stringify({
-        content: content ? content : originalContent,
+        content: content !== undefined ? content : originalContent,
         embed: embed ? embed : originalEmbed
       }),
       date: date ? date : message.date,
@@ -154,6 +253,13 @@ function ScheduledMessages({
     setMessages({
       ...messages,
       [message.id]: updatedMessage
+    });
+
+    const changed = JSON.stringify(updatedMessage) !== JSON.stringify(previousMessages[message.id]);
+
+    setMessageChanged({
+      ...messageChanged,
+      [message.id]: changed
     });
   }
 
@@ -172,51 +278,156 @@ function ScheduledMessages({
       }
     )
       .then(response => response.json())
-      .then((data: { message: string }) => console.log(data.message));
-    // TODO: do something better with the response than just logging it
+      .then((data: { newId: number; message: string }) => {
+        if (!data.message.includes('Successfully')) {
+          toast.error(
+            `Message was not saved for some reason. It might have already been sent. Reload the page and try again.`,
+            {
+              position: 'top-center',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              theme: 'dark'
+            }
+          );
+          return;
+        }
+
+        if (messageId < 1) {
+          // Change the generated id with the new correct id returned from server
+          const newIdMessage = messages[messageId];
+          newIdMessage['id'] = data.newId;
+          delete messages[messageId];
+
+          setMessages({
+            ...messages,
+            [data.newId]: newIdMessage
+          });
+        }
+
+        setMessageChanged({
+          ...messageChanged,
+          [messageId]: false
+        });
+
+        setPreviousMessages(messages);
+      });
+  }
+
+  async function hasEmptyFields(messageId: number) {
+    const fields: ExtendedAPIEmbedField[] = JSON.parse(messages[messageId].message).embed.fields;
+    for (const field of fields) {
+      if (field.name.trim() === '' || field.value.trim() === '') return true;
+    }
+    return false;
   }
 
   const onSubmit = async (messageId: number, event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (await hasEmptyFields(messageId)) {
+      toast.error(`Field name and value can't be empty.`, {
+        position: 'top-center',
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        theme: 'dark'
+      });
+      return;
+    }
     await onSubmitCallback(messageId);
   };
 
-  function handleAddNewMessage() {
-    console.log('adding new message');
-  }
-
+  const tester = {
+    author: {
+      name: 'TestUser',
+      url: 'https://beepbot.app',
+      iconUrl: 'https://beepbot.app/img/favicon-32x32.png'
+    },
+    title: 'My Awesome Day Out',
+    description: '## Testing\n This is a message on another line?',
+    url: '',
+    timestamp: '2020-12-10T00:00:00.000Z',
+    color: '#fff',
+    footer: {
+      iconUrl: 'https://beepbot.app/img/favicon-32x32.png',
+      text: 'via BeepBot \\o/'
+    },
+    image: {
+      width: 250,
+      height: 300,
+      url: 'https://i.imgur.com/fmYrG2N.png'
+    },
+    thumbnail: {
+      width: 0,
+      height: 0,
+      url: 'https://i.imgur.com/fmYrG2N.png'
+    },
+    fields: [
+      {
+        name: 'Item 1',
+        value:
+          'These things have [manual ways](https://discord.dev/reference#message-formatting) ... blah, blah, `d.user`, `d.role`, `d.channel`, and `d.emoji`.',
+        inline: true
+      },
+      {
+        name: 'Item 2',
+        value:
+          'You can create reaction roles with the bot using the `d.reactionrole` command, the set-up process is very simple: add a reaction to any existing message in your server, and name the role.',
+        inline: true
+      },
+      {
+        name: 'Item 3',
+        value:
+          'The bot is capable of turning most message links sent inside your server into Discohook links. Use the `d.link` command with a message link to move that message from Discord into Discohook.',
+        inline: false
+      }
+    ]
+  };
   return (
-    <div className="wrapper">
-      <button id="new_message" onClick={handleAddNewMessage}>
-        ADD MESSAGE
-        <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
-      </button>
-      {Object.keys(messages).map(oId => {
-        const { id, date, channel, message } = messages[+oId];
-        const { embed }: { embed: APIEmbed } = JSON.parse(message);
+    <>
+      <ToastContainer style={{ fontSize: '.8em' }} />
+      <ConfirmDeleteModal
+        isOpen={deleteModalOpen}
+        toggle={toggleDeleteModal}
+        confirmDelete={confirmDeleteMessage}
+        modalData={deleteModalData}
+      />
+      <div className="wrapper">
+        <button id="new_message" onClick={handleAddNewMessage}>
+          ADD MESSAGE
+          <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
+        </button>
+        {Object.keys(messages).map(oId => {
+          const { id, date, channel, message } = messages[+oId];
+          const { embed, content } = JSON.parse(message);
 
-        return (
-          <div className="container" key={id}>
-            <Collapsible
-              title={embed.title || '[empty title]'}
-              id={id}
-              date={date}
-              channel={guildChannels.filter(c => c.id === channel)[0].name}
-            >
-              <GUI
-                scheduledMessage={messages[+oId]}
-                handleRemoveField={removeField}
-                handleAddField={addField}
-                handleSubmit={onSubmit}
-                handleChange={onChange}
-                handleColorPicked={onColorPicked}
-              />
-              <div className="preview">PREVIEW GOES HERE</div>
-            </Collapsible>
-          </div>
-        );
-      })}
-    </div>
+          return (
+            <div className="container" key={id}>
+              <Collapsible
+                title={embed.title || '[empty title]'}
+                id={id}
+                date={date}
+                channel={guildChannels.filter(c => c.id === channel)[0].name}
+              >
+                <GUI
+                  scheduledMessage={messages[id]}
+                  guildChannels={guildChannels}
+                  messageChanged={messageChanged[id]}
+                  handleRemoveField={removeField}
+                  handleAddField={addField}
+                  handleRemoveMessage={removeMessage}
+                  handleSubmit={onSubmit}
+                  handleChange={onChange}
+                  handleColorPicked={onColorPicked}
+                  handleDatePicked={onDatePicked}
+                />
+                <Preview embed={embed} content={content} date={date} />
+              </Collapsible>
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }
 

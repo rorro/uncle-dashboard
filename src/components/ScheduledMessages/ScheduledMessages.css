@@ -1,18 +1,17 @@
 .wrapper {
   width: 95%;
   margin: 3em auto 0 auto;
-
 }
 
 .gui {
   width: 40%;
   float: left;
-  border: 1px red solid;
+  /* border: 1px red solid; */
   border-width: 0 1px 0 0;
 }
 
 .preview {
-  width: 59%;
+  max-width: 59%;
   float: right;
   padding: 0 0 5px 0;
 }
@@ -53,15 +52,34 @@
   font-size: 1em;
   transition: all 0.2s;
   cursor: pointer;
-  margin: 5px 5px 20px 30px;
+  margin: 5px;
   padding: .4em .6em;
   font-weight: bold;
-  background-color: #04AA6D;
   float: left;
+  pointer-events: all;
+  background-color: #04AA6D;
 }
 
-.save_embed:active {
-  background-color: #026d46;
+.save_embed:hover {
+  background-color: #04aa6dab;
+}
+
+.delete_embed {
+  border-radius: .2em;
+  border: none;
+  color: #FFFFFF;
+  font-size: 1em;
+  transition: all 0.1s;
+  cursor: pointer;
+  margin: 5px;
+  padding: .4em .6em;
+  font-weight: bold;
+  float: left;
+  background-color: #c20000;
+}
+
+.delete_embed:hover {
+  background-color: #c20000cb;
 }
 
 #new_message {

@@ -23,6 +23,7 @@
   padding: 3px;
   border-radius: .3em;
   margin-right: .4em;
+  overflow: hidden;
 }
 
 .arrow {
