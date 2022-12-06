@@ -1,4 +1,6 @@
+import parse from 'html-react-parser';
 import React, { useState } from 'react';
+import { markup } from '../../helpers/formatting';
 import './Collapsible.css';
 
 interface IProps {
@@ -25,7 +27,7 @@ function Collapsible({ id, title, date, channel, children }: IProps) {
   return (
     <div className="card">
       <div className="card_header" onClick={handleFilterOpening}>
-        <span title={title}>{title}</span>
+        <span title={title}>{parse(markup(title, { replaceEmojis: true }))}</span>
         {isHeader() && <span className="info">ID: {id}</span>}
         {isHeader() && <span className="info">Date: {date}</span>}
         {isHeader() && <span className="info">Channel: #{channel}</span>}

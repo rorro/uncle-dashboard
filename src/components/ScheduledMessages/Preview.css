@@ -328,3 +328,49 @@
 .embedFieldValue {
     color: var(--embedTextColor);
 }
+
+.emoji {
+  object-fit: contain;
+  width: 1.375em;
+  height: 1.375em;
+  vertical-align: bottom;
+}
+
+.embed .emoji {
+  width: 18px;
+  height: 18px;
+}
+
+.embed code {
+  border: none;
+  background: var(--background-tertiary);
+}
+
+.embedFields {
+  display: grid;
+  grid-column: 1 / 1;
+  margin-top: 8px;
+  gap: 8px;
+  min-width: 0px;
+  grid-gap: 8px;
+}
+
+.embedField {
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  min-width: 0px;
+}
+
+.embedFieldName {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.embedFieldValue {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+  white-space: pre-line;
+  min-width: 0px;
+}
