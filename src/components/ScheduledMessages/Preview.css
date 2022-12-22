@@ -61,10 +61,6 @@
 }
 
 .botTag {
-  padding-left: 0;
-}
-
-.botTag {
   height: 0.9375rem;
   padding: 0px 0.275rem;
   margin-top: 0.075em;
@@ -235,7 +231,6 @@
 }
 
 .embedContainer {
-  /* max-width: inherit; */
   display: grid;
   grid-auto-flow: row;
   row-gap: 0.25rem;
@@ -254,7 +249,7 @@
 
 .embedGrid {
   overflow: hidden;
-  /* max-width: 520px; */
+  max-width: 520px;
   padding: 0.5rem 1rem 1rem 0.75rem;
   display: inline-grid;
   grid-template-columns: auto;

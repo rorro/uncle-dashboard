@@ -1,7 +1,7 @@
 import { emojis } from './emojis';
 
 function markup(
-  txt: string,
+  text: string,
   options: {
     replaceEmojis?: boolean;
     inlineBlock?: boolean;
@@ -12,7 +12,7 @@ function markup(
 
   let out = '';
   if (replaceEmojis)
-    out = txt.replace(/(?<!code(?: \w+=".+")?>[^>]+)(?<!\/[^\s"]+?):((?!\/)\w+):/g, (match, p) =>
+    out = text.replace(/(?<!code(?: \w+=".+")?>[^>]+)(?<!\/[^\s"]+?):((?!\/)\w+):/g, (match, p) =>
       p && emojis[p] ? emojis[p] : match
     );
 

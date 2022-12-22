@@ -12,11 +12,101 @@ interface PreviewProps {
 }
 
 function Preview({ embed, content, date }: PreviewProps) {
-  const { author } = embed;
-  let index = 0;
-  let colNum = 1;
-  let num=0
-  let gridCol = '';
+  const { author, title, description, url, fields } = embed;
+
+  // Please don't look at this function. It's not pretty.
+  function determineGridColumns(): Record<number, string> {
+    const gridColumns: Record<number, string> = {};
+
+    if (!fields) return {};
+    for (let i = 0; i < fields.length; i++) {
+      // It's first on the row or it's the first field in the embed
+      if (
+        fields[i].inline &&
+        // If it's the first field in the embed
+        (!fields[i - 1] ||
+          // If it's not the first field in embed and the previous field is not inline
+          (fields[i - 1] && !fields[i - 1].inline) ||
+          // If current field has 3 inline fields before it, it's the first field on a new row
+          (fields[i - 1] &&
+            fields[i - 1].inline &&
+            fields[i - 2] &&
+            fields[i - 2].inline &&
+            fields[i - 3] &&
+            fields[i - 3].inline))
+      ) {
+        // If the next one is inline
+        if (fields[i + 1] && fields[i + 1].inline) {
+          // if the next is inline but not the third next
+          if (
+            // If it's the second to last field in the embed
+            !fields[i + 2] ||
+            // Or if the third field after current is not inline
+            (fields[i + 2] && !fields[i + 2].inline)
+          ) {
+            // Occupy half
+            gridColumns[i] = '1 / 7';
+            gridColumns[i + 1] = '7 / 13';
+            i++;
+          }
+          // 3 inline fields in a row
+          else {
+            // Occupy a third
+            gridColumns[i] = '1 / 5';
+            gridColumns[i + 1] = '5 / 9';
+            gridColumns[i + 2] = '9 / 13';
+            i += 2;
+          }
+        } else {
+          gridColumns[i] = '1 / 13';
+        }
+      }
+      // It's second on the row
+      else if (
+        fields[i].inline &&
+        fields[i - 1] &&
+        fields[i - 1].inline &&
+        fields[i - 2] &&
+        !fields[i - 2].inline
+      ) {
+        // If previous and current are inline but not the next
+        if (fields[i + 1] && !fields[i + 1].inline) {
+          // Occupy half
+          gridColumns[i - 1] = '1 / 7';
+          gridColumns[i] = '1 / 7';
+        }
+        // 3 inline fields in a row
+        else {
+          // Occupy a third
+          gridColumns[i - 1] = '1 / 5';
+          gridColumns[i] = '5 / 9';
+          gridColumns[i + 1] = '9 / 13';
+          i++;
+        }
+      }
+      // It's the third on the row
+      else if (
+        fields[i].inline &&
+        fields[i - 1] &&
+        fields[i - 1].inline &&
+        fields[i - 2] &&
+        fields[i - 2].inline &&
+        fields[i - 3] &&
+        !fields[i - 3].inline
+      ) {
+        // Occupy a third
+        gridColumns[i - 2] = '1 / 5';
+        gridColumns[i - 1] = '5 / 9';
+        gridColumns[i] = '9 / 13';
+      } else {
+        gridColumns[i] = '1 / 13';
+      }
+    }
+    return gridColumns;
+  }
+
+  const gridColumns = determineGridColumns();
+
   return (
     <div className="side2">
       <div className="msgEmbed">
@@ -42,94 +132,44 @@ function Preview({ embed, content, date }: PreviewProps) {
                 <img className="embedAuthorIcon embedAuthorLink" src={author?.icon_url} alt=" " />
                 <span className="embedAuthorNameLink embedLink embedAuthorName">{author?.name}</span>
               </div>
-              {/* TODO: suport formatting voodoo in the description */}
-              {embed.title && (
+              {title && (
                 <div className="embedTitle embedMargin" style={{ display: 'unset' }}>
-                  {embed.url ? (
-                    <a className="anchor" target={'_blank'} rel={'noreferrer'} href={embed.url}>
-                      {parse(markup(embed.title, { replaceEmojis: true }))}
+                  {url ? (
+                    <a className="anchor" target={'_blank'} rel={'noreferrer'} href={url}>
+                      {parse(markup(title, { replaceEmojis: true }))}
                     </a>
                   ) : (
-                    parse(markup(embed.title, { replaceEmojis: true }))
+                    parse(markup(title, { replaceEmojis: true }))
                   )}
                 </div>
               )}
-              {embed.description && (
+              {description && (
                 <div className="embedDescription embedMargin">
-                  {parse(markup(embed.description, { replaceEmojis: true, inEmbed: true }))}
+                  {parse(markup(description, { replaceEmojis: true, inEmbed: true }))}
                 </div>
               )}
               <div className="embedFields">
-                {embed.fields &&
-                  embed.fields.map((field, i) => {
-                    console.log(embed, i);
-                    // if both this field and the next one are inline
-                    if (
-                      embed.fields?.at(i)?.inline &&
-                      embed.fields?.at(i + 1)?.inline &&
-                      // it's the first field in the embed or -
-                      ((i === 0 && embed.fields?.at(i + 2) && !embed.fields?.at(i + 2)?.inline) || // it's not the first field in the embed but the previous field is not inline or -
-                        (((i > 0 && !embed.fields?.at(i - 1)?.inline) ||
-                          // it has 3 or more fields behind it and 3 of those are inline except the 4th one back if it exists -
-                          (i >= 3 &&
-                            embed.fields?.at(i - 1)?.inline &&
-                            embed.fields?.at(i - 2)?.inline &&
-                            embed.fields?.at(i - 3)?.inline &&
-                            (embed.fields?.at(i - 4)
-                              ? !embed.fields?.at(i - 4)?.inline
-                              : !embed.fields?.at(i - 4)))) &&
-                          // or it's the first field on the last row or the last field on the last row is not inline or it's the first field in a row and it's the last field on the last row.
-                          (i === embed.fields.length - 2 || !embed.fields?.at(i + 2)?.inline)) ||
-                        i % 3 === 0) &&
-                      i == embed.fields.length - 2
-                    ) {
-                      // then make the field halfway (and the next field will take the other half of the embed).
-                      index = i;
-                      gridCol = '1 / 7';
-                    }
-
-                    if (i === i - 1) {
-                      gridCol = '7 / 13';
-                    }
-
-                    if (!field.inline) {
-                      return (
-                        <div className="embedField" style={{gridColumn: "1 / 13"}}>
+                {fields &&
+                  fields.map((field, i) => {
+                    return (
+                      (field.name || field.value) && (
+                        <div
+                          key={uuidv4()}
+                          className="embedField"
+                          style={{
+                            gridColumn: gridColumns[i] && gridColumns[i]
+                          }}
+                        >
                           <div className="embedFieldName">
-                            {parse(
-                              markup(field.name, { replaceEmojis: true, inEmbed: true, inlineBlock: true })
-                            )}
+                            {parse(markup(field.name, { replaceEmojis: true, inEmbed: true }))}
                           </div>
                           <div className="embedFieldValue">
-                            {parse(
-                              markup(field.value, {
-                                replaceEmojis: true,
-                                inEmbed: true,
-                                inlineBlock: true
-                              })
-                            )}
+                            {parse(markup(field.value, { replaceEmojis: true, inEmbed: true }))}
                           </div>
                         </div>
                       )
-                    } else {
-                      if (i && !embed.fields?.at(i - 1)?.inline) {colNum = 1}
-                      if (index !== i) gridCol = '';
-                      
-                      return <div className={`embedField ${num}${gridCol ? ' colNum-2' : ''}`} style={{gridColumn: `${gridCol || (colNum + ' / ' + (colNum + 4))}`}}>
-                        <div className="embedFieldName">
-                          {parse(markup(field.name, { replaceEmojis: true, inEmbed: true, inlineBlock: true }))}
-                        </div>
-                        <div className="embedFieldValue">
-                          {parse(markup(field.value, {replaceEmojis: true, inEmbed: true}))}
-                        </div>
-                      </div>
-
-                      
-                  }
-                  colNum = (colNum === 9 ? 1 : colNum + 4);
-                  num=num+1;
-                }
-                  }
+                    );
+                  })}
               </div>
               {/* <div className="imageWrapper clickable embedMedia embedImage">
                 <img
