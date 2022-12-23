@@ -1,9 +1,12 @@
+import { faLinkSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIEmbed } from 'discord.js';
 import './Preview.css';
 import logo from '../../uncle.png';
 import { markup } from '../../helpers/formatting';
 import parse from 'html-react-parser';
 import { v4 as uuidv4 } from 'uuid';
+import { SyntheticEvent } from 'react';
 
 interface PreviewProps {
   embed: APIEmbed;
@@ -12,8 +15,11 @@ interface PreviewProps {
 }
 
 function Preview({ embed, content, date }: PreviewProps) {
-  const { author, title, description, url, fields } = embed;
+  const { author, title, description, url, fields, image, thumbnail, footer, color } = embed;
 
+  function handleIconError(e: SyntheticEvent<HTMLImageElement>) {
+    e.currentTarget.src = 'https://i.imgur.com/F0yt4Gr.png';
+  }
   // Please don't look at this function. It's not pretty.
   function determineGridColumns(): Record<number, string> {
     const gridColumns: Record<number, string> = {};
@@ -108,7 +114,7 @@ function Preview({ embed, content, date }: PreviewProps) {
   const gridColumns = determineGridColumns();
 
   return (
-    <div className="side2">
+    <div className="preview">
       <div className="msgEmbed">
         <div className="contents">
           <img className="avatar embedLink" src={logo} alt=" " />
@@ -117,7 +123,6 @@ function Preview({ embed, content, date }: PreviewProps) {
               Uncle
             </span>
             <span className="botTag">
-              {/* This should have a purple pill background */}
               <span className="botText">BOT</span>
             </span>
             {/* Maybe replace this with a timestamp instead? */}
@@ -126,12 +131,22 @@ function Preview({ embed, content, date }: PreviewProps) {
         </div>
         {<div className="messageContent markup">{parse(markup(content, { replaceEmojis: true }))}</div>}
         <div className="embedContainer">
-          <div className="embed markup">
+          <div
+            className="embed markup"
+            style={{ borderColor: color ? `#${color.toString(16)}` : '#1e2327' }}
+          >
             <div className="embedGrid">
-              <div className="embedAuthor embedMargin embedLink">
-                <img className="embedAuthorIcon embedAuthorLink" src={author?.icon_url} alt=" " />
-                <span className="embedAuthorNameLink embedLink embedAuthorName">{author?.name}</span>
-              </div>
+              {author?.name && (
+                <div className="embedAuthor embedMargin embedLink">
+                  <img
+                    className="embedAuthorIcon embedAuthorLink"
+                    src={author?.icon_url}
+                    alt=" "
+                    onError={handleIconError}
+                  />
+                  <span className="embedAuthorNameLink embedLink embedAuthorName">{author.name}</span>
+                </div>
+              )}
               {title && (
                 <div className="embedTitle embedMargin" style={{ display: 'unset' }}>
                   {url ? (
@@ -148,9 +163,9 @@ function Preview({ embed, content, date }: PreviewProps) {
                   {parse(markup(description, { replaceEmojis: true, inEmbed: true }))}
                 </div>
               )}
-              <div className="embedFields">
-                {fields &&
-                  fields.map((field, i) => {
+              {fields && fields.length > 0 && (
+                <div className="embedFields">
+                  {fields.map((field, i) => {
                     return (
                       (field.name || field.value) && (
                         <div
@@ -170,38 +185,42 @@ function Preview({ embed, content, date }: PreviewProps) {
                       )
                     );
                   })}
-              </div>
-              {/* <div className="imageWrapper clickable embedMedia embedImage">
-                <img
-                  className="img embedImageLink"
-                  // onload="this.nextElementSibling?.style.removeProperty('display');"
-                  alt=" "
-                />
-                <div className="spinner-container" style={{ display: 'block' }}>
-                  <span className="spinner">
-                    <span className="inner">
-                      <span className="wanderingCubesItem"></span>
-                      <span className="wanderingCubesItem"></span>
-                    </span>
-                  </span>
                 </div>
-              </div> */}
-              {/* <div className="imageWrapper clickable embedThumbnail">
-                <img
-                  className="img embedThumbnailLink"
-                  // onload="this.nextElementSibling?.style.removeProperty('display');"
-                  alt=" "
-                />
-                <div className="spinner-container" style={{ display: 'block' }}>
-                  <span className="spinner">
-                    <span className="inner">
-                      <span className="wanderingCubesItem"></span>
-                      <span className="wanderingCubesItem"></span>
-                    </span>
-                  </span>
+              )}
+              {image?.url && (
+                <div className="imageWrapper embedMedia embedImage">
+                  <img className="img embedImageLink" alt=" " src={image.url} />
+                  <div className="error">
+                    <FontAwesomeIcon icon={faLinkSlash} id="imageIcon" />
+                    <label htmlFor="imageIcon"> Broken Image Link</label>
+                  </div>
                 </div>
-              </div> */}
-              {/* <div className="embedFooter embedMargin"></div> */}
+              )}
+              {thumbnail?.url && (
+                <div className="imageWrapper embedThumbnail">
+                  <img className="img embedThumbnailLink" alt=" " src={thumbnail.url} />
+                  <div className="error">
+                    <FontAwesomeIcon icon={faLinkSlash} id="thumbnailIcon" />
+                    <label htmlFor="thumbnailIcon"> Broken Thumbnail Link</label>
+                  </div>
+                </div>
+              )}
+
+              {footer?.text && (
+                <div className="embedFooter embedMargin">
+                  {footer?.icon_url && (
+                    <div>
+                      <img
+                        className="embedFooterIcon embedFooterLink"
+                        src={footer.icon_url}
+                        alt=" "
+                        onError={handleIconError}
+                      />
+                    </div>
+                  )}
+                  <span className="embedFooterText">{footer.text}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

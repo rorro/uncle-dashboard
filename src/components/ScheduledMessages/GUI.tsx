@@ -54,7 +54,7 @@ function GUI({
   handleColorPicked,
   handleDatePicked
 }: IProps) {
-  const { id, message, date, channel, type } = scheduledMessage;
+  const { id, message, date, channel } = scheduledMessage;
   const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(message);
 
   return (

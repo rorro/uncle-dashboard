@@ -1,7 +1,7 @@
 import { useState, MouseEvent, FormEvent, ChangeEvent } from 'react';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APIEmbed, Embed } from 'discord.js';
+import { APIEmbed } from 'discord.js';
 import './ScheduledMessages.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import {
@@ -46,7 +46,6 @@ function ScheduledMessages({
         if (f['key']) return; // There has to be a better way of doing this
 
         f['key'] = uuidv4();
-        console.log('why is this happening now?', f);
       });
       m.message = JSON.stringify({ content: content, embed: embed });
     }
@@ -64,7 +63,12 @@ function ScheduledMessages({
   }
 
   function addField(messageId: number) {
-    const newField: ExtendedAPIEmbedField = { name: '', value: '', inline: false, key: uuidv4() };
+    const newField: ExtendedAPIEmbedField = {
+      name: 'Field name',
+      value: 'Field value',
+      inline: false,
+      key: uuidv4()
+    };
 
     const message = messages[messageId];
 
@@ -171,7 +175,6 @@ function ScheduledMessages({
   }
 
   function handleAddNewMessage() {
-    console.log('adding new message');
     const newMessage: ScheduledMessageEntry = {
       id: Math.random(),
       message: `{"content": "", "embed": {"title": "⚠️ PLACEHOLDER TITLE ⚠️ ", "fields": []}}`,
@@ -191,7 +194,6 @@ function ScheduledMessages({
   }
 
   async function confirmDeleteMessage(messageId: number) {
-    console.log(`Removing scheduled message from database!`);
     const cookie = getCookie('access_token');
 
     await fetch(
@@ -206,7 +208,6 @@ function ScheduledMessages({
       .then(response => response.json())
       .then((data: { message: string }) => {
         //TODO: only if successfully saved scheduled message set changed to false
-        console.log(data.message);
         setMessageChanged({
           ...messageChanged,
           [messageId]: false
@@ -264,7 +265,6 @@ function ScheduledMessages({
   }
 
   async function onSubmitCallback(messageId: number) {
-    console.log(`Saving embed to database!`);
     const cookie = getCookie('access_token');
 
     await fetch(
@@ -337,52 +337,6 @@ function ScheduledMessages({
     await onSubmitCallback(messageId);
   };
 
-  const tester = {
-    author: {
-      name: 'TestUser',
-      url: 'https://beepbot.app',
-      iconUrl: 'https://beepbot.app/img/favicon-32x32.png'
-    },
-    title: 'My Awesome Day Out',
-    description: '## Testing\n This is a message on another line?',
-    url: '',
-    timestamp: '2020-12-10T00:00:00.000Z',
-    color: '#fff',
-    footer: {
-      iconUrl: 'https://beepbot.app/img/favicon-32x32.png',
-      text: 'via BeepBot \\o/'
-    },
-    image: {
-      width: 250,
-      height: 300,
-      url: 'https://i.imgur.com/fmYrG2N.png'
-    },
-    thumbnail: {
-      width: 0,
-      height: 0,
-      url: 'https://i.imgur.com/fmYrG2N.png'
-    },
-    fields: [
-      {
-        name: 'Item 1',
-        value:
-          'These things have [manual ways](https://discord.dev/reference#message-formatting) ... blah, blah, `d.user`, `d.role`, `d.channel`, and `d.emoji`.',
-        inline: true
-      },
-      {
-        name: 'Item 2',
-        value:
-          'You can create reaction roles with the bot using the `d.reactionrole` command, the set-up process is very simple: add a reaction to any existing message in your server, and name the role.',
-        inline: true
-      },
-      {
-        name: 'Item 3',
-        value:
-          'The bot is capable of turning most message links sent inside your server into Discohook links. Use the `d.link` command with a message link to move that message from Discord into Discohook.',
-        inline: false
-      }
-    ]
-  };
   return (
     <>
       <ToastContainer style={{ fontSize: '.8em' }} />

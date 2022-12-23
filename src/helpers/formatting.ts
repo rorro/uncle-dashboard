@@ -17,7 +17,7 @@ function markup(
     );
 
   out = out
-    /** Markdown */
+    /* Markdown */
     .replace(
       /<:\w+:(\d{17,19})>/g,
       '<img class="emoji" src="https://cdn.discordapp.com/emojis/$1.png"/>'
@@ -32,22 +32,21 @@ function markup(
     .replace(/__(.+?)__/g, '<u>$1</u>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/_(.+?)_/g, '<em>$1</em>')
-    // Replace >>> and > with block-quotes. &#62; is HTML code for >
+    // Replace >>> and > with block-quotes.
     .replace(
-      /^(?: *&#62;&#62;&#62; ([\s\S]*))|(?:^ *&#62;(?!&#62;&#62;) +.+\n)+(?:^ *&#62;(?!&#62;&#62;) .+\n?)+|^(?: *&#62;(?!&#62;&#62;) ([^\n]*))(\n?)/gm,
+      /^(?: *>>> ([\s\S]*))|(?:^ *>(?!>>) +.+\n)+(?:^ *>(?!>>) .+\n?)+|^(?: *>(?!>>) ([^\n]*))(\n?)/gm,
       (all, match1, match2, newLine) => {
         return `<div class="blockquote"><div class="blockquoteDivider"></div><blockquote>${
-          match1 || match2 || newLine ? match1 || match2 : all.replace(/^ *&#62; /gm, '')
+          match1 || match2 || newLine ? match1 || match2 : all.replace(/^ *> /gm, '')
         }</blockquote></div>`;
       }
     )
 
-    /** Mentions */
-    .replace(/&#60;#\d+&#62;/g, () => `<span class="mention channel interactive">channel</span>`)
-    .replace(/&#60;@(?:&#38;|!)?\d+&#62;|@(?:everyone|here)/g, match => {
+    /* Mentions */
+    .replace(/<#\d+>/g, () => `<span class="mention channel interactive">channel</span>`)
+    .replace(/<@(?:&|!)?\d+>|@(?:everyone|here)/g, match => {
       if (match.startsWith('@')) return `<span class="mention">${match}</span>`;
-      else
-        return `<span class="mention interactive">@${match.includes('&#38;') ? 'role' : 'user'}</span>`;
+      else return `<span class="mention interactive">@${match.includes('&') ? 'role' : 'user'}</span>`;
     });
 
   if (inlineBlock)
@@ -81,7 +80,7 @@ function markup(
 
   if (inEmbed)
     out = out.replace(
-      /\[([^\[\]]+)\]\((.+?)\)/g,
+      /\[([^[\]]+)\]\((.+?)\)/g,
       `<a title="$1" target="_blank" class="anchor" href="$2">$1</a>`
     );
 

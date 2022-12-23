@@ -21,7 +21,7 @@
 
 .card_header span {
   padding: 3px;
-  border-radius: .3em;
+  border-radius: .2em;
   margin-right: .4em;
   overflow: hidden;
 }
@@ -38,7 +38,7 @@
   font-size: 13px;
   width: 100%;
   padding: 0 0 5px 0;
-  grid-area: auto / 1 / auto / 5;
+  background-color: inherit;
 }
 
 .info {

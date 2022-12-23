@@ -8,7 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-left: -3em; */
 }
 
 .modal-box {
@@ -47,7 +46,6 @@
 
 .message-info {
   background-color: #1a1a1a;
-  /* font-weight: bold; */
   text-align: left;
   max-width: 300px;
   overflow-wrap: break-word;
@@ -63,7 +61,6 @@
   margin: 5px;
   padding: .4em .6em;
   font-weight: bold;
-  /* background-color: #04AA6D; */
   background-color: #04AA6D;
 }
 
@@ -81,7 +78,6 @@
   margin: 5px;
   padding: .4em .6em;
   font-weight: bold;
-  /* background-color: #04AA6D; */
   background-color: #686868;
 }
 

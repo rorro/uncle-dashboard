@@ -6,14 +6,14 @@
 .gui {
   width: 40%;
   float: left;
-  /* border: 1px red solid; */
-  border-width: 0 1px 0 0;
 }
 
 .preview {
-  max-width: 59%;
+  width: 60%;
+  font-family: DsWhitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--fullEmbedBackground);
   float: right;
-  padding: 0 0 5px 0;
+  margin-bottom: 10px;
 }
 
 .icon {
