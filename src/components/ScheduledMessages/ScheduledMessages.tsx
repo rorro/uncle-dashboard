@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIEmbed } from 'discord.js';
 import './ScheduledMessages.css';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { ColorResult } from '@hello-pangea/color-picker';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   DeleteModalOptions,
   ExtendedAPIEmbedField,
@@ -16,11 +20,11 @@ import Collapsible from '../Collapsible';
 import GUI from './GUI';
 import { v4 as uuidv4 } from 'uuid';
 import { getCookie } from '../../utils/cookie';
-import { ColorResult } from '@hello-pangea/color-picker';
-import dayjs from 'dayjs';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
-import { ToastContainer, toast } from 'react-toastify';
 import Preview from './Preview';
+import Clock from '../Clock';
+
+dayjs.extend(utc);
 
 function ScheduledMessages({
   scheduledMessages,
@@ -109,6 +113,9 @@ function ScheduledMessages({
     const { embed } = JSON.parse(message.message);
 
     embed.fields.splice(clickedField, 1);
+    if (embed.fields.length === 0) {
+      delete embed.fields;
+    }
 
     updateMessages(message, { embed: embed });
   }
@@ -147,6 +154,7 @@ function ScheduledMessages({
     let { embed } = JSON.parse(scheduledMessage.message);
 
     let options: UpdateMessageOptions = {};
+
     switch (name as APIEmbed) {
       case 'content':
       case 'channel':
@@ -156,12 +164,15 @@ function ScheduledMessages({
       case 'description':
       case 'url':
         embed[name] = value;
+        if (!value) delete embed[name];
         break;
       case 'thumbnail':
       case 'image':
       case 'footer':
       case 'author':
         embed[name] = { ...embed[name], ...{ [key]: value } };
+        if (!value) delete embed[name][key];
+        if (Object.keys(embed[name]).length === 0) delete embed[name];
         break;
       case 'fields':
         const clickedField = getClickedField(messageId, e);
@@ -177,8 +188,8 @@ function ScheduledMessages({
   function handleAddNewMessage() {
     const newMessage: ScheduledMessageEntry = {
       id: Math.random(),
-      message: `{"content": "", "embed": {"title": "⚠️ PLACEHOLDER TITLE ⚠️ ", "fields": []}}`,
-      date: dayjs().format('YYYY-MM-DD HH:mm'),
+      message: `{"content": "", "embed": {}}`,
+      date: dayjs().utc().format('YYYY-MM-DD HH:mm'),
       channel: guildChannels[1].id,
       type: ScheduledMessageType.Embed
     };
@@ -237,14 +248,13 @@ function ScheduledMessages({
 
   function updateMessages(message: ScheduledMessageEntry, options: UpdateMessageOptions) {
     const { content, embed, date, channel } = options;
-
     const { content: originalContent, embed: originalEmbed } = JSON.parse(message.message);
 
     const updatedMessage = {
       id: message.id,
       message: JSON.stringify({
         content: content !== undefined ? content : originalContent,
-        embed: embed ? embed : originalEmbed
+        embed: embed ? (isEmptyEmbed(embed) ? {} : embed) : originalEmbed
       }),
       date: date ? date : message.date,
       channel: channel ? channel : message.channel,
@@ -316,6 +326,7 @@ function ScheduledMessages({
 
   async function hasEmptyFields(messageId: number) {
     const fields: ExtendedAPIEmbedField[] = JSON.parse(messages[messageId].message).embed.fields;
+    if (!fields) return false;
     for (const field of fields) {
       if (field.name.trim() === '' || field.value.trim() === '') return true;
     }
@@ -337,6 +348,30 @@ function ScheduledMessages({
     await onSubmitCallback(messageId);
   };
 
+  function isEmptyEmbed(embed: any): boolean {
+    const keys = Object.keys(embed);
+
+    const visibleKeys = [
+      'title',
+      'author name',
+      'fields',
+      'footer text',
+      'thumbnail url',
+      'description',
+      'image'
+    ];
+
+    for (const key of visibleKeys) {
+      const [k, l] = key.split(' ');
+
+      if (keys.includes(k) && ((l && embed[k][l]) || (!l && embed[k]))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   return (
     <>
       <ToastContainer style={{ fontSize: '.8em' }} />
@@ -347,10 +382,13 @@ function ScheduledMessages({
         modalData={deleteModalData}
       />
       <div className="wrapper">
-        <button id="new_message" onClick={handleAddNewMessage}>
-          ADD MESSAGE
-          <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
-        </button>
+        <div className="bar_content">
+          <Clock />
+          <button id="new_message" onClick={handleAddNewMessage}>
+            ADD MESSAGE
+            <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
+          </button>
+        </div>
         {Object.keys(messages).map(oId => {
           const { id, date, channel, message } = messages[+oId];
           const { embed, content } = JSON.parse(message);
@@ -375,7 +413,7 @@ function ScheduledMessages({
                   handleColorPicked={onColorPicked}
                   handleDatePicked={onDatePicked}
                 />
-                <Preview embed={embed} content={content} date={date} />
+                <Preview embed={embed} content={content} date={date} emptyEmbed={isEmptyEmbed(embed)} />
               </Collapsible>
             </div>
           );

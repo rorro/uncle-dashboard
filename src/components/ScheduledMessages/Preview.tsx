@@ -12,9 +12,10 @@ interface PreviewProps {
   embed: APIEmbed;
   content: string;
   date: string;
+  emptyEmbed: boolean;
 }
 
-function Preview({ embed, content, date }: PreviewProps) {
+function Preview({ embed, content, date, emptyEmbed }: PreviewProps) {
   const { author, title, description, url, fields, image, thumbnail, footer, color } = embed;
 
   function handleIconError(e: SyntheticEvent<HTMLImageElement>) {
@@ -130,100 +131,104 @@ function Preview({ embed, content, date }: PreviewProps) {
           </h2>
         </div>
         {<div className="messageContent markup">{parse(markup(content, { replaceEmojis: true }))}</div>}
-        <div className="embedContainer">
-          <div
-            className="embed markup"
-            style={{ borderColor: color ? `#${color.toString(16)}` : '#1e2327' }}
-          >
-            <div className="embedGrid">
-              {author?.name && (
-                <div className="embedAuthor embedMargin embedLink">
-                  <img
-                    className="embedAuthorIcon embedAuthorLink"
-                    src={author?.icon_url}
-                    alt=" "
-                    onError={handleIconError}
-                  />
-                  <span className="embedAuthorNameLink embedLink embedAuthorName">{author.name}</span>
-                </div>
-              )}
-              {title && (
-                <div className="embedTitle embedMargin" style={{ display: 'unset' }}>
-                  {url ? (
-                    <a className="anchor" target={'_blank'} rel={'noreferrer'} href={url}>
-                      {parse(markup(title, { replaceEmojis: true }))}
-                    </a>
-                  ) : (
-                    parse(markup(title, { replaceEmojis: true }))
-                  )}
-                </div>
-              )}
-              {description && (
-                <div className="embedDescription embedMargin">
-                  {parse(markup(description, { replaceEmojis: true, inEmbed: true }))}
-                </div>
-              )}
-              {fields && fields.length > 0 && (
-                <div className="embedFields">
-                  {fields.map((field, i) => {
-                    return (
-                      (field.name || field.value) && (
-                        <div
-                          key={uuidv4()}
-                          className="embedField"
-                          style={{
-                            gridColumn: gridColumns[i] && gridColumns[i]
-                          }}
-                        >
-                          <div className="embedFieldName">
-                            {parse(markup(field.name, { replaceEmojis: true, inEmbed: true }))}
-                          </div>
-                          <div className="embedFieldValue">
-                            {parse(markup(field.value, { replaceEmojis: true, inEmbed: true }))}
-                          </div>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
-              )}
-              {image?.url && (
-                <div className="imageWrapper embedMedia embedImage">
-                  <img className="img embedImageLink" alt=" " src={image.url} />
-                  <div className="error">
-                    <FontAwesomeIcon icon={faLinkSlash} id="imageIcon" />
-                    <label htmlFor="imageIcon"> Broken Image Link</label>
-                  </div>
-                </div>
-              )}
-              {thumbnail?.url && (
-                <div className="imageWrapper embedThumbnail">
-                  <img className="img embedThumbnailLink" alt=" " src={thumbnail.url} />
-                  <div className="error">
-                    <FontAwesomeIcon icon={faLinkSlash} id="thumbnailIcon" />
-                    <label htmlFor="thumbnailIcon"> Broken Thumbnail Link</label>
-                  </div>
-                </div>
-              )}
-
-              {footer?.text && (
-                <div className="embedFooter embedMargin">
-                  {footer?.icon_url && (
-                    <div>
+        {!emptyEmbed && (
+          <div className="embedContainer">
+            <div
+              className="embed markup"
+              style={{ borderColor: color ? `#${color.toString(16)}` : '#1e2327' }}
+            >
+              <div className="embedGrid">
+                {author?.name && (
+                  <div className="embedAuthor embedMargin embedLink">
+                    {author.icon_url && (
                       <img
-                        className="embedFooterIcon embedFooterLink"
-                        src={footer.icon_url}
+                        className="embedAuthorIcon embedAuthorLink"
+                        src={author.icon_url}
                         alt=" "
                         onError={handleIconError}
                       />
+                    )}
+                    <span className="embedAuthorNameLink embedLink embedAuthorName">{author.name}</span>
+                  </div>
+                )}
+                {title && (
+                  <div className="embedTitle embedMargin" style={{ display: 'unset' }}>
+                    {url ? (
+                      <a className="anchor" target={'_blank'} rel={'noreferrer'} href={url}>
+                        {parse(markup(title, { replaceEmojis: true }))}
+                      </a>
+                    ) : (
+                      parse(markup(title, { replaceEmojis: true }))
+                    )}
+                  </div>
+                )}
+                {description && (
+                  <div className="embedDescription embedMargin">
+                    {parse(markup(description, { replaceEmojis: true, inEmbed: true }))}
+                  </div>
+                )}
+                {fields && fields.length > 0 && (
+                  <div className="embedFields">
+                    {fields.map((field, i) => {
+                      return (
+                        (field.name || field.value) && (
+                          <div
+                            key={uuidv4()}
+                            className="embedField"
+                            style={{
+                              gridColumn: gridColumns[i] && gridColumns[i]
+                            }}
+                          >
+                            <div className="embedFieldName">
+                              {parse(markup(field.name, { replaceEmojis: true, inEmbed: true }))}
+                            </div>
+                            <div className="embedFieldValue">
+                              {parse(markup(field.value, { replaceEmojis: true, inEmbed: true }))}
+                            </div>
+                          </div>
+                        )
+                      );
+                    })}
+                  </div>
+                )}
+                {image?.url && (
+                  <div className="imageWrapper embedMedia embedImage">
+                    <img className="img embedImageLink" alt=" " src={image.url} />
+                    <div className="error">
+                      <FontAwesomeIcon icon={faLinkSlash} id="imageIcon" />
+                      <label htmlFor="imageIcon"> Broken Image Link</label>
                     </div>
-                  )}
-                  <span className="embedFooterText">{footer.text}</span>
-                </div>
-              )}
+                  </div>
+                )}
+                {thumbnail?.url && (
+                  <div className="imageWrapper embedThumbnail">
+                    <img className="img embedThumbnailLink" alt=" " src={thumbnail.url} />
+                    <div className="error">
+                      <FontAwesomeIcon icon={faLinkSlash} id="thumbnailIcon" />
+                      <label htmlFor="thumbnailIcon"> Broken Thumbnail Link</label>
+                    </div>
+                  </div>
+                )}
+
+                {footer?.text && (
+                  <div className="embedFooter embedMargin">
+                    {footer?.icon_url && (
+                      <div>
+                        <img
+                          className="embedFooterIcon embedFooterLink"
+                          src={footer.icon_url}
+                          alt=" "
+                          onError={handleIconError}
+                        />
+                      </div>
+                    )}
+                    <span className="embedFooterText">{footer.text}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

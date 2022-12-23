@@ -16,6 +16,9 @@ function markup(
       p && emojis[p] ? emojis[p] : match
     );
 
+  /* Zero-width space */
+  out = out.replaceAll('\\u200B', '​');
+
   out = out
     /* Markdown */
     .replace(

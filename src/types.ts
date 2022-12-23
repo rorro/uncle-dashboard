@@ -113,8 +113,8 @@ export interface ExtendedAPIEmbedField extends APIEmbedField {
 }
 
 export interface UpdateMessageOptions {
-  content?: string | undefined;
-  embed?: APIEmbed | undefined;
+  content?: string;
+  embed?: APIEmbed;
   date?: string;
   channel?: string;
 }
