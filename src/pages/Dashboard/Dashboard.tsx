@@ -19,7 +19,7 @@ const menuItems = [
 ];
 
 function Dashboard() {
-  const apiUrl = 'http://localhost:7373/dashboard';
+  const apiUrl = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard`;
   const cookie = getCookie('access_token');
   const { data } = useFetch<DashboardData>(`${apiUrl}?accessToken=${cookie}`);
   const [selectedOption, setSelectedOption] = useState<string>('config');

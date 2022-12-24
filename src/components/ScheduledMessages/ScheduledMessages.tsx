@@ -208,7 +208,7 @@ function ScheduledMessages({
     const cookie = getCookie('access_token');
 
     await fetch(
-      `http://localhost:7373/dashboard/deletemessage?accessToken=${cookie}&messageId=${messageId}`,
+      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/deletemessage?accessToken=${cookie}&messageId=${messageId}`,
       {
         method: 'DELETE',
         headers: {
@@ -278,7 +278,7 @@ function ScheduledMessages({
     const cookie = getCookie('access_token');
 
     await fetch(
-      `http://localhost:7373/dashboard/savedata?accessToken=${cookie}&category=scheduled_messages`,
+      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/savedata?accessToken=${cookie}&category=scheduled_messages`,
       {
         method: 'POST',
         headers: {

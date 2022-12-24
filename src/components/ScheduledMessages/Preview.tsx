@@ -6,7 +6,7 @@ import logo from '../../uncle.png';
 import { markup } from '../../helpers/formatting';
 import parse from 'html-react-parser';
 import { v4 as uuidv4 } from 'uuid';
-import { SyntheticEvent } from 'react';
+import { handleIconError } from '../../helpers/error';
 
 interface PreviewProps {
   embed: APIEmbed;
@@ -18,9 +18,6 @@ interface PreviewProps {
 function Preview({ embed, content, date, emptyEmbed }: PreviewProps) {
   const { author, title, description, url, fields, image, thumbnail, footer, color } = embed;
 
-  function handleIconError(e: SyntheticEvent<HTMLImageElement>) {
-    e.currentTarget.src = 'https://i.imgur.com/F0yt4Gr.png';
-  }
   // Please don't look at this function. It's not pretty.
   function determineGridColumns(): Record<number, string> {
     const gridColumns: Record<number, string> = {};

@@ -11,8 +11,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const handleLogin = () => {
-    const loginUrl =
-      'https://discord.com/api/oauth2/authorize?client_id=969344573514088508&redirect_uri=http%3A%2F%2Flocalhost%3A7373%2Fdashboard%2Fauth&response_type=code&scope=identify';
+    const loginUrl = process.env.REACT_APP_LOGIN_URL as string;
     window.location.href = loginUrl;
   };
 
@@ -30,7 +29,10 @@ function App() {
       body: JSON.stringify(payload)
     };
 
-    fetch('http://localhost:7373/dashboard/logout', options);
+    fetch(
+      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/logout`,
+      options
+    );
     removeCookie('access_token');
     setLoggedIn(false);
   };
