@@ -6,7 +6,7 @@ function Home() {
       <br />
       <br />
       <div className="container">
-        <h3>Welcome to the controls for Uncle Discord bot.</h3>
+        <h3>Welcome to the controls for Uncle Discord bot. :)</h3>
         <p>Please log in to access the dashboard.</p>
       </div>
     </div>

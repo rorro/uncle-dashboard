@@ -2,7 +2,9 @@ import Cookie from 'js-cookie';
 
 const setCookie = (name: string, value: string) => {
   Cookie.set(name, value, {
-    expires: 7 // days
+    expires: 7, // days
+    secure: false,
+    sameSite: 'None'
   });
 };
 

@@ -30,6 +30,14 @@ function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: Gui
 
   return (
     <form onSubmit={onSubmit} className="config_form">
+      <div className="center">
+        <button
+          className="save_btn"
+          style={valuesChanged ? { pointerEvents: 'all', backgroundColor: '#04AA6D' } : {}}
+        >
+          <span>Save </span>
+        </button>
+      </div>
       {Object.entries(values).map(([key, val], index) => {
         return (
           <div key={index} className="item_box">
@@ -71,13 +79,6 @@ function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: Gui
           </div>
         );
       })}
-
-      <button
-        className="save_btn"
-        style={valuesChanged ? { pointerEvents: 'all', backgroundColor: '#04AA6D' } : {}}
-      >
-        <span>Save </span>
-      </button>
     </form>
   );
 }

@@ -1,6 +1,6 @@
 .config_form {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .save_btn {
@@ -16,9 +16,6 @@
   cursor: pointer;
   margin: 5px;
   font-weight: bold;
-  position: absolute;
-  bottom: 1em;
-  right: 1em;
   pointer-events: none;
   background-color: #444444;
 }
@@ -49,14 +46,13 @@
 }
 
 .item_box {
-  border-width: 2px 0 0 0;
-  border-color: #b587c5;
+  border-width: 1px 1px 1px 1px;
+  border-color: #36393f;
   border-style: solid;
-  border-radius: .5em .5em 0 0;
+  border-radius: .2em;
   padding: 10px;
   margin: 0 0 1em 1em;
   background-color: #1e1e1e;
-  width: fit-content;
 }
 
 .item_box img {
@@ -68,7 +64,7 @@
 }
 
 .information {
-  width: 15em;
+  width: 100%;
   word-wrap: normal;
   font-size: small;
 }
@@ -89,4 +85,17 @@
 
 .hidden {
   display: none;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* screens less or equals to 800px */
+@media (max-width: 800px) {
+  .config_form {
+    grid-template-columns: 1fr 1fr;
+  }
 }

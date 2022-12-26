@@ -1,6 +1,6 @@
 select {
   color: white;
   background-color: inherit;
-  
   border: 1px #2f2f2f solid;
+  width: 100%;
 }

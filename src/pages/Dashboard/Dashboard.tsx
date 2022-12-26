@@ -18,6 +18,10 @@ const menuItems = [
   // { key: 'tickets', value: 'Support Tickets' }
 ];
 
+function getName(option: string): string {
+  return menuItems.filter(mi => mi.key === option)[0].value;
+}
+
 function Dashboard() {
   const apiUrl = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard`;
   const cookie = getCookie('access_token');
@@ -55,7 +59,7 @@ function Dashboard() {
       {data && <SidePanel menuItems={menuItems} handleClick={buttonHandler} />}
       <div className="page-wrap">
         {data && data.guild && <Pill label={data.guild.name} icon={data.guild.iconURL} />}
-        <h2>Dashboard</h2>
+        <h2>{getName(selectedOption)}</h2>
         {showData(selectedOption)}
       </div>
     </div>
