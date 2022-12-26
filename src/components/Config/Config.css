@@ -1,6 +1,8 @@
 .config_form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin: 0 1em 0 1em;
 }
 
 .save_btn {
@@ -51,7 +53,6 @@
   border-style: solid;
   border-radius: .2em;
   padding: 10px;
-  margin: 0 0 1em 1em;
   background-color: #1e1e1e;
 }
 
