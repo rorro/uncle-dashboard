@@ -1,21 +1,21 @@
 import { faLinkSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIEmbed } from 'discord.js';
-import './Preview.css';
+import './EmbedPreview.css';
 import logo from '../../uncle.png';
 import { markup } from '../../helpers/formatting';
 import parse from 'html-react-parser';
 import { v4 as uuidv4 } from 'uuid';
 import { handleIconError } from '../../helpers/error';
+import { isEmptyEmbed } from '../../helpers/embed';
 
 interface PreviewProps {
   embed: APIEmbed;
   content: string;
-  date: string;
-  emptyEmbed: boolean;
+  date?: string;
 }
 
-function Preview({ embed, content, date, emptyEmbed }: PreviewProps) {
+function Preview({ embed, content, date }: PreviewProps) {
   const { author, title, description, url, fields, image, thumbnail, footer, color } = embed;
 
   // Please don't look at this function. It's not pretty.
@@ -128,7 +128,7 @@ function Preview({ embed, content, date, emptyEmbed }: PreviewProps) {
           </h2>
         </div>
         {<div className="messageContent markup">{parse(markup(content, { replaceEmojis: true }))}</div>}
-        {!emptyEmbed && (
+        {!isEmptyEmbed(embed) && (
           <div className="embedContainer">
             <div
               className="embed markup"

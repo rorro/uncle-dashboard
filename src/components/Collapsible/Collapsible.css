@@ -32,6 +32,7 @@
   right: 0;
   margin-left: auto;
   order: 2;
+  height: 20px;
 }
 
 .card_content {
@@ -44,4 +45,5 @@
 .info {
   background-color: #2f2f2f;
   font-size: 11px;
+  height: fit-content;
 }

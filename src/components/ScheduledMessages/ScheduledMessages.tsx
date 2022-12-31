@@ -21,8 +21,9 @@ import GUI from './GUI';
 import { v4 as uuidv4 } from 'uuid';
 import { getCookie } from '../../utils/cookie';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
-import Preview from './Preview';
 import Clock from '../Clock';
+import EmbedPreview from '../EmbedPreview';
+import { isEmptyEmbed } from '../../helpers/embed';
 
 dayjs.extend(utc);
 
@@ -348,30 +349,6 @@ function ScheduledMessages({
     await onSubmitCallback(messageId);
   };
 
-  function isEmptyEmbed(embed: any): boolean {
-    const keys = Object.keys(embed);
-
-    const visibleKeys = [
-      'title',
-      'author name',
-      'fields',
-      'footer text',
-      'thumbnail url',
-      'description',
-      'image'
-    ];
-
-    for (const key of visibleKeys) {
-      const [k, l] = key.split(' ');
-
-      if (keys.includes(k) && ((l && embed[k][l]) || (!l && embed[k]))) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   return (
     <>
       <ToastContainer style={{ fontSize: '.8em' }} />
@@ -413,7 +390,7 @@ function ScheduledMessages({
                   handleColorPicked={onColorPicked}
                   handleDatePicked={onDatePicked}
                 />
-                <Preview embed={embed} content={content} date={date} emptyEmbed={isEmptyEmbed(embed)} />
+                <EmbedPreview embed={embed} content={content} date={date} />
               </Collapsible>
             </div>
           );
