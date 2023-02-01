@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import uncleLogo from './logo.png';
 import { Home, Dashboard, NotFound, Login } from './pages';
-import { getCookie, removeCookie } from './utils/cookie';
+import { getStorage, removeStorage } from './utils/storage';
 
 function App() {
   // TODO: store this in .env
@@ -16,10 +16,10 @@ function App() {
   };
 
   const handleLogout = () => {
-    const cookie = getCookie('access_token');
-    if (!cookie) return;
+    const token = getStorage('access_token');
+    if (!token) return;
 
-    const payload = { access_token: cookie };
+    const payload = { access_token: token };
 
     const options = {
       method: 'POST',
@@ -30,16 +30,16 @@ function App() {
     };
 
     fetch(
-      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/logout`,
+      `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/logout`,
       options
     );
-    removeCookie('access_token');
+    removeStorage('access_token');
     setLoggedIn(false);
   };
 
   useEffect(() => {
-    const cookie = getCookie('access_token');
-    if (!cookie) setLoggedIn(false);
+    const token = getStorage('access_token');
+    if (!token) setLoggedIn(false);
     else setLoggedIn(true);
   }, []);
 

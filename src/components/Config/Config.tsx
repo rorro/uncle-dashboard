@@ -3,16 +3,16 @@ import { ConfigEntry, GuildChannelEntry } from '../../types';
 import Select from '../Select';
 import { useForm } from '../../hooks/useForm';
 import ConfigDescriptions from '../../configDescriptions';
-import { getCookie } from '../../utils/cookie';
+import { getStorage } from '../../utils/storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: GuildChannelEntry[] }) {
   async function handleSave() {
-    const cookie = getCookie('access_token');
+    const token = getStorage('access_token');
 
     await fetch(
-      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/savedata?accessToken=${cookie}&category=configs`,
+      `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/savedata?accessToken=${token}&category=configs`,
       {
         method: 'POST',
         headers: {

@@ -7,7 +7,7 @@ import MessagesTable from '../../components/MessagesTable';
 import Config from '../../components/Config';
 import ScheduledMessages from '../../components/ScheduledMessages';
 import useFetch from '../../hooks/useFetch';
-import { getCookie } from '../../utils/cookie';
+import { getStorage } from '../../utils/storage';
 
 const menuItems = [
   { key: 'config', value: 'Config' },
@@ -23,9 +23,9 @@ function getName(option: string): string {
 }
 
 function Dashboard() {
-  const apiUrl = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard`;
-  const cookie = getCookie('access_token');
-  const { data } = useFetch<DashboardData>(`${apiUrl}?accessToken=${cookie}`);
+  const apiUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard`;
+  const token = getStorage('access_token');
+  const { data } = useFetch<DashboardData>(`${apiUrl}?accessToken=${token}`);
   const [selectedOption, setSelectedOption] = useState<string>('config');
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {

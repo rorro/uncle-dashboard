@@ -19,7 +19,7 @@ import {
 import Collapsible from '../Collapsible';
 import GUI from './GUI';
 import { v4 as uuidv4 } from 'uuid';
-import { getCookie } from '../../utils/cookie';
+import { getStorage } from '../../utils/storage';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
 import Clock from '../Clock';
 import EmbedPreview from '../EmbedPreview';
@@ -206,10 +206,10 @@ function ScheduledMessages({
   }
 
   async function confirmDeleteMessage(messageId: number) {
-    const cookie = getCookie('access_token');
+    const token = getStorage('access_token');
 
     await fetch(
-      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/deletemessage?accessToken=${cookie}&messageId=${messageId}`,
+      `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/deletemessage?accessToken=${token}&messageId=${messageId}`,
       {
         method: 'DELETE',
         headers: {
@@ -276,10 +276,10 @@ function ScheduledMessages({
   }
 
   async function onSubmitCallback(messageId: number) {
-    const cookie = getCookie('access_token');
+    const token = getStorage('access_token');
 
     await fetch(
-      `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/dashboard/savedata?accessToken=${cookie}&category=scheduled_messages`,
+      `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/savedata?accessToken=${token}&category=scheduled_messages`,
       {
         method: 'POST',
         headers: {

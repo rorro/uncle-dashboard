@@ -16,7 +16,7 @@ The following things need to be in your `.env` file.
 
 ```
 REACT_APP_LOGIN_URL={login_url}
-REACT_APP_API_URL=localhost
+REACT_APP_API_URL=http://localhost
 REACT_APP_API_PORT=7373
 ```
 
