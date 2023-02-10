@@ -2,18 +2,20 @@ import './Dashboard.css';
 import SidePanel from '../../components/SidePanel';
 import { useState } from 'react';
 import Pill from '../../components/Pill';
+
 import { DashboardData } from '../../types';
 import MessagesTable from '../../components/MessagesTable';
 import Config from '../../components/Config';
 import ScheduledMessages from '../../components/ScheduledMessages';
 import useFetch from '../../hooks/useFetch';
 import { getStorage } from '../../utils/storage';
+import Embeds from '../Embeds';
 
 const menuItems = [
   { key: 'config', value: 'Config' },
   { key: 'messages', value: 'Sent Messages' },
-  { key: 'scheduled_messages', value: 'Scheduled Messages' }
-  // { key: 'channels', value: 'Channels' },
+  { key: 'scheduled_messages', value: 'Scheduled Messages' },
+  { key: 'embeds', value: 'Embeds' }
   // { key: 'applications', value: 'Applications' },
   // { key: 'tickets', value: 'Support Tickets' }
 ];
@@ -51,6 +53,8 @@ function Dashboard() {
         ) : (
           <p>No sheduled messages here</p>
         );
+      case 'embeds':
+        return data && <Embeds />;
     }
   };
 

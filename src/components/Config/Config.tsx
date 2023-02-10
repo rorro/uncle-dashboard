@@ -26,6 +26,23 @@ function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: Gui
     // TODO: do something better with the response than just logging it
   }
 
+  function getInputMethod(key: string, val: any): JSX.Element {
+    if (key.includes('_channel')) {
+      return (
+        <Select
+          guildChannels={guildChannels}
+          name={key}
+          selected={values[key as keyof ConfigEntry]}
+          onChange={onChange}
+        />
+      );
+    } else if (key.includes('_message')) {
+      return <textarea className="input" onChange={onChange} name={key} defaultValue={val} />;
+    } else {
+      return <input className="input" onChange={onChange} name={key} type="text" defaultValue={val} />;
+    }
+  }
+
   const { onChange, onSubmit, values, valuesChanged } = useForm<ConfigEntry>(handleSave, data);
 
   return (
@@ -42,16 +59,7 @@ function Config({ data, guildChannels }: { data: ConfigEntry; guildChannels: Gui
         return (
           <div key={index} className="item_box">
             <p>{ConfigDescriptions[key].name}</p>
-            {key.includes('_channel') ? (
-              <Select
-                guildChannels={guildChannels}
-                name={key}
-                selected={values[key as keyof ConfigEntry]}
-                onChange={onChange}
-              />
-            ) : (
-              <input className="input" onChange={onChange} name={key} type="text" defaultValue={val} />
-            )}
+            {getInputMethod(key, val)}
             <p className="information">{ConfigDescriptions[key].description}</p>
             {(key.includes('_icon') || key.includes('_image')) && val && (
               <>
