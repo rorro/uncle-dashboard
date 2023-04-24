@@ -30,7 +30,6 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
 
   const messageChanged = { support: false, application: false };
   function addField(messageId: number) {
-    
     const newField: ExtendedAPIEmbedField = {
       name: 'Field name',
       value: 'Field value',
@@ -127,7 +126,6 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
         [messageId]: currentEmbeds[messageId]
       })
     })
-    // TODO: do something with the response sent back from the server
   }
 
   function handleChange(
