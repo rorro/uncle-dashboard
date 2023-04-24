@@ -2,7 +2,7 @@ import { MessagesResponse, MessageType } from '../../types';
 import './MessagesTable.css';
 
 function MessagesTable({ messages }: { messages: MessagesResponse[] }) {
-  return (
+ return (
     <table className="table">
       <tbody>
         <tr>

@@ -54,7 +54,7 @@ function Dashboard() {
           <p>No sheduled messages here</p>
         );
       case 'embeds':
-        return data && <Embeds />;
+        return data && <Embeds embeds={data.embedConfigs} />;
     }
   };
 

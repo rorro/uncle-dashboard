@@ -1,3 +1,5 @@
+import {MouseEvent, ChangeEvent } from 'react';
+
 function isEmptyEmbed(embed: any): boolean {
   const keys = Object.keys(embed);
 
@@ -22,4 +24,26 @@ function isEmptyEmbed(embed: any): boolean {
   return true;
 }
 
-export { isEmptyEmbed };
+function getClickedField(
+  messageId: number,
+  e:
+    | MouseEvent<HTMLLabelElement>
+    | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+): number | null {
+  const parent = e.currentTarget.parentElement;
+  const fieldsContainer = document.querySelector(`[id='${messageId}']`);
+  const fields = fieldsContainer?.querySelectorAll('.field');
+
+  if (!fields) return null;
+
+  let clickedField: number | null = null;
+  for (const [i, f] of Object.entries(fields)) {
+    if (f === parent) {
+      clickedField = +i;
+      break;
+    }
+  }
+  return clickedField;
+}
+
+export { isEmptyEmbed, getClickedField };

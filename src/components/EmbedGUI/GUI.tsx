@@ -3,59 +3,43 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ChangeEvent, FormEvent, MouseEvent } from 'react';
 import Collapsible from '../Collapsible';
 import Field from './Field';
-import {
-  DeleteModalOptions,
-  ExtendedAPIEmbedField,
-  GuildChannelEntry,
-  ScheduledMessageEntry
-} from '../../types';
+import { ExtendedAPIEmbedField } from '../../types';
 import { APIEmbed } from 'discord.js';
 import { ChromePicker, ColorResult } from '@hello-pangea/color-picker';
-import dayjs from 'dayjs';
 import type {} from '@mui/x-date-pickers/themeAugmentation';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Select from '../Select';
 
 interface IProps {
-  scheduledMessage: ScheduledMessageEntry;
-  guildChannels: GuildChannelEntry[];
+  // scheduledMessage: ScheduledMessageEntry;
+  id: number;
+  content: string;
+  embed: APIEmbed;
   messageChanged: boolean;
   handleRemoveField: (messageId: number, e: MouseEvent<HTMLLabelElement>) => void;
   handleAddField: (messageId: number) => void;
-  handleRemoveMessage: (modalData: DeleteModalOptions, e: MouseEvent<HTMLButtonElement>) => void;
   handleSubmit: (messageId: number, e: FormEvent<HTMLFormElement>) => void;
   handleChange: (
     messageId: number,
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
   handleColorPicked: (messageId: number, color: ColorResult) => void;
-  handleDatePicked: (messageId: number, time: string | undefined) => void;
+  children?: React.ReactNode;
 }
 
-const darkMode = createTheme({
-  palette: {
-    mode: 'dark'
-  }
-});
-
 function GUI({
-  scheduledMessage,
-  guildChannels,
+  // scheduledMessage,
+  id,
+  content,
+  embed,
   messageChanged,
   handleRemoveField,
   handleAddField,
-  handleRemoveMessage,
   handleSubmit,
   handleChange,
   handleColorPicked,
-  handleDatePicked
+  children
 }: IProps) {
-  const { id, message, date, channel } = scheduledMessage;
-  const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(message);
+  // const { id, message, date, channel } = scheduledMessage;
+  // const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(message);
 
   return (
     <form onSubmit={e => handleSubmit(id, e)} className="gui">
@@ -203,46 +187,13 @@ function GUI({
         />
       </Collapsible>
 
-      <Collapsible title={'Date'}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <ThemeProvider theme={darkMode}>
-            <DateTimePicker
-              renderInput={props => <TextField {...props} />}
-              onChange={d => handleDatePicked(id, d?.format('YYYY-MM-DD HH:mm'))}
-              value={dayjs(date)}
-              inputFormat={'YYYY-MM-DD HH:mm'}
-              ampm={false}
-            />
-          </ThemeProvider>
-        </LocalizationProvider>
-      </Collapsible>
-
-      <Collapsible title={'Channel'}>
-        <Select
-          guildChannels={guildChannels}
-          name={'channel'}
-          selected={channel}
-          onChange={e => handleChange(id, e)}
-        />
-      </Collapsible>
+      {children}
 
       <button
         className="save_embed"
         style={messageChanged ? {} : { pointerEvents: 'none', backgroundColor: '#444444' }}
       >
         <span>Save</span>
-      </button>
-
-      <button
-        className="delete_embed"
-        onClick={e =>
-          handleRemoveMessage(
-            { messageId: id, date, channel: guildChannels.filter(c => c.id === channel)[0].name, embed },
-            e
-          )
-        }
-      >
-        <span>Delete</span>
       </button>
     </form>
   );

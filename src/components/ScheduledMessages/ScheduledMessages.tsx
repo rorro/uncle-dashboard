@@ -1,13 +1,18 @@
 import { useState, MouseEvent, FormEvent, ChangeEvent } from 'react';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APIEmbed } from 'discord.js';
 import './ScheduledMessages.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { ColorResult } from '@hello-pangea/color-picker';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ToastContainer, toast } from 'react-toastify';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Select from '../Select';
 import {
   DeleteModalOptions,
   ExtendedAPIEmbedField,
@@ -17,15 +22,21 @@ import {
   UpdateMessageOptions
 } from '../../types';
 import Collapsible from '../Collapsible';
-import GUI from './GUI';
+import GUI from '../EmbedGUI/GUI';
 import { v4 as uuidv4 } from 'uuid';
 import { getStorage } from '../../utils/storage';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
 import Clock from '../Clock';
 import EmbedPreview from '../EmbedPreview';
-import { isEmptyEmbed } from '../../helpers/embed';
+import { isEmptyEmbed, getClickedField } from '../../helpers/embed';
 
 dayjs.extend(utc);
+
+const darkMode = createTheme({
+  palette: {
+    mode: 'dark'
+  }
+});
 
 function ScheduledMessages({
   scheduledMessages,
@@ -58,7 +69,7 @@ function ScheduledMessages({
   });
 
   const [messages, setMessages] = useState<T>(initialMessages);
-  const [previousMessages, setPreviousMessages] = useState<T>(initialMessages);
+  const [previousEmbeds, setPreviousMessages] = useState<T>(initialMessages);
   const [messageChanged, setMessageChanged] = useState<Record<number, boolean>>(initialMessagesChanged);
   const [deleteModalOpen, setDeleteModelOpen] = useState<boolean>(false);
   const [deleteModalData, setDeleteModelData] = useState<DeleteModalOptions | undefined>();
@@ -81,29 +92,6 @@ function ScheduledMessages({
     embed.fields ? embed.fields.push(newField) : (embed.fields = [newField]);
 
     updateMessages(message, { embed: embed });
-  }
-
-  function getClickedField(
-    messageId: number,
-    e:
-      | MouseEvent<HTMLLabelElement>
-      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ): number | null {
-    const parent = e.currentTarget.parentElement;
-
-    const fieldsContainer = document.querySelector(`[id='${messageId}']`);
-    const fields = fieldsContainer?.querySelectorAll('.field');
-
-    if (!fields) return null;
-
-    let clickedField: number | null = null;
-    for (const [i, f] of Object.entries(fields)) {
-      if (f === parent) {
-        clickedField = +i;
-        break;
-      }
-    }
-    return clickedField;
   }
 
   function removeField(messageId: number, e: MouseEvent<HTMLLabelElement>) {
@@ -153,10 +141,9 @@ function ScheduledMessages({
 
     const scheduledMessage = messages[messageId];
     let { embed } = JSON.parse(scheduledMessage.message);
-
     let options: UpdateMessageOptions = {};
 
-    switch (name as APIEmbed) {
+    switch (name) {
       case 'content':
       case 'channel':
         options[name as keyof UpdateMessageOptions] = value.toString();
@@ -267,7 +254,7 @@ function ScheduledMessages({
       [message.id]: updatedMessage
     });
 
-    const changed = JSON.stringify(updatedMessage) !== JSON.stringify(previousMessages[message.id]);
+    const changed = JSON.stringify(updatedMessage) !== JSON.stringify(previousEmbeds[message.id]);
 
     setMessageChanged({
       ...messageChanged,
@@ -290,7 +277,7 @@ function ScheduledMessages({
     )
       .then(response => response.json())
       .then((data: { newId: number; message: string }) => {
-        if (!data.message.includes('Successfully')) {
+        if (!data.message.toLowerCase().includes('success')) {
           toast.error(
             `Message was not saved for some reason. It might have already been sent. Reload the page and try again.`,
             {
@@ -379,17 +366,56 @@ function ScheduledMessages({
                 channel={guildChannels.filter(c => c.id === channel)[0].name}
               >
                 <GUI
-                  scheduledMessage={messages[id]}
-                  guildChannels={guildChannels}
+                  id={id}
+                  content={content}
+                  embed={embed}
                   messageChanged={messageChanged[id]}
                   handleRemoveField={removeField}
                   handleAddField={addField}
-                  handleRemoveMessage={removeMessage}
                   handleSubmit={onSubmit}
                   handleChange={onChange}
                   handleColorPicked={onColorPicked}
-                  handleDatePicked={onDatePicked}
-                />
+                >
+                  <Collapsible title={'Date'}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <ThemeProvider theme={darkMode}>
+                        <DateTimePicker
+                          renderInput={props => <TextField {...props} />}
+                          onChange={d => onDatePicked(id, d?.format('YYYY-MM-DD HH:mm'))}
+                          value={dayjs(date)}
+                          inputFormat={'YYYY-MM-DD HH:mm'}
+                          ampm={false}
+                        />
+                      </ThemeProvider>
+                    </LocalizationProvider>
+                  </Collapsible>
+
+                  <Collapsible title={'Channel'}>
+                    <Select
+                      guildChannels={guildChannels}
+                      name={'channel'}
+                      selected={channel}
+                      onChange={e => onChange(id, e)}
+                    />
+                  </Collapsible>
+
+                  <button
+                    className="delete_embed"
+                    onClick={e =>
+                      removeMessage(
+                        {
+                          messageId: id,
+                          date,
+                          channel: guildChannels.filter(c => c.id === channel)[0].name,
+                          embed
+                        },
+                        e
+                      )
+                    }
+                  >
+                    <span>Delete</span>
+                  </button>
+                </GUI>
                 <EmbedPreview embed={embed} content={content} date={date} />
               </Collapsible>
             </div>

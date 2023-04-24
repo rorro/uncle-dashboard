@@ -63,11 +63,8 @@ export interface ConfigEntry {
   new_members_channel: string | null;
   assign_roles_channel: string | null;
   rules_channel: string | null;
-  diary_channel: string | null;
   leaderboard_channel: string | null;
   transcripts_channel: string | null;
-  clan_icon: string | null;
-  requirements_image: string | null;
   diary_top10_message: string | null;
 }
 
@@ -84,6 +81,7 @@ export interface DashboardData {
   messages: MessagesResponse[];
   configs: ConfigEntry;
   scheduledMessages: ScheduledMessageEntry[];
+  embedConfigs: EmbedConfigs;
 }
 
 export interface OptGroupType {
@@ -106,6 +104,11 @@ export interface ScheduledMessageEntry {
   date: string;
   channel: string;
   type: ScheduledMessageType;
+}
+
+export interface EmbedConfigs {
+  application_embed: string;
+  support_embed: string;
 }
 
 export interface ExtendedAPIEmbedField extends APIEmbedField {

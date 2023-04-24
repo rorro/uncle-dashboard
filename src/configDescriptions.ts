@@ -20,14 +20,6 @@ const ConfigDescriptions: ConfigDescription = {
     description:
       'Application transcripts are sent are sent to this channel. Make sure the selected channel is only visible to staff members.'
   },
-  clan_icon: {
-    name: 'Clan Icon',
-    description: `The clan icon. It's shown in all the embeds that are sent by the bot. Make sure it's a valid url directly linking to an image.`
-  },
-  requirements_image: {
-    name: 'Requirements Image',
-    description: `The requirements image is the image shown to new applicants. Make sure it's a valid url directly linking to an image.`
-  },
   welcome_base_message: {
     name: 'Base Welcome Message',
     description: `The first part, that is always sent, of the welcome message.`

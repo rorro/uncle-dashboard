@@ -432,11 +432,6 @@ blockquote {
 }
 
 .embedThumbnail {
-  width: 80px;
-  height: 80px;
-}
-
-.embedThumbnail {
   grid-area: 1 / 2 / 8 / 2;
   margin-left: 16px;
   margin-top: 8px;
@@ -451,16 +446,6 @@ blockquote {
   display: block;
   object-fit: fill;
   border-radius: 4px;
-}
-
-.embedThumbnail {
-  grid-area: 1 / 2 / 8 / 2;
-  margin-left: 16px;
-  margin-top: 8px;
-  flex-shrink: 0;
-  justify-self: end;
-  width: 80px;
-  height: 80px;
 }
 
 .error {
