@@ -9,7 +9,6 @@ import { ChromePicker, ColorResult } from '@hello-pangea/color-picker';
 import type {} from '@mui/x-date-pickers/themeAugmentation';
 
 interface IProps {
-  // scheduledMessage: ScheduledMessageEntry;
   id: number;
   content: string;
   embed: APIEmbed;
@@ -26,7 +25,6 @@ interface IProps {
 }
 
 function GUI({
-  // scheduledMessage,
   id,
   content,
   embed,
@@ -38,9 +36,6 @@ function GUI({
   handleColorPicked,
   children
 }: IProps) {
-  // const { id, message, date, channel } = scheduledMessage;
-  // const { content, embed }: { content: string; embed: APIEmbed } = JSON.parse(message);
-
   return (
     <form onSubmit={e => handleSubmit(id, e)} className="gui">
       <Collapsible title="Message Content">

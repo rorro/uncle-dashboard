@@ -1,28 +1,28 @@
 import { ColorResult } from '@hello-pangea/color-picker';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ToastContainer, ToastOptions, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Collapsible from '../../components/Collapsible';
 import GUI from '../../components/EmbedGUI/GUI';
 import EmbedPreview from '../../components/EmbedPreview';
-import { EmbedConfigs, ExtendedAPIEmbedField } from '../../types';
+import { EmbedConfigs, ExtendedAPIEmbedField, ToastType } from '../../types';
 import './Embeds.css';
 import { UpdateMessageOptions } from '../../types';
 import { getClickedField, isEmptyEmbed } from '../../helpers/embed';
 import { getStorage } from '../../utils/storage';
+import sendToast from '../../utils/toast';
 
 function Embeds({ embeds }: { embeds: EmbedConfigs }) {
   interface T {
-    [id: number]: {id: number, name: string, title: string, data: string}
+    [id: number]: { id: number; name: string; title: string; data: string };
   }
 
   const initialEmbeds: T = {
-    1: {id: 1, name: 'application_embed', title: 'Application Embed', data: embeds.application_embed},
-    2: {id: 2, name: 'support_embed', title: 'Support Embed', data: embeds.support_embed}
+    1: { id: 1, name: 'application_embed', title: 'Application Embed', data: embeds.application_embed },
+    2: { id: 2, name: 'support_embed', title: 'Support Embed', data: embeds.support_embed }
   };
 
-  const initialEmbedsChanged: Record<number, boolean> = {0: false, 1: false};
+  const initialEmbedsChanged: Record<number, boolean> = { 0: false, 1: false };
 
   const [currentEmbeds, setCurrentEmbeds] = useState<T>(initialEmbeds);
   const [previousEmbeds, setPreviousEmbeds] = useState<T>(initialEmbeds);
@@ -50,14 +50,14 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
     if (clickedField === null) return;
 
     const message = currentEmbeds[mid];
-    const {embed} = JSON.parse(message.data);
+    const { embed } = JSON.parse(message.data);
 
     embed.fields?.splice(clickedField, 1);
     if (embed.fields?.length === 0) {
       delete embed.fields;
     }
 
-    updateMessages(message, {embed: embed});
+    updateMessages(message, { embed: embed });
   }
 
   async function hasEmptyFields(messageId: number) {
@@ -73,13 +73,7 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
     e.preventDefault();
 
     if (await hasEmptyFields(messageId)) {
-      toast.error(`Field name and value can't be empty.`, {
-        position: 'top-center',
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        theme: 'dark'
-      });
+      sendToast(`Field name and value can't be empty.`, ToastType.Error);
       return;
     }
 
@@ -99,33 +93,25 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
         body: JSON.stringify(currentEmbeds[messageId])
       }
     )
-    .then(response => response.json())
-    .then((data: {message: string}) => {
-      const toastOptions: ToastOptions = {
-        position: 'top-center',
-        autoClose: 1500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        theme: 'dark'
-      }
+      .then(response => response.json())
+      .then((data: { message: string }) => {
+        if (data.message.toLowerCase().includes('success')) {
+          sendToast(data.message, ToastType.Success);
+        } else {
+          sendToast(data.message, ToastType.Error);
+          return;
+        }
 
-      if (data.message.toLowerCase().includes('success')) {
-        toast.success(data.message, toastOptions);
-      } else {
-        toast.error(data.message, toastOptions);
-        return;
-      }
+        setEmbedChanged({
+          ...messageChanged,
+          [messageId]: false
+        });
 
-      setEmbedChanged({
-        ...messageChanged,
-        [messageId]: false
-      })
-
-      setPreviousEmbeds({
-        ...previousEmbeds,
-        [messageId]: currentEmbeds[messageId]
-      })
-    })
+        setPreviousEmbeds({
+          ...previousEmbeds,
+          [messageId]: currentEmbeds[messageId]
+        });
+      });
   }
 
   function handleChange(
@@ -134,7 +120,7 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
   ) {
     const [name, key] = e.currentTarget.name.split(' ');
 
-    const value = 
+    const value =
       key === 'inline'
         ? (e as ChangeEvent<HTMLInputElement>).currentTarget.checked
         : e.currentTarget.value;
@@ -170,7 +156,7 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
     }
 
     options.embed = embed;
-    updateMessages(message, options)
+    updateMessages(message, options);
   }
 
   function handleColorPicked(messageId: number, color: ColorResult) {
@@ -183,11 +169,14 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
     updateMessages(message, { embed: embed });
   }
 
-  function updateMessages(message: {id: number, name: string, title: string, data: string}, newData: UpdateMessageOptions) {
-    const {data} = message;
-    const {content: originalContent, embed: originalEmbed} = JSON.parse(data);
+  function updateMessages(
+    message: { id: number; name: string; title: string; data: string },
+    newData: UpdateMessageOptions
+  ) {
+    const { data } = message;
+    const { content: originalContent, embed: originalEmbed } = JSON.parse(data);
 
-    const {content: newContent, embed: newEmbed} = newData;
+    const { content: newContent, embed: newEmbed } = newData;
 
     const updatedMessage = {
       id: message.id,
@@ -197,7 +186,7 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
         content: newContent !== undefined ? newContent : originalContent,
         embed: newEmbed ? (isEmptyEmbed(newEmbed) ? {} : newEmbed) : originalEmbed
       })
-    }
+    };
 
     setCurrentEmbeds({
       ...currentEmbeds,
@@ -209,38 +198,35 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
     setEmbedChanged({
       ...messageChanged,
       [message.id]: changed
-    })
+    });
   }
 
   return (
-    <>
-    <ToastContainer style={{ fontSize: '.8em' }} />
     <div className="wrapper">
-        {Object.keys(currentEmbeds).map(oId => {
-          const {id, title, data} = currentEmbeds[+oId]
-          const {content, embed} = JSON.parse(data);
+      {Object.keys(currentEmbeds).map(oId => {
+        const { id, title, data } = currentEmbeds[+oId];
+        const { content, embed } = JSON.parse(data);
 
-          return (
-            <div className="container" key={id}>
-              <Collapsible title={title} id={id}>
-                <GUI
-                  id={id}
-                  content={content}
-                  embed={embed}
-                  messageChanged={embedChanged[id]}
-                  handleRemoveField={removeField}
-                  handleAddField={addField}
-                  handleSubmit={handleSubmit}
-                  handleChange={handleChange}
-                  handleColorPicked={handleColorPicked}
-                ></GUI>
-                <EmbedPreview content={content} embed={embed} />
-              </Collapsible>
+        return (
+          <div className="container" key={id}>
+            <Collapsible title={title} id={id}>
+              <GUI
+                id={id}
+                content={content}
+                embed={embed}
+                messageChanged={embedChanged[id]}
+                handleRemoveField={removeField}
+                handleAddField={addField}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                handleColorPicked={handleColorPicked}
+              ></GUI>
+              <EmbedPreview content={content} embed={embed} />
+            </Collapsible>
           </div>
-          )
-        })}
-      </div>
-      </>
+        );
+      })}
+    </div>
   );
 }
 

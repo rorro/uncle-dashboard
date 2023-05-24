@@ -2,22 +2,22 @@ import { MessagesResponse, MessageType } from '../../types';
 import './MessagesTable.css';
 
 function MessagesTable({ messages }: { messages: MessagesResponse[] }) {
- return (
+  return (
     <table className="table">
       <tbody>
         <tr>
-          <th>Name</th>
-          <th>Channel</th>
-          <th>Message ID</th>
-          <th>Type</th>
+          <th className="table-head">Name</th>
+          <th className="table-head">Channel</th>
+          <th className="table-head">Message ID</th>
+          <th className="table-head">Type</th>
         </tr>
         {messages.map(m => {
           return (
-            <tr key={m.id}>
-              <td>{m.name}</td>
-              <td>{m.channel}</td>
-              <td>{m.message_id}</td>
-              <td>{MessageType[m.type]}</td>
+            <tr id="table-row" key={m.id}>
+              <td className="table-data">{m.name}</td>
+              <td className="table-data">{m.channel}</td>
+              <td className="table-data">{m.message_id}</td>
+              <td className="table-data">{MessageType[m.type]}</td>
             </tr>
           );
         })}

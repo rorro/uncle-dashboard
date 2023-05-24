@@ -1,5 +1,5 @@
 .table {
-  border-radius: .5em;
+  border-radius: 0.5em;
   overflow: hidden;
   border-collapse: collapse;
   margin: 0 auto 0 auto;
@@ -7,15 +7,15 @@
   width: 90%;
 }
 
-th {
+.table-head {
   background-color: #272727;
   padding: 0 0 0 5px;
 }
 
-tr {
+#table-row {
   background-color: #1e1e1e;
 }
 
-td {
+.table-data {
   padding: 0 0 10px 5px;
 }

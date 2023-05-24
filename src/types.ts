@@ -82,6 +82,8 @@ export interface DashboardData {
   configs: ConfigEntry;
   scheduledMessages: ScheduledMessageEntry[];
   embedConfigs: EmbedConfigs;
+  pets: PetEntry[];
+  petsLeaderboard: PetLeaderboardEntry[];
 }
 
 export interface OptGroupType {
@@ -127,4 +129,72 @@ export interface DeleteModalOptions {
   date: string;
   channel: string;
   embed: APIEmbed;
+}
+
+export interface PetEntry {
+  name: string;
+  display_name: string;
+  emoji: string;
+}
+
+export interface PetLeaderboardEntry {
+  id: number;
+  username: string;
+  abyssal_sire: number;
+  giant_mole: number;
+  callisto: number;
+  cerberus: number;
+  alchemical_hydra: number;
+  tzkal_zuk: number;
+  kalphite_queen: number;
+  theatre_of_blood: number;
+  phantom_muspah: number;
+  nightmare: number;
+  nex: number;
+  grotesque_guardians: number;
+  chambers_of_xeric: number;
+  chaos_elemental: number;
+  dagannoth_prime: number;
+  dagannoth_rex: number;
+  dagannoth_supreme: number;
+  corporeal_beast: number;
+  general_graardor: number;
+  kril_tsutsaroth: number;
+  kraken: number;
+  kreearra: number;
+  thermonuclear_smoke_devil: number;
+  zulrah: number;
+  commander_zilyana: number;
+  king_black_dragon: number;
+  scorpia: number;
+  skotizo: number;
+  sarachnis: number;
+  tombs_of_amascut: number;
+  tztok_jad: number;
+  venenatis: number;
+  vetion: number;
+  vorkath: number;
+  chinchompa: number;
+  beaver: number;
+  giant_squirrel: number;
+  heron: number;
+  rift_guardian: number;
+  rock_golem: number;
+  rocky: number;
+  tangleroot: number;
+  bloodhound: number;
+  chompy_chick: number;
+  herbiboar: number;
+  lil_creator: number;
+  penance_queen: number;
+  phoenix: number;
+  tempoross: number;
+  gauntlet: number;
+  zalcano: number;
+  abyssal_protector: number;
+}
+
+export enum ToastType {
+  Error = 1,
+  Success = 2
 }
