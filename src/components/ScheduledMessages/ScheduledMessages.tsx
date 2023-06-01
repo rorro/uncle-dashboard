@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { ColorResult } from '@hello-pangea/color-picker';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { ToastContainer, toast } from 'react-toastify';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +18,7 @@ import {
   GuildChannelEntry,
   ScheduledMessageEntry,
   ScheduledMessageType,
+  ToastType,
   UpdateMessageOptions
 } from '../../types';
 import Collapsible from '../Collapsible';
@@ -29,6 +29,7 @@ import ConfirmDeleteModal from '../ConfirmDeleteModal';
 import Clock from '../Clock';
 import EmbedPreview from '../EmbedPreview';
 import { isEmptyEmbed, getClickedField } from '../../helpers/embed';
+import sendToast from '../../utils/toast';
 
 dayjs.extend(utc);
 
@@ -278,15 +279,9 @@ function ScheduledMessages({
       .then(response => response.json())
       .then((data: { newId: number; message: string }) => {
         if (!data.message.toLowerCase().includes('success')) {
-          toast.error(
+          sendToast(
             `Message was not saved for some reason. It might have already been sent. Reload the page and try again.`,
-            {
-              position: 'top-center',
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              theme: 'dark'
-            }
+            ToastType.Error
           );
           return;
         }
@@ -324,13 +319,7 @@ function ScheduledMessages({
   const onSubmit = async (messageId: number, event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (await hasEmptyFields(messageId)) {
-      toast.error(`Field name and value can't be empty.`, {
-        position: 'top-center',
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        theme: 'dark'
-      });
+      sendToast(`Field name and value can't be empty.`, ToastType.Error);
       return;
     }
     await onSubmitCallback(messageId);
@@ -338,7 +327,6 @@ function ScheduledMessages({
 
   return (
     <>
-      <ToastContainer style={{ fontSize: '.8em' }} />
       <ConfirmDeleteModal
         isOpen={deleteModalOpen}
         toggle={toggleDeleteModal}

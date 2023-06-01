@@ -5,7 +5,7 @@
   background: none;
   margin-bottom: 10px;
   color: white;
-  transition: color 0.2s;
+  transition: color 0.1s;
   width: 100%;
   padding: 0.5em;
   margin-bottom: 0;
@@ -22,7 +22,7 @@
 }
 
 .bm-burger-button {
-  position:absolute;
+  position: absolute;
   width: 25px;
   height: 25px;
   left: 10px;
@@ -47,7 +47,6 @@
   background: #1e1e1e;
   padding: 1.5em 0em 0;
   font-size: 1em;
-  
 }
 
 .bm-morph-shape {

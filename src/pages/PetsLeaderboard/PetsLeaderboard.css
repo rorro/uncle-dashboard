@@ -1,0 +1,134 @@
+#pets-leaderboard {
+  table-layout: auto;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.pet-head {
+  font-size: smaller;
+  padding: 0 0.7em;
+  white-space: nowrap;
+  width: auto;
+}
+
+.pet-entry {
+  white-space: nowrap;
+}
+
+.pet-entry label {
+  margin: 0 0.3em;
+}
+
+.pet-head:first-child,
+.pet-entry:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  text-align: left;
+  padding: 0;
+}
+.pet-head:first-child {
+  background-color: #121212;
+}
+
+.pet-head:first-child::after,
+.pet-entry:first-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px; /* Divider position */
+  height: 100%;
+  width: 1px;
+  background-color: #36393f;
+}
+
+.pet-list:nth-child(odd) {
+  background-color: #1e1e1e;
+}
+
+.pet-list:nth-child(even) {
+  background-color: #121212;
+}
+
+.pet-list:nth-child(odd) .pet-entry:first-child {
+  background-color: #1e1e1e;
+}
+
+.pet-list:nth-child(even) .pet-entry:first-child {
+  background-color: #121212;
+}
+
+.leaderboard-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-top: 3em;
+}
+
+.username {
+  width: 100px;
+  font-size: 0.9em;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#new-player {
+  position: fixed;
+  align-self: flex-end;
+  background: none;
+  border: none;
+  border-radius: 0.2em;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#new-player:hover {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#remove-player {
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #66666699;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#remove-player:hover {
+  color: #ff0000;
+}
+
+#remove-player:active {
+  color: #ff000099;
+}
+
+.save-pets {
+  position: fixed;
+  align-self: flex-start;
+  border-radius: 0.2em;
+  border: none;
+  color: #ffffff;
+  font-size: 1em;
+  transition: all 0.1s;
+  cursor: pointer;
+  margin: 5px;
+  padding: 0.4em 0.6em;
+  font-weight: bold;
+  pointer-events: all;
+  background-color: #04aa6d;
+  /* margin-top: -0.4em; */
+}
+
+.save-pets:hover {
+  background-color: #04aa6dab;
+}
