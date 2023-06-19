@@ -1,5 +1,6 @@
 export const defaultPetLeaderboardEntry = {
   username: '',
+  removed: 0,
   abyssal_sire: 0,
   giant_mole: 0,
   callisto: 0,

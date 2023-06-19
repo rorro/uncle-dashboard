@@ -1,4 +1,4 @@
-#pets-leaderboard {
+.pets-leaderboard {
   table-layout: auto;
   border-collapse: collapse;
   margin-bottom: 10px;
@@ -77,9 +77,20 @@
   margin-right: auto;
 }
 
-#new-player {
-  position: fixed;
+.buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-end {
   align-self: flex-end;
+}
+
+.flex-start {
+  align-self: flex-start;
+}
+
+#new-player {
   background: none;
   border: none;
   border-radius: 0.2em;
@@ -87,7 +98,6 @@
   font-size: 0.9em;
   color: #ffffff;
   cursor: pointer;
-  transition: all 0.1s;
 }
 
 #new-player:hover {
@@ -98,10 +108,9 @@
   background: none;
   border: none;
   font-weight: bold;
-  font-size: 0.9em;
+  font-size: 1em;
   color: #66666699;
   cursor: pointer;
-  transition: all 0.1s;
 }
 
 #remove-player:hover {
@@ -113,22 +122,36 @@
 }
 
 .save-pets {
-  position: fixed;
-  align-self: flex-start;
   border-radius: 0.2em;
   border: none;
   color: #ffffff;
   font-size: 1em;
-  transition: all 0.1s;
   cursor: pointer;
   margin: 5px;
   padding: 0.4em 0.6em;
   font-weight: bold;
   pointer-events: all;
   background-color: #04aa6d;
-  /* margin-top: -0.4em; */
 }
 
 .save-pets:hover {
+  background-color: #04aa6dab;
+}
+
+.update-discord {
+  border-radius: 0.2em;
+  border: none;
+  color: #ffffff;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 5px;
+  padding: 0.4em 0.6em;
+  font-weight: bold;
+  pointer-events: all;
+  background-color: #04aa6d;
+  margin-right: auto;
+}
+
+.update-discord:hover {
   background-color: #04aa6dab;
 }

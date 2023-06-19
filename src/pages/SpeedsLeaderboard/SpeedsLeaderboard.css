@@ -1,0 +1,105 @@
+.speed-username {
+  border-top-left-radius: 0.2em;
+  border-bottom-left-radius: 0.2em;
+  border: none;
+  background: 0 0;
+  padding: 0.2em;
+  border: 1px #2f2f2f solid;
+  color: #ffffff;
+  width: 30%;
+}
+
+.speed-time {
+  border-top-right-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+  background: 0 0;
+  padding: 0.2em;
+  border: 1px #2f2f2f solid;
+  border-left: none;
+  color: #ffffff;
+  width: 70px;
+}
+
+.speed-username:focus {
+  outline: none;
+}
+
+.speed-time:focus {
+  outline: none;
+}
+
+.speeds-add {
+  position: unset !important;
+  margin-bottom: 10px;
+}
+
+.save-speeds {
+  align-self: flex-start;
+  border-radius: 0.2em;
+  border: none;
+  color: #ffffff;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.4em 0.6em;
+  font-weight: bold;
+  pointer-events: all;
+  background-color: #04aa6d;
+  margin-bottom: -20px;
+}
+
+#precise-time-input {
+  border-radius: 0.2em;
+  background: 0 0;
+  padding: 0.2em;
+  border: 1px #2f2f2f solid;
+  color: #ffffff;
+  width: 50px;
+  margin: 0 10px 10px 10px;
+}
+
+#precise-time-result {
+  border-radius: 0.2em;
+  background: 0 0;
+  padding: 0.2em;
+  border: none;
+  color: #ffffff;
+  width: 70px;
+}
+#precise-time-input:focus,
+#precise-time-result:focus {
+  outline: none;
+}
+
+.precise-time {
+  align-self: flex-end;
+}
+
+.update-boss {
+  border-radius: 0.2em;
+  border: none;
+  color: #ffffff;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.4em 0.6em;
+  font-weight: bold;
+  pointer-events: all;
+  background-color: #04aa6d;
+  margin-bottom: 10px;
+}
+
+#readd-player {
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: 1em;
+  color: #66666699;
+  cursor: pointer;
+}
+
+#readd-player:hover {
+  color: #04aa6d;
+}
+
+#readd-player:active {
+  color: #04774d;
+}
