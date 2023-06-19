@@ -82,8 +82,8 @@ export interface DashboardData {
   configs: ConfigEntry;
   scheduledMessages: ScheduledMessageEntry[];
   embedConfigs: EmbedConfigs;
-  pets: PetEntry[];
   petsLeaderboard: PetLeaderboardEntry[];
+  speedsLeaderboard: SpeedsLeaderboardEntry[];
 }
 
 export interface OptGroupType {
@@ -140,6 +140,7 @@ export interface PetEntry {
 export interface PetLeaderboardEntry {
   id: number;
   username: string;
+  removed: number;
   abyssal_sire: number;
   giant_mole: number;
   callisto: number;
@@ -192,6 +193,21 @@ export interface PetLeaderboardEntry {
   gauntlet: number;
   zalcano: number;
   abyssal_protector: number;
+}
+
+export interface SpeedsLeaderboardEntry {
+  id: number;
+  username: string;
+  boss: string;
+  category: string | null;
+  time: string;
+  removed: number;
+}
+
+export interface LeaderboardBoss {
+  boss: string;
+  emoji: string;
+  categories?: string[];
 }
 
 export enum ToastType {

@@ -10,7 +10,7 @@
 
 .preview {
   width: 60%;
-  font-family: DsWhitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: DsWhitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: var(--fullEmbedBackground);
   float: right;
   margin-bottom: 10px;
@@ -46,18 +46,17 @@
 }
 
 .save_embed {
-  border-radius: .2em;
+  border-radius: 0.2em;
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1em;
-  transition: all 0.2s;
   cursor: pointer;
   margin: 5px;
-  padding: .4em .6em;
+  padding: 0.4em 0.6em;
   font-weight: bold;
   float: left;
   pointer-events: all;
-  background-color: #04AA6D;
+  background-color: #04aa6d;
 }
 
 .save_embed:hover {
@@ -65,14 +64,13 @@
 }
 
 .delete_embed {
-  border-radius: .2em;
+  border-radius: 0.2em;
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1em;
-  transition: all 0.1s;
   cursor: pointer;
   margin: 5px;
-  padding: .4em .6em;
+  padding: 0.4em 0.6em;
   font-weight: bold;
   float: left;
   background-color: #c20000;
@@ -86,10 +84,10 @@
   align-self: flex-end;
   background: none;
   border: none;
-  border-radius: .2em;
+  border-radius: 0.2em;
   font-weight: bold;
-  font-size: .9em;
-  color: #FFFFFF;
+  font-size: 0.9em;
+  color: #ffffff;
   cursor: pointer;
 }
 
@@ -105,7 +103,7 @@
   position: absolute;
   align-self: flex-start;
   font-weight: bold;
-  font-size: .9em;
+  font-size: 0.9em;
 }
 
 .bar_content {

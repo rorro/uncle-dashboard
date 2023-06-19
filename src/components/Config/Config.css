@@ -9,12 +9,11 @@
   display: inline-block;
   border-radius: 4px;
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   text-align: center;
   font-size: 1.3em;
   width: 5em;
   height: 2.5em;
-  transition: all 0.2s;
   cursor: pointer;
   margin: 5px;
   font-weight: bold;
@@ -51,7 +50,7 @@
   border-width: 1px 1px 1px 1px;
   border-color: #36393f;
   border-style: solid;
-  border-radius: .2em;
+  border-radius: 0.2em;
   padding: 10px;
   background-color: #1e1e1e;
 }
@@ -73,8 +72,8 @@
 .input {
   background: 0 0;
   border: none;
-  border-radius: .2em;
-  padding: .2em;
+  border-radius: 0.2em;
+  padding: 0.2em;
   border: 1px #2f2f2f solid;
   color: #ffffff;
   width: 80%;

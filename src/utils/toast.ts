@@ -4,7 +4,7 @@ import { ToastType } from '../types';
 const options: ToastOptions = {
   position: 'top-center',
   autoClose: 3000,
-  hideProgressBar: false,
+  hideProgressBar: true,
   closeOnClick: true,
   theme: 'dark'
 };

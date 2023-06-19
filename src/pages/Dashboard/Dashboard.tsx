@@ -12,13 +12,15 @@ import { getStorage } from '../../utils/storage';
 import Embeds from '../Embeds';
 import PetsLeaderboard from '../PetsLeaderboard';
 import { ToastContainer } from 'react-toastify';
+import SpeedsLeaderboard from '../SpeedsLeaderboard';
 
 const menuItems = [
   { key: 'config', value: 'Config' },
   { key: 'messages', value: 'Sent Messages' },
   { key: 'scheduled_messages', value: 'Scheduled Messages' },
   { key: 'embeds', value: 'Embeds' },
-  { key: 'pets_leaderboard', value: 'Pets Leaderboard' }
+  { key: 'pets_leaderboard', value: 'Pets Leaderboard' },
+  { key: 'speeds_leaderboard', value: 'Speeds Leaderboard' }
 ];
 
 function getName(option: string): string {
@@ -58,9 +60,12 @@ function Dashboard() {
         return data && <Embeds embeds={data.embedConfigs} />;
       case 'pets_leaderboard':
         return (
+          data && data.petsLeaderboard && <PetsLeaderboard petsLeaderboard={data.petsLeaderboard} />
+        );
+      case 'speeds_leaderboard':
+        return (
           data &&
-          data.petsLeaderboard &&
-          data.pets && <PetsLeaderboard pets={data.pets} petsLeaderboard={data.petsLeaderboard} />
+          data.speedsLeaderboard && <SpeedsLeaderboard speedsLeaderboard={data.speedsLeaderboard} />
         );
     }
   };
