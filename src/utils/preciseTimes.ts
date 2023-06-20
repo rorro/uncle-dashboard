@@ -5,7 +5,7 @@ enum PeriodsInMillseconds {
   tick = 600
 }
 
-function timeInMilliseconds(time: string) {
+export function timeInMilliseconds(time: string) {
   const splitTime = time.split(':');
   const hours: number = Number(splitTime.at(-3))
     ? Number(splitTime.at(-3)) * PeriodsInMillseconds.hour
@@ -21,6 +21,39 @@ function timeInMilliseconds(time: string) {
     : 0;
 
   return hours + minutes + seconds + milliseconds;
+}
+
+export function timeInHumanReadable(time: number): string {
+  const hours = Math.floor(time / PeriodsInMillseconds.hour);
+  const minutes = Math.floor((time - hours * PeriodsInMillseconds.hour) / PeriodsInMillseconds.minute);
+  const seconds = Math.floor(
+    (time - hours * PeriodsInMillseconds.hour - minutes * PeriodsInMillseconds.minute) /
+      PeriodsInMillseconds.second
+  );
+  const milliseconds =
+    (time -
+      hours * PeriodsInMillseconds.hour -
+      minutes * PeriodsInMillseconds.minute -
+      seconds * PeriodsInMillseconds.second) /
+    10;
+
+  let humanReadable = '';
+  humanReadable +=
+    hours > 0
+      ? `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}.${padNumber(milliseconds)}`
+      : minutes > 0
+      ? `${padNumber(minutes)}:${padNumber(seconds)}.${padNumber(milliseconds)}`
+      : `${padNumber(seconds)}.${padNumber(milliseconds)}`;
+
+  return humanReadable;
+}
+
+function padNumber(num: number): string {
+  if (num < 10) {
+    return '0' + num;
+  } else {
+    return num + '';
+  }
 }
 
 function isMultipleOfTick(time: string) {

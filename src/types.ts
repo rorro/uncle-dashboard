@@ -214,3 +214,7 @@ export enum ToastType {
   Error = 1,
   Success = 2
 }
+
+export interface LeaderboardRecord {
+  [key: number]: [number];
+}

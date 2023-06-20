@@ -191,6 +191,7 @@ function Preview({ embed, content, date }: PreviewProps) {
                 {image?.url && (
                   <div className="imageWrapper embedMedia embedImage">
                     <img className="img embedImageLink" alt=" " src={image.url} />
+
                     <div className="error">
                       <FontAwesomeIcon icon={faLinkSlash} id="imageIcon" />
                       <label htmlFor="imageIcon"> Broken Image Link</label>
@@ -198,7 +199,7 @@ function Preview({ embed, content, date }: PreviewProps) {
                   </div>
                 )}
                 {thumbnail?.url && (
-                  <div className="imageWrapper embedThumbnail">
+                  <div className="imageWrapper embedMedia embedThumbnail">
                     <img className="img embedThumbnailLink" alt=" " src={thumbnail.url} />
                     <div className="error">
                       <FontAwesomeIcon icon={faLinkSlash} id="thumbnailIcon" />

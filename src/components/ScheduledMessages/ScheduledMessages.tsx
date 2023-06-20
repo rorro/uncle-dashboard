@@ -404,7 +404,9 @@ function ScheduledMessages({
                     <span>Delete</span>
                   </button>
                 </GUI>
-                <EmbedPreview embed={embed} content={content} date={date} />
+                <div className="float-right">
+                  <EmbedPreview embed={embed} content={content} date={date} />
+                </div>
               </Collapsible>
             </div>
           );

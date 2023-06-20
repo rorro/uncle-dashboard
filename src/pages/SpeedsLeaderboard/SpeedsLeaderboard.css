@@ -1,3 +1,13 @@
+.boss-wrapper {
+  float: left;
+  width: 50%;
+}
+
+.speed-preview {
+  width: 49%;
+  float: right;
+}
+
 .speed-username {
   border-top-left-radius: 0.2em;
   border-bottom-left-radius: 0.2em;
