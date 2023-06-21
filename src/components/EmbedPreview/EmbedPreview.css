@@ -467,15 +467,6 @@ blockquote {
   height: auto;
 }
 
-.error {
-  color: rgb(211, 43, 43);
-  display: none;
-}
-
-.imageWrapper:not(.embedMedia) .error {
-  display: block;
-}
-
 .embedFooter {
   display: flex;
   align-items: center;
