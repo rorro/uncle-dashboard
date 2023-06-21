@@ -113,3 +113,13 @@
 #readd-player:active {
   color: #04774d;
 }
+
+@media (max-width: 800px) {
+  .speed-preview {
+    display: none;
+  }
+
+  .boss-wrapper {
+    width: 100%;
+  }
+}
