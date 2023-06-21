@@ -5,18 +5,29 @@ import { LeaderboardBoss, SpeedsLeaderboardEntry } from '../../types';
 import TimeEntry from './TimeEntry';
 import Category from './Category';
 import Collapsible from '../../components/Collapsible';
+import EmbedPreview from '../../components/EmbedPreview';
 
 interface IProps {
   boss: LeaderboardBoss;
   data: SpeedsLeaderboardEntry[];
   saved: boolean;
+  previewContent: string;
   addTime: (boss: LeaderboardBoss, category: string | null) => void;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleRemove: (id: number, hardDelete: boolean) => void;
   handleUpdate: (boss: LeaderboardBoss) => void;
 }
 
-function BossLine({ boss, data, saved, addTime, handleChange, handleRemove, handleUpdate }: IProps) {
+function BossLine({
+  boss,
+  data,
+  saved,
+  previewContent,
+  addTime,
+  handleChange,
+  handleRemove,
+  handleUpdate
+}: IProps) {
   return (
     <Collapsible title={`${boss.emoji} ${boss.boss}`}>
       <div className="boss-wrapper">
@@ -70,6 +81,9 @@ function BossLine({ boss, data, saved, addTime, handleChange, handleRemove, hand
             handleRemove={handleRemove}
           />
         )}
+      </div>
+      <div className="speed-preview">
+        <EmbedPreview embed={{}} content={previewContent} />
       </div>
     </Collapsible>
   );

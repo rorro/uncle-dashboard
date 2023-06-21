@@ -6,6 +6,7 @@ import BossLine from './BossLine';
 import { getStorage } from '../../utils/storage';
 import sendToast from '../../utils/toast';
 import { findNextMultiple } from '../../utils/preciseTimes';
+import { buildBoardMessage } from '../../utils/topThreeLeaderboard';
 
 function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLeaderboardEntry[] }) {
   const ALL_ZERO = '00:00:00.00';
@@ -189,8 +190,12 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
               boss={b}
               data={leaderboard.filter(e => e.boss === b.boss)}
               saved={!boardChanged}
-              addTime={addTime}
+              previewContent={buildBoardMessage(
+                b,
+                leaderboard.filter(e => e.boss === b.boss && !e.removed)
+              )}
               key={b.boss}
+              addTime={addTime}
               handleChange={handleChange}
               handleRemove={handleRemove}
               handleUpdate={handleUpdate}

@@ -1,7 +1,8 @@
 import { SyntheticEvent } from 'react';
+import BrokenLink from '../broken-link.svg';
 
 function handleIconError(e: SyntheticEvent<HTMLImageElement>) {
-  e.currentTarget.src = 'https://i.imgur.com/F0yt4Gr.png';
+  e.currentTarget.src = BrokenLink;
 }
 
 export { handleIconError };

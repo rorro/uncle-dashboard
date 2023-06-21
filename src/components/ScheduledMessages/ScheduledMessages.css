@@ -8,14 +8,6 @@
   float: left;
 }
 
-.preview {
-  width: 60%;
-  font-family: DsWhitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: var(--fullEmbedBackground);
-  float: right;
-  margin-bottom: 10px;
-}
-
 .icon {
   position: absolute;
   margin: 5px 0 0 -18px;
@@ -114,4 +106,9 @@
   border-color: #36393f;
   border-style: solid;
   margin: 0 0 2px 0;
+}
+
+.float-right {
+  float: right;
+  width: 60%;
 }

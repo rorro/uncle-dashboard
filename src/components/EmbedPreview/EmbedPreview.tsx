@@ -1,5 +1,3 @@
-import { faLinkSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APIEmbed } from 'discord.js';
 import './EmbedPreview.css';
 import logo from '../../uncle.png';
@@ -190,20 +188,22 @@ function Preview({ embed, content, date }: PreviewProps) {
                 )}
                 {image?.url && (
                   <div className="imageWrapper embedMedia embedImage">
-                    <img className="img embedImageLink" alt=" " src={image.url} />
-                    <div className="error">
-                      <FontAwesomeIcon icon={faLinkSlash} id="imageIcon" />
-                      <label htmlFor="imageIcon"> Broken Image Link</label>
-                    </div>
+                    <img
+                      className="img embedImageLink"
+                      alt=" "
+                      src={image.url}
+                      onError={handleIconError}
+                    />
                   </div>
                 )}
                 {thumbnail?.url && (
-                  <div className="imageWrapper embedThumbnail">
-                    <img className="img embedThumbnailLink" alt=" " src={thumbnail.url} />
-                    <div className="error">
-                      <FontAwesomeIcon icon={faLinkSlash} id="thumbnailIcon" />
-                      <label htmlFor="thumbnailIcon"> Broken Thumbnail Link</label>
-                    </div>
+                  <div className="imageWrapper embedMedia embedThumbnail">
+                    <img
+                      className="img embedThumbnailLink"
+                      alt=" "
+                      src={thumbnail.url}
+                      onError={handleIconError}
+                    />
                   </div>
                 )}
 

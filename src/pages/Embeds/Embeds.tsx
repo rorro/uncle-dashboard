@@ -221,7 +221,9 @@ function Embeds({ embeds }: { embeds: EmbedConfigs }) {
                 handleChange={handleChange}
                 handleColorPicked={handleColorPicked}
               ></GUI>
-              <EmbedPreview content={content} embed={embed} />
+              <div className="float-right">
+                <EmbedPreview content={content} embed={embed} />
+              </div>
             </Collapsible>
           </div>
         );
