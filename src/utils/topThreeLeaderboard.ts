@@ -2,7 +2,7 @@ import { LeaderboardBoss, LeaderboardRecord, SpeedsLeaderboardEntry } from '../t
 import { timeInHumanReadable, timeInMilliseconds } from './preciseTimes';
 
 export function buildBoardMessage(boss: LeaderboardBoss, entries: SpeedsLeaderboardEntry[]): string {
-  let message = `${boss.emoji} ${boss.boss} ${boss.emoji}\n\`\`\`ini\n`;
+  let message = `${boss.emoji} ${boss.boss} ${boss.emoji.split(' ').reverse().join(' ')}\n\`\`\`ini\n`;
 
   if (!boss.categories) {
     if (!entries.length) {

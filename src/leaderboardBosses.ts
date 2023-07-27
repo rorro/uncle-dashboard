@@ -103,6 +103,12 @@ const LeaderboardBosses: LeaderboardBoss[] = [
   {
     boss: 'The Mimic',
     emoji: '<:mimic:1004376448842342420>'
+  },
+  {
+    boss: 'DT2 - The Fallen Empire',
+    emoji:
+      '<:succ:1134015341408829480> <:vard:1134015332059709450> <:lev:1134015335914279005> <:wisp:1134015334525972510>',
+    categories: ['Duke Sucellus', 'Vardorvis', 'The Leviathan', 'The Whisperer']
   }
 ];
 
