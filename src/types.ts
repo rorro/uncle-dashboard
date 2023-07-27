@@ -144,12 +144,15 @@ export interface PetLeaderboardEntry {
   abyssal_sire: number;
   giant_mole: number;
   callisto: number;
+  duke_sucellus: number;
+  vardorvis: number;
   cerberus: number;
   alchemical_hydra: number;
   tzkal_zuk: number;
   kalphite_queen: number;
   theatre_of_blood: number;
   phantom_muspah: number;
+  the_leviathan: number;
   nightmare: number;
   nex: number;
   grotesque_guardians: number;
@@ -175,6 +178,7 @@ export interface PetLeaderboardEntry {
   venenatis: number;
   vetion: number;
   vorkath: number;
+  the_whisperer: number;
   chinchompa: number;
   beaver: number;
   giant_squirrel: number;

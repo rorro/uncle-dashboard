@@ -56,7 +56,7 @@ function PetRow({ player, handleChange, handleRemove }: IProps) {
                 type="checkbox"
                 className="checkbox"
                 name={`${player.id}:${k}`}
-                defaultChecked={!!player[k as keyof PetLeaderboardEntry]}
+                defaultChecked={!!player[kType]}
                 onChange={e => handleChange(e)}
               />
             )}
