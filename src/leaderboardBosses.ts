@@ -43,9 +43,8 @@ const LeaderboardBosses: LeaderboardBoss[] = [
     categories: ['Duo', 'Trio', '5 Man', '8 Man']
   },
   {
-    boss: 'Tombs of Amascut: 500 Invocation',
-    emoji: '<:toae:1020399804918014003>',
-    categories: ['Solo', 'Duo', 'Trio']
+    boss: 'Tombs of Amascut: Solo 500 Invocation',
+    emoji: '<:toae:1020399804918014003>'
   },
   {
     boss: 'Gauntlet',
@@ -78,7 +77,7 @@ const LeaderboardBosses: LeaderboardBoss[] = [
   {
     boss: 'Nightmare of Ashihama',
     emoji: '<:nightmare:983752799533826098>',
-    categories: ['Solo', '5 Man', 'All-Legacy Mass']
+    categories: ['Solo', '5 Man']
   },
   {
     boss: `Phosani's Nightmare`,
