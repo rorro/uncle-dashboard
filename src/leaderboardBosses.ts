@@ -40,7 +40,7 @@ const LeaderboardBosses: LeaderboardBoss[] = [
   {
     boss: 'Tombs of Amascut: Expert (Teams)',
     emoji: '<:toae:1020399804918014003>',
-    categories: ['Duo', 'Trio', '5 Man', '8 Man']
+    categories: ['Duo', 'Trio', '4 Man', '5 Man', '8 Man']
   },
   {
     boss: 'Tombs of Amascut: Solo 500 Invocation',
