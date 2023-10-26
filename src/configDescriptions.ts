@@ -35,6 +35,11 @@ const ConfigDescriptions: ConfigDescription = {
   welcome_pm_message: {
     name: 'Welcome PM',
     description: `This is the welcome message the bot sends to the new member. A diary sheet link will be linked at the end of this message.`
+  },
+  inactivity_check_channel: {
+    name: 'Inactivity Check Channel',
+    description:
+      '30 days after someone has been accepted to the clan an inactivity check message is sent to this channel.'
   }
 };
 export default ConfigDescriptions;

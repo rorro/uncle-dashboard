@@ -66,6 +66,7 @@ export interface ConfigEntry {
   leaderboard_channel: string | null;
   transcripts_channel: string | null;
   diary_top10_message: string | null;
+  inactivity_check_channel: string | null;
 }
 
 export interface DashboardData {
