@@ -151,9 +151,9 @@ export interface PetLeaderboardEntry {
   alchemical_hydra: number;
   tzkal_zuk: number;
   kalphite_queen: number;
-  theatre_of_blood: number;
   phantom_muspah: number;
   the_leviathan: number;
+  theatre_of_blood: number;
   nightmare: number;
   nex: number;
   grotesque_guardians: number;
@@ -170,16 +170,20 @@ export interface PetLeaderboardEntry {
   thermonuclear_smoke_devil: number;
   zulrah: number;
   commander_zilyana: number;
+  phoenix: number;
   king_black_dragon: number;
   scorpia: number;
   skotizo: number;
+  zalcano: number;
   sarachnis: number;
+  tempoross: number;
   tombs_of_amascut: number;
   tztok_jad: number;
   venenatis: number;
   vetion: number;
   vorkath: number;
   the_whisperer: number;
+  gauntlet: number;
   chinchompa: number;
   beaver: number;
   giant_squirrel: number;
@@ -188,16 +192,12 @@ export interface PetLeaderboardEntry {
   rock_golem: number;
   rocky: number;
   tangleroot: number;
+  abyssal_protector: number;
   bloodhound: number;
   chompy_chick: number;
   herbiboar: number;
   lil_creator: number;
   penance_queen: number;
-  phoenix: number;
-  tempoross: number;
-  gauntlet: number;
-  zalcano: number;
-  abyssal_protector: number;
 }
 
 export interface SpeedsLeaderboardEntry {
