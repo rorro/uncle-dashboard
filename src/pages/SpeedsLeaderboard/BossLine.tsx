@@ -6,12 +6,13 @@ import TimeEntry from './TimeEntry';
 import Category from './Category';
 import Collapsible from '../../components/Collapsible';
 import EmbedPreview from '../../components/EmbedPreview';
+import { APIEmbed } from 'discord.js';
 
 interface IProps {
   boss: LeaderboardBoss;
   data: SpeedsLeaderboardEntry[];
   saved: boolean;
-  previewContent: string;
+  previewContent: APIEmbed;
   addTime: (boss: LeaderboardBoss, category: string | null) => void;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleRemove: (id: number, hardDelete: boolean) => void;
@@ -83,7 +84,7 @@ function BossLine({
         )}
       </div>
       <div className="speed-preview">
-        <EmbedPreview embed={{}} content={previewContent} />
+        <EmbedPreview embed={previewContent} content={''} />
       </div>
     </Collapsible>
   );

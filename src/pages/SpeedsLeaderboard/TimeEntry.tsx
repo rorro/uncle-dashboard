@@ -43,6 +43,14 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
         name={`${entry.id}:time`}
         onChange={e => handleChange(e)}
       />
+      <input
+        className="speed-proof"
+        type="text"
+        defaultValue={entry.proof ? entry.proof : ''}
+        placeholder="Proof"
+        name={`${entry.id}:proof`}
+        onChange={e => handleChange(e)}
+      />
     </div>
   );
 }

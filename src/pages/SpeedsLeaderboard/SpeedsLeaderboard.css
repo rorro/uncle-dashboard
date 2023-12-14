@@ -20,8 +20,6 @@
 }
 
 .speed-time {
-  border-top-right-radius: 0.2em;
-  border-bottom-right-radius: 0.2em;
   background: 0 0;
   padding: 0.2em;
   border: 1px #2f2f2f solid;
@@ -30,11 +28,26 @@
   width: 70px;
 }
 
+.speed-proof {
+  border-top-right-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+  background: 0 0;
+  padding: 0.2em;
+  border: 1px #2f2f2f solid;
+  border-left: none;
+  color: #ffffff;
+  width: 100px;
+}
+
 .speed-username:focus {
   outline: none;
 }
 
 .speed-time:focus {
+  outline: none;
+}
+
+.speed-proof:focus {
   outline: none;
 }
 

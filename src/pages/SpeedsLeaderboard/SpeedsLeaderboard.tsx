@@ -39,6 +39,7 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
       boss: boss.boss,
       category: category,
       time: '',
+      proof: '',
       removed: 0
     };
 

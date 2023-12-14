@@ -206,6 +206,7 @@ export interface SpeedsLeaderboardEntry {
   boss: string;
   category: string | null;
   time: string;
+  proof: string | null;
   removed: number;
 }
 

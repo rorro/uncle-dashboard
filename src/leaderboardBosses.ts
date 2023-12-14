@@ -2,22 +2,14 @@ import { LeaderboardBoss } from './types';
 
 const LeaderboardBosses: LeaderboardBoss[] = [
   {
-    boss: 'Chambers of Xeric (Solo)',
-    emoji: '<:olm:983752795159162901>'
-  },
-  {
-    boss: 'Chambers of Xeric (Teams)',
+    boss: 'Chambers of Xeric',
     emoji: '<:olm:983752795159162901>',
-    categories: ['Duo', 'Trio', '5 Man', '7 Man']
+    categories: ['Solo', 'Duo', 'Trio', '5 Man', '7 Man']
   },
   {
-    boss: 'Chambers of Xeric: Challenge Mode (Solo)',
-    emoji: '<:cmdust:988539525263417394>'
-  },
-  {
-    boss: 'Chambers of Xeric: Challenge Mode (Teams)',
+    boss: 'Chambers of Xeric: Challenge Mode',
     emoji: '<:cmdust:988539525263417394>',
-    categories: ['Trio', '5 Man', '7 Man']
+    categories: ['Solo', 'Duo', 'Trio', '5 Man', '7 Man']
   },
   {
     boss: 'Theatre of Blood: Normal Mode',
@@ -34,17 +26,9 @@ const LeaderboardBosses: LeaderboardBoss[] = [
     emoji: '<:toan:1020399806587355276>'
   },
   {
-    boss: 'Tombs of Amascut: Expert (Solo)',
-    emoji: '<:toae:1020399804918014003>'
-  },
-  {
-    boss: 'Tombs of Amascut: Expert (Teams)',
+    boss: 'Tombs of Amascut: Expert',
     emoji: '<:toae:1020399804918014003>',
-    categories: ['Duo', 'Trio', '4 Man', '5 Man', '8 Man']
-  },
-  {
-    boss: 'Tombs of Amascut: Solo 500 Invocation',
-    emoji: '<:toae:1020399804918014003>'
+    categories: ['Solo', 'Solo 500 Invocation', 'Duo', 'Trio', '4 Man', '5 Man', '8 Man']
   },
   {
     boss: 'Gauntlet',
@@ -63,12 +47,9 @@ const LeaderboardBosses: LeaderboardBoss[] = [
     emoji: '<:vorkath:983752768533721088>'
   },
   {
-    boss: 'Jad (On task)',
-    emoji: '<:jad:983752772270837760>'
-  },
-  {
-    boss: 'Jad (Off task)',
-    emoji: '<:jad:983752772270837760>'
+    boss: 'Jad',
+    emoji: '<:jad:983752772270837760>',
+    categories: ['On task', 'Off task']
   },
   {
     boss: 'Zuk',
@@ -104,19 +85,24 @@ const LeaderboardBosses: LeaderboardBoss[] = [
     emoji: '<:mimic:1004376448842342420>'
   },
   {
-    boss: 'DT2 - The Fallen Empire',
-    emoji:
-      '<:succ:1134015341408829480> <:vard:1134015332059709450> <:lev:1134015335914279005> <:wisp:1134015334525972510>',
-    categories: [
-      'Duke Sucellus',
-      'Vardorvis',
-      'The Leviathan',
-      'The Whisperer',
-      'Awakened Duke Sucellus',
-      `Awakened Vardorvis`,
-      'Awakened Leviathan',
-      'Awakened Whisperer'
-    ]
+    boss: 'Duke Sucellus',
+    emoji: '<:succ:1134015341408829480>',
+    categories: ['Normal', 'Awakened']
+  },
+  {
+    boss: 'Vardorvis',
+    emoji: '<:vard:1134015332059709450>',
+    categories: ['Normal', 'Awakened']
+  },
+  {
+    boss: 'The Leviathan',
+    emoji: '<:lev:1134015335914279005>',
+    categories: ['Normal', 'Awakened']
+  },
+  {
+    boss: 'The Whisperer',
+    emoji: '<:wisp:1134015334525972510>',
+    categories: ['Normal', 'Awakened']
   }
 ];
 
