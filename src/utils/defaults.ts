@@ -32,6 +32,7 @@ export const defaultPetLeaderboardEntry = {
   phoenix: 0,
   king_black_dragon: 0,
   scorpia: 0,
+  scurrius: 0,
   skotizo: 0,
   zalcano: 0,
   sarachnis: 0,
