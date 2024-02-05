@@ -224,3 +224,21 @@ export enum ToastType {
 export interface LeaderboardRecord {
   [key: number]: [number];
 }
+
+export interface BoardInterface {
+  name: string[] | null;
+  time: number | null;
+  category?: string;
+}
+
+export interface AllTopInterface {
+  [key: string]: BoardInterface[];
+}
+
+export interface BoardUpdates {
+  [key: string]: {
+    fellOff: string[];
+    newEntry: string[];
+    improved: string[];
+  };
+}
