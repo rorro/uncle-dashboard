@@ -199,7 +199,6 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
   }
 
   async function handlePostChangelog() {
-    console.log('posting board updates');
     const token = getStorage('access_token');
 
     await fetch(
