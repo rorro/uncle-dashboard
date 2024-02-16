@@ -40,6 +40,10 @@ const ConfigDescriptions: ConfigDescription = {
     name: 'Inactivity Check Channel',
     description:
       '30 days after someone has been accepted to the clan an inactivity check message is sent to this channel.'
+  },
+  logs_channel: {
+    name: 'Logs Channel',
+    description: 'Any logs will be sent here as messages.'
   }
 };
 export default ConfigDescriptions;
