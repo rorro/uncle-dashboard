@@ -35,6 +35,7 @@ export const defaultPetLeaderboardEntry = {
   scurrius: 0,
   skotizo: 0,
   zalcano: 0,
+  sol_heredit: 0,
   sarachnis: 0,
   tempoross: 0,
   tombs_of_amascut: 0,
@@ -57,5 +58,6 @@ export const defaultPetLeaderboardEntry = {
   chompy_chick: 0,
   herbiboar: 0,
   lil_creator: 0,
-  penance_queen: 0
+  penance_queen: 0,
+  quetzin: 0
 };
