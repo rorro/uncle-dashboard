@@ -175,6 +175,7 @@ export interface PetLeaderboardEntry {
   scorpia: number;
   skotizo: number;
   zalcano: number;
+  sol_heredit: number;
   sarachnis: number;
   tempoross: number;
   tombs_of_amascut: number;
@@ -198,6 +199,7 @@ export interface PetLeaderboardEntry {
   herbiboar: number;
   lil_creator: number;
   penance_queen: number;
+  quetzin: number;
 }
 
 export interface SpeedsLeaderboardEntry {
