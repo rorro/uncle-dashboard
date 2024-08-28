@@ -2,7 +2,7 @@
 
 ## **Uncle Dashboard**
 
-![Uncle](https://i.imgur.com/x9I9NPY.png)
+![Uncle](https://imgur.com/Ovj9FtF.png)
 
 This is a Discord bot dashboard for [Uncle](https://github.com/rorro/uncle).
 

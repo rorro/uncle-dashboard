@@ -107,6 +107,10 @@ const LeaderboardBosses: LeaderboardBoss[] = [
     boss: 'The Whisperer',
     emoji: '<:wisp:1134015334525972510>',
     categories: ['Normal', 'Awakened']
+  },
+  {
+    boss: 'Araxxor',
+    emoji: '<:nid:1278463230922068018>'
   }
 ];
 
