@@ -150,8 +150,8 @@ export interface PetLeaderboardEntry {
   commander_zilyana: number;
   corporeal_beast: number;
   dagannoth_prime: number;
-  dagannoth_rex: number;
   dagannoth_supreme: number;
+  dagannoth_rex: number;
   tztok_jad: number;
   general_graardor: number;
   giant_mole: number;
