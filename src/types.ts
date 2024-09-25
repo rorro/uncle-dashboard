@@ -202,6 +202,8 @@ export interface PetLeaderboardEntry {
   sol_heredit: number;
   quetzin: number;
   araxxor: number;
+  the_hueycoatl: number;
+  amoxliatl: number;
 }
 
 export interface SpeedsLeaderboardEntry {

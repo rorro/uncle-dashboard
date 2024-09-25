@@ -60,5 +60,7 @@ export const defaultPetLeaderboardEntry = {
   scurrius: 0,
   sol_heredit: 0,
   quetzin: 0,
-  araxxor: 0
+  araxxor: 0,
+  the_hueycoatl: 0,
+  amoxliatl: 0
 };
