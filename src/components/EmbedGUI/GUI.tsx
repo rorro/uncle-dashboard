@@ -52,6 +52,7 @@ function GUI({
         <FontAwesomeIcon icon={faImage} className="icon" />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.author?.icon_url}
           placeholder={`Icon URL`}
@@ -60,6 +61,7 @@ function GUI({
         />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.author?.name}
           placeholder={'Author name'}
@@ -72,6 +74,7 @@ function GUI({
       <Collapsible title={'Title'}>
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.title}
           placeholder={'Title'}
@@ -85,6 +88,7 @@ function GUI({
         <FontAwesomeIcon icon={faLink} className="icon" />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.url}
           placeholder={'URL'}
@@ -131,6 +135,7 @@ function GUI({
         <FontAwesomeIcon icon={faImage} className="icon" />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.thumbnail?.url}
           placeholder={'Thumbnail URL'}
@@ -143,6 +148,7 @@ function GUI({
         <FontAwesomeIcon icon={faImage} className="icon" />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.image?.url}
           placeholder={'Image URL'}
@@ -155,6 +161,7 @@ function GUI({
         <FontAwesomeIcon icon={faImage} className="icon" />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.footer?.icon_url}
           placeholder={`Icon URL`}
@@ -163,6 +170,7 @@ function GUI({
         />
         <input
           type="text"
+          autoComplete="off"
           className="input"
           defaultValue={embed.footer?.text}
           placeholder={'Footer text'}

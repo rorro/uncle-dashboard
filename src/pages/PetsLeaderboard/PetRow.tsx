@@ -36,6 +36,7 @@ function PetRow({ player, handleChange, handleRemove }: IProps) {
                 </button>
                 <input
                   type="text"
+                  autoComplete="off"
                   className="input username"
                   value={player.username}
                   placeholder={'Username'}

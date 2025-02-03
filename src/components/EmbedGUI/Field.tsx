@@ -15,6 +15,7 @@ function Field({ field, messageId, handleRemoveField, handleChangeField }: IProp
     <div className="field">
       <input
         type="text"
+        autoComplete="off"
         className="input"
         defaultValue={field.name.toString()}
         placeholder={'Field name'}

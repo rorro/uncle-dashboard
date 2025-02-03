@@ -258,6 +258,7 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
           <input
             id="precise-time-input"
             type="text"
+            autoComplete="off"
             placeholder="Time"
             onChange={e => convertToPrecice(e)}
           />

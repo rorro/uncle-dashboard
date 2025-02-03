@@ -30,6 +30,7 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
       <input
         className="speed-username"
         type="text"
+        autoComplete="off"
         defaultValue={entry.username}
         placeholder="Username"
         name={`${entry.id}:username`}
@@ -38,6 +39,7 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
       <input
         className="speed-time"
         type="text"
+        autoComplete="off"
         defaultValue={entry.time}
         placeholder="Time"
         name={`${entry.id}:time`}
@@ -46,6 +48,7 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
       <input
         className="speed-proof"
         type="text"
+        autoComplete="off"
         defaultValue={entry.proof ? entry.proof : ''}
         placeholder="Proof"
         name={`${entry.id}:proof`}
