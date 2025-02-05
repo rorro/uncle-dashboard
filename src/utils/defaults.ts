@@ -62,5 +62,6 @@ export const defaultPetLeaderboardEntry = {
   quetzin: 0,
   araxxor: 0,
   the_hueycoatl: 0,
-  amoxliatl: 0
+  amoxliatl: 0,
+  the_royal_titans: 0
 };

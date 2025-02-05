@@ -204,6 +204,7 @@ export interface PetLeaderboardEntry {
   araxxor: number;
   the_hueycoatl: number;
   amoxliatl: number;
+  the_royal_titans: number;
 }
 
 export interface SpeedsLeaderboardEntry {
