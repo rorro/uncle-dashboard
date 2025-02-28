@@ -7,43 +7,17 @@
 
 .save_btn {
   display: inline-block;
-  border-radius: 4px;
+  color: white;
+  background-color: #04AA6D;
   border: none;
-  color: #ffffff;
-  text-align: center;
-  font-size: 1.3em;
-  width: 5em;
-  height: 2.5em;
+  border-radius: 2px;
+  text-decoration: none;
+  padding: 5px 10px;
   cursor: pointer;
-  margin: 5px;
-  font-weight: bold;
-  pointer-events: none;
-  background-color: #444444;
 }
 
-.save_btn span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.2s;
-}
-
-.save_btn span:after {
-  content: '\1F4BE';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -1em;
-  transition: 0.2s;
-}
-
-.save_btn:hover span {
-  padding-right: 1.5em;
-}
-
-.save_btn:hover span:after {
-  opacity: 1;
-  right: 0;
+.save_btn:hover {
+  background-color: #33a87d;
 }
 
 .item_box {
