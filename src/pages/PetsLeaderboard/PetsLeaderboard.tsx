@@ -10,11 +10,35 @@ import { getStorage } from '../../utils/storage';
 import sendToast from '../../utils/toast';
 import Pets from '../../pets';
 
-function PetsLeaderboard({ petsLeaderboard }: { petsLeaderboard: PetLeaderboardEntry[] }) {
-  const [leaderboard, setLeaderboard] = useState<PetLeaderboardEntry[]>(petsLeaderboard);
-  const [previousLeaderboard, setPreviousLeaderboard] = useState<PetLeaderboardEntry[]>(petsLeaderboard);
+function PetsLeaderboard() {
+  const [leaderboard, setLeaderboard] = useState<PetLeaderboardEntry[]>([]);
+  const [previousLeaderboard, setPreviousLeaderboard] = useState<PetLeaderboardEntry[]>([]);
   const [boardChanged, setboardChanged] = useState<boolean>(false);
+  const [hardDeleted, setHardDeleted] = useState<number[]>([]);
   const removedPets = leaderboard.filter(p => p.removed);
+
+  async function getPetsLeaderboard() {
+    const petsLeaderboardBoardUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/petsleaderboard`;
+    const token = getStorage('access_token');
+    await fetch(`${petsLeaderboardBoardUrl}?accessToken=${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then((data: PetLeaderboardEntry[]) => {
+        setLeaderboard(data);
+        setPreviousLeaderboard(data);
+      });
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getPetsLeaderboard();
+    };
+    fetchData();
+  }, []);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const [id, metric] = e.currentTarget.name.split(':');
@@ -48,8 +72,9 @@ function PetsLeaderboard({ petsLeaderboard }: { petsLeaderboard: PetLeaderboardE
     let i = leaderboard.findIndex((player: PetLeaderboardEntry) => player.id === playerId);
     if (i === -1) return;
 
-    const tempBoard = [...leaderboard];
+    const tempBoard = JSON.parse(JSON.stringify(leaderboard)) as PetLeaderboardEntry[];
     if (hardDelete) {
+      if (Number.isInteger(tempBoard[i].id)) setHardDeleted([...hardDeleted, tempBoard[i].id]);
       tempBoard.splice(i, 1);
     } else {
       const updatedObject = Object.assign({}, leaderboard[i], {
@@ -71,16 +96,29 @@ function PetsLeaderboard({ petsLeaderboard }: { petsLeaderboard: PetLeaderboardE
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(leaderboard)
+        body: JSON.stringify({ changes: leaderboard, deletions: hardDeleted })
       }
     )
       .then(response => response.json())
-      .then((data: { message: string }) => {
+      .then((data: { message: string; ids?: { oldId: number; newId: number }[] }) => {
         if (!data.message.toLowerCase().includes('success')) {
           sendToast(data.message, ToastType.Error);
           return;
         } else {
-          setPreviousLeaderboard(leaderboard);
+          if (data.ids) {
+            // New players were added to the leaderboard.
+            const tempPetsLeaderboard = JSON.parse(JSON.stringify(leaderboard)) as PetLeaderboardEntry[];
+            data.ids.forEach(idUpdate => {
+              const entryIndex = tempPetsLeaderboard.findIndex(entry => entry.id === idUpdate.oldId);
+              tempPetsLeaderboard[entryIndex].id = idUpdate.newId;
+            });
+
+            setLeaderboard(tempPetsLeaderboard);
+            setPreviousLeaderboard(tempPetsLeaderboard);
+          } else {
+            setPreviousLeaderboard(leaderboard);
+          }
+          setHardDeleted([]);
           sendToast(data.message, ToastType.Success);
           return;
         }

@@ -38,35 +38,20 @@ function Dashboard() {
   };
 
   const showData = (selectedOption: string): JSX.Element | undefined => {
+    if (!data) return <p>Please log in to access the dashboard.</p>;
     switch (selectedOption) {
-      case 'messages':
-        return data ? <MessagesTable messages={data.messages} /> : <p>You need to log in</p>;
       case 'config':
-        return data && data.configs ? (
-          <Config data={data.configs} guildChannels={data.guildChannels} />
-        ) : (
-          <p>Please log in to access the dashboard.</p>
-        );
+        return <Config guildChannels={data.guildChannels} />;
+      case 'messages':
+        return <MessagesTable />;
       case 'scheduled_messages':
-        return data && data.scheduledMessages ? (
-          <ScheduledMessages
-            scheduledMessages={data.scheduledMessages}
-            guildChannels={data.guildChannels}
-          />
-        ) : (
-          <p>No sheduled messages here</p>
-        );
+        return <ScheduledMessages guildChannels={data.guildChannels} />;
       case 'embeds':
-        return data && <Embeds embeds={data.embedConfigs} />;
+        return <Embeds />;
       case 'pets_leaderboard':
-        return (
-          data && data.petsLeaderboard && <PetsLeaderboard petsLeaderboard={data.petsLeaderboard} />
-        );
+        return <PetsLeaderboard />;
       case 'speeds_leaderboard':
-        return (
-          data &&
-          data.speedsLeaderboard && <SpeedsLeaderboard speedsLeaderboard={data.speedsLeaderboard} />
-        );
+        return <SpeedsLeaderboard />;
     }
   };
 

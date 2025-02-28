@@ -75,74 +75,70 @@ export function buildBoardMessage(boss: LeaderboardBoss, entries: SpeedsLeaderbo
   return embed;
 }
 
-export function getTopThree(data: SpeedsLeaderboardEntry[]) {
+export function getTopThree(boss: LeaderboardBoss, data: SpeedsLeaderboardEntry[]) {
   const topThree: AllTopInterface = {};
 
-  for (const boss of LeaderboardBosses) {
-    const bossTop3: BoardInterface[] = [];
-    const entries = data.filter(e => e.boss === boss.boss && !e.removed);
-    if (!boss.categories) {
-      if (!entries.length) {
-        for (let i = 0; i < 3; i++) {
-          bossTop3.push({ name: null, time: null });
-        }
-      } else {
-        const { values, indexes, top } = getTopSpeedIndexes(entries, 3);
-
-        for (let i = 0; i < 3; i++) {
-          if (top[i] === undefined) {
-            bossTop3.push({ name: null, time: null });
-          } else {
-            for (let j in indexes[top[i]]) {
-              const index = indexes[top[i]][j];
-              const leaderboardEntry = values[index];
-
-              const onBoard = bossTop3.findIndex(e => e.time === top[i]);
-              if (onBoard !== -1) {
-                bossTop3[onBoard].name?.push(leaderboardEntry.name);
-              } else {
-                bossTop3.push({ name: [leaderboardEntry.name], time: top[i] });
-              }
-            }
-          }
-        }
+  const bossTop3: BoardInterface[] = [];
+  const entries = data.filter(e => e.boss === boss.boss && !e.removed);
+  if (!boss.categories) {
+    if (!entries.length) {
+      for (let i = 0; i < 3; i++) {
+        topThree[boss.boss].push({ name: null, time: null });
       }
     } else {
-      for (const category of boss.categories) {
-        const categoryBoard = entries.filter(c => c.category === category && !c.removed);
+      const { values, indexes, top } = getTopSpeedIndexes(entries, 3);
 
-        if (!categoryBoard.length) {
-          for (let i = 0; i < 3; i++) {
-            bossTop3.push({ name: null, time: null, category: category });
-          }
-          continue;
-        }
+      for (let i = 0; i < 3; i++) {
+        if (top[i] === undefined) {
+          topThree[boss.boss].push({ name: null, time: null });
+        } else {
+          for (let j in indexes[top[i]]) {
+            const index = indexes[top[i]][j];
+            const leaderboardEntry = values[index];
 
-        const { values, indexes, top } = getTopSpeedIndexes(categoryBoard, 3);
-
-        for (let i = 0; i < 3; i++) {
-          if (top[i] === undefined) {
-            bossTop3.push({ name: null, time: null, category: category });
-          } else {
-            for (let j in indexes[top[i]]) {
-              const index = indexes[top[i]][j];
-              const leaderboardEntry = values[index];
-
-              const onBoard = bossTop3.findIndex(e => e.time === top[i]);
-              if (onBoard !== -1) {
-                bossTop3[onBoard].name?.push(leaderboardEntry.name);
-              } else {
-                bossTop3.push({ name: [leaderboardEntry.name], time: top[i], category: category });
-              }
+            const onBoard = bossTop3.findIndex(e => e.time === top[i]);
+            if (onBoard !== -1) {
+              bossTop3[onBoard].name?.push(leaderboardEntry.name);
+            } else {
+              bossTop3.push({ name: [leaderboardEntry.name], time: top[i] });
             }
           }
         }
       }
     }
-    topThree[boss.boss] = bossTop3;
-  }
+  } else {
+    for (const category of boss.categories) {
+      const categoryBoard = entries.filter(c => c.category === category && !c.removed);
 
-  return topThree;
+      if (!categoryBoard.length) {
+        for (let i = 0; i < 3; i++) {
+          bossTop3.push({ name: null, time: null, category: category });
+        }
+        continue;
+      }
+
+      const { values, indexes, top } = getTopSpeedIndexes(categoryBoard, 3);
+
+      for (let i = 0; i < 3; i++) {
+        if (top[i] === undefined) {
+          bossTop3.push({ name: null, time: null, category: category });
+        } else {
+          for (let j in indexes[top[i]]) {
+            const index = indexes[top[i]][j];
+            const leaderboardEntry = values[index];
+
+            const onBoard = bossTop3.findIndex(e => e.time === top[i]);
+            if (onBoard !== -1) {
+              bossTop3[onBoard].name?.push(leaderboardEntry.name);
+            } else {
+              bossTop3.push({ name: [leaderboardEntry.name], time: top[i], category: category });
+            }
+          }
+        }
+      }
+    }
+  }
+  return bossTop3;
 }
 
 export function getTopSpeedIndexes(data: SpeedsLeaderboardEntry[], places: number) {

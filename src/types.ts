@@ -79,12 +79,6 @@ export interface DashboardData {
     iconURL: string;
   };
   guildChannels: GuildChannelEntry[];
-  messages: MessagesResponse[];
-  configs: ConfigEntry;
-  scheduledMessages: ScheduledMessageEntry[];
-  embedConfigs: EmbedConfigs;
-  petsLeaderboard: PetLeaderboardEntry[];
-  speedsLeaderboard: SpeedsLeaderboardEntry[];
 }
 
 export interface OptGroupType {
@@ -215,6 +209,14 @@ export interface SpeedsLeaderboardEntry {
   time: string;
   proof: string | null;
   removed: number;
+}
+
+export interface FetchedSpeedLeaderboard {
+  [key: string]: { board: SpeedsLeaderboardEntry[] };
+}
+
+export interface DeletedSpeedBoardEntry {
+  [key: string]: number[];
 }
 
 export interface LeaderboardBoss {
