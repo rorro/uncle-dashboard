@@ -21,13 +21,13 @@ import EmbedPreview from '../../components/EmbedPreview';
 function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLeaderboardEntry[] }) {
   const ALL_ZERO = '00:00:00.00';
 
-  const [leaderboard, setLeaderboard] = useState<SpeedsLeaderboardEntry[]>(speedsLeaderboard);
-  const [previousLeaderboard, setPreviousLeaderboard] =
-    useState<SpeedsLeaderboardEntry[]>(speedsLeaderboard);
+  const [leaderboard, setLeaderboard] = useState<SpeedsLeaderboardEntry[]>([]);
+  const [previousLeaderboard, setPreviousLeaderboard] = useState<SpeedsLeaderboardEntry[]>([]);
   const [boardChanged, setboardChanged] = useState<boolean>(false);
   const [correctFormat, setCorrectFormat] = useState<Record<number, boolean>>({});
   const [preciseTime, setPreciseTime] = useState<string>(ALL_ZERO);
   const [boardUpdates, setBoardUpdates] = useState<BoardUpdates>({});
+  const fetchedBoss: string[] = [];
 
   const timeRegex: RegExp = /^(?:(?:[1-9]\d*:)?(?:[0-5]?\d:[0-5]?\d\.\d{1,2})|(?:[0-5]?\d\.\d{1,2}))$/;
   const nonPreciseTimeRegex: RegExp = /^(?:(?:\d+):)?(?:[0-5]?\d:)?(?:[0-5]?\d)$/;
@@ -224,6 +224,25 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
       });
   }
 
+  async function getSpeedBoard(boss: LeaderboardBoss): Promise<void> {
+    console.log('here too?');
+
+    if (!fetchedBoss.includes(boss.boss)) {
+      const bossBoardUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/speedboard`;
+      const token = getStorage('access_token');
+      await fetch(`${bossBoardUrl}?accessToken=${token}&boss=${boss.boss}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then((data: SpeedsLeaderboardEntry[]) => {
+          setLeaderboard([...leaderboard, ...data]);
+        });
+    }
+  }
+
   useEffect(() => {
     const changed = JSON.stringify(leaderboard) !== JSON.stringify(previousLeaderboard);
 
@@ -250,7 +269,7 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
                 : { pointerEvents: 'none', backgroundColor: '#444444' }
             }
           >
-            <span>Post Updates</span>
+            <span>Post Changelog</span>
           </button>
         </div>
         <div className="precise-time">
@@ -282,6 +301,7 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
               handleChange={handleChange}
               handleRemove={handleRemove}
               handleUpdate={handleUpdate}
+              getSpeedBoard={getSpeedBoard}
             />
           );
         })}

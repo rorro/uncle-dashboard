@@ -17,6 +17,7 @@ interface IProps {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleRemove: (id: number, hardDelete: boolean) => void;
   handleUpdate: (boss: LeaderboardBoss) => void;
+  getSpeedBoard: (boss: LeaderboardBoss) => void;
 }
 
 function BossLine({
@@ -27,11 +28,19 @@ function BossLine({
   addTime,
   handleChange,
   handleRemove,
-  handleUpdate
+  handleUpdate,
+  getSpeedBoard
 }: IProps) {
   return (
-    <Collapsible title={`${boss.emoji} ${boss.boss}`}>
+    <Collapsible title={`${boss.emoji} ${boss.boss}`} boss={boss} fetchOnOpen={getSpeedBoard}>
       <div className="boss-wrapper">
+        <button
+          className="save-boss"
+          style={!saved ? {} : { pointerEvents: 'none', backgroundColor: '#444444' }}
+          onClick={() => console.log(`Saving the board: ${boss.boss}`)}
+        >
+          Save board
+        </button>
         <button
           className="update-boss"
           style={saved ? {} : { pointerEvents: 'none', backgroundColor: '#444444' }}

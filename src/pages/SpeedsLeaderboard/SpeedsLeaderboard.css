@@ -126,6 +126,19 @@
   margin-bottom: 10px;
 }
 
+.save-boss {
+  border-radius: 0.2em;
+  border: none;
+  color: #ffffff;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.4em 0.6em;
+  font-weight: bold;
+  pointer-events: all;
+  background-color: #04aa6d;
+  margin-right: 10px;
+}
+
 #readd-player {
   background: none;
   border: none;
