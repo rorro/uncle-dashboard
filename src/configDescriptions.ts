@@ -3,8 +3,7 @@ import { ConfigDescription } from './types';
 const ConfigDescriptions: ConfigDescription = {
   new_members_channel: {
     name: 'New Members Channel',
-    description:
-      'This is where new members will get an introduction message from the bot. Where they are instructed to introduce themselves.'
+    description: 'This is where new members will get a public introduction message from the bot.'
   },
   assign_roles_channel: {
     name: 'Assign Roles Channel',
@@ -21,8 +20,8 @@ const ConfigDescriptions: ConfigDescription = {
       'Application transcripts are sent are sent to this channel. Make sure the selected channel is only visible to staff members.'
   },
   welcome_base_message: {
-    name: 'Base Welcome Message',
-    description: `The first part, that is always sent, of the welcome message.`
+    name: 'Welcome Message',
+    description: `The message sent in the New Members Channel. You can tag the new member with <@user>.`
   },
   welcome_success_message: {
     name: 'Success Welcome Message',
@@ -33,8 +32,8 @@ const ConfigDescriptions: ConfigDescription = {
     description: `This is added to the message if the bot wasn't able to send the welcome PM to the new member.`
   },
   welcome_pm_message: {
-    name: 'Welcome PM',
-    description: `This is the welcome message the bot sends to the new member. A diary sheet link will be linked at the end of this message.`
+    name: 'Personal message',
+    description: `This message is sent as the content in the applicant channel together with the embed. You can tag the new member with <@user>.`
   },
   inactivity_check_channel: {
     name: 'Inactivity Check Channel',
