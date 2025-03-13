@@ -27,7 +27,9 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
   const [correctFormat, setCorrectFormat] = useState<Record<number, boolean>>({});
   const [preciseTime, setPreciseTime] = useState<string>(ALL_ZERO);
   const [boardUpdates, setBoardUpdates] = useState<BoardUpdates>({});
-  const fetchedBoss: string[] = [];
+  const [fetchedBoards, setFetchedBoards] = useState<{
+    [key: string]: { board: SpeedsLeaderboardEntry[] };
+  }>({});
 
   const timeRegex: RegExp = /^(?:(?:[1-9]\d*:)?(?:[0-5]?\d:[0-5]?\d\.\d{1,2})|(?:[0-5]?\d\.\d{1,2}))$/;
   const nonPreciseTimeRegex: RegExp = /^(?:(?:\d+):)?(?:[0-5]?\d:)?(?:[0-5]?\d)$/;
@@ -225,9 +227,7 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
   }
 
   async function getSpeedBoard(boss: LeaderboardBoss): Promise<void> {
-    console.log('here too?');
-
-    if (!fetchedBoss.includes(boss.boss)) {
+    if (!fetchedBoards.hasOwnProperty(boss.boss)) {
       const bossBoardUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/speedboard`;
       const token = getStorage('access_token');
       await fetch(`${bossBoardUrl}?accessToken=${token}&boss=${boss.boss}`, {
@@ -239,6 +239,7 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
         .then(response => response.json())
         .then((data: SpeedsLeaderboardEntry[]) => {
           setLeaderboard([...leaderboard, ...data]);
+          setFetchedBoards({ ...fetchedBoards, [boss.boss]: { board: data } });
         });
     }
   }
@@ -252,26 +253,6 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
   return (
     <>
       <div className="wrap">
-        <div className="button-wrapper">
-          <button
-            className="save-speeds"
-            onClick={handleSave}
-            style={boardChanged ? {} : { pointerEvents: 'none', backgroundColor: '#444444' }}
-          >
-            <span>Save</span>
-          </button>
-          <button
-            className="post-updates"
-            onClick={handlePostChangelog}
-            style={
-              Object.keys(boardUpdates).length > 0
-                ? {}
-                : { pointerEvents: 'none', backgroundColor: '#444444' }
-            }
-          >
-            <span>Post Changelog</span>
-          </button>
-        </div>
         <div className="precise-time">
           <label htmlFor="precise-time-input">Time to Precise time</label>
           <input
@@ -284,6 +265,17 @@ function SpeedsLeaderboard({ speedsLeaderboard }: { speedsLeaderboard: SpeedsLea
           <input id="precise-time-result" type="text" value={preciseTime} readOnly />
         </div>
         <Collapsible title="Board Changes">
+          <button
+            className="post-updates"
+            onClick={handlePostChangelog}
+            style={
+              Object.keys(boardUpdates).length > 0
+                ? {}
+                : { pointerEvents: 'none', backgroundColor: '#444444' }
+            }
+          >
+            <span>Post Changelog</span>
+          </button>
           <EmbedPreview embed={{}} content={createUpdatesContent(boardUpdates)} />
         </Collapsible>
         {LeaderboardBosses.map(b => {

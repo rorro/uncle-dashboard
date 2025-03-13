@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LeaderboardBoss, SpeedsLeaderboardEntry } from '../../types';
@@ -42,7 +42,7 @@ function BossLine({
           Save board
         </button>
         <button
-          className="update-boss"
+          className="update-discord"
           style={saved ? {} : { pointerEvents: 'none', backgroundColor: '#444444' }}
           onClick={e => handleUpdate(boss)}
         >

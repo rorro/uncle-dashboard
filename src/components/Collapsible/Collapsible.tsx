@@ -15,15 +15,13 @@ interface IProps {
 }
 function Collapsible({ id, title, date, channel, boss, children, fetchOnOpen }: IProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [hasFetched, setHasFetched] = useState<boolean>(false);
   const handleFilterOpening = (boss?: LeaderboardBoss) => {
     setIsOpen(prev => !prev);
 
-    console.log(`fetchOnOpen: ${fetchOnOpen} isOpen: ${isOpen} boss: ${boss}`);
-
-    if (fetchOnOpen && !isOpen && boss) {
-      console.log(`Fetching data for`);
-
+    if (fetchOnOpen && !isOpen && boss && !hasFetched) {
       fetchOnOpen(boss);
+      setHasFetched(true);
     }
   };
 
