@@ -1,5 +1,5 @@
 import { ColorResult } from '@hello-pangea/color-picker';
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Collapsible from '../../components/Collapsible';
@@ -12,21 +12,52 @@ import { getClickedField, isEmptyEmbed } from '../../helpers/embed';
 import { getStorage } from '../../utils/storage';
 import sendToast from '../../utils/toast';
 
-function Embeds({ embeds }: { embeds: EmbedConfigs }) {
+function Embeds() {
+  const [currentEmbeds, setCurrentEmbeds] = useState<T>({});
+  const [previousEmbeds, setPreviousEmbeds] = useState<T>({});
+  const [embedChanged, setEmbedChanged] = useState<Record<number, boolean>>({ 0: false, 1: false });
+
   interface T {
     [id: number]: { id: number; name: string; title: string; data: string };
   }
 
-  const initialEmbeds: T = {
-    1: { id: 1, name: 'application_embed', title: 'Application Embed', data: embeds.application_embed },
-    2: { id: 2, name: 'support_embed', title: 'Support Embed', data: embeds.support_embed }
-  };
+  async function getEmbedConfigs() {
+    const embedConfigsUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/embeds`;
+    const token = getStorage('access_token');
+    await fetch(`${embedConfigsUrl}?accessToken=${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then((data: EmbedConfigs) => {
+        const initialEmbeds: T = {
+          1: {
+            id: 1,
+            name: 'application_embed',
+            title: 'Application Embed',
+            data: data.application_embed
+          },
+          2: {
+            id: 2,
+            name: 'support_embed',
+            title: 'Support Embed',
+            data: data.support_embed
+          }
+        };
 
-  const initialEmbedsChanged: Record<number, boolean> = { 0: false, 1: false };
+        setCurrentEmbeds(initialEmbeds);
+        setPreviousEmbeds(initialEmbeds);
+      });
+  }
 
-  const [currentEmbeds, setCurrentEmbeds] = useState<T>(initialEmbeds);
-  const [previousEmbeds, setPreviousEmbeds] = useState<T>(initialEmbeds);
-  const [embedChanged, setEmbedChanged] = useState<Record<number, boolean>>(initialEmbedsChanged);
+  useEffect(() => {
+    const fetchData = async () => {
+      await getEmbedConfigs();
+    };
+    fetchData();
+  }, []);
 
   const messageChanged = { support: false, application: false };
   function addField(messageId: number) {

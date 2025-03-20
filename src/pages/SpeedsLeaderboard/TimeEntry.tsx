@@ -6,14 +6,14 @@ import { ChangeEvent } from 'react';
 interface IProps {
   entry: SpeedsLeaderboardEntry;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleRemove: (id: number, hardDelete: boolean) => void;
+  handleRemove: (id: number, boss: string, hardDelete?: boolean) => void;
 }
 
 function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
   return (
     <div>
       {entry.removed ? (
-        <button id="readd-player" onClick={e => handleRemove(entry.id, false)}>
+        <button id="readd-player" onClick={e => handleRemove(entry.id, entry.boss, false)}>
           <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
         </button>
       ) : (
@@ -22,7 +22,11 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
 
       <button
         id="remove-player"
-        onClick={e => (entry.removed ? handleRemove(entry.id, true) : handleRemove(entry.id, false))}
+        onClick={e =>
+          entry.removed
+            ? handleRemove(entry.id, entry.boss, true)
+            : handleRemove(entry.id, entry.boss, false)
+        }
       >
         <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faTrash} />
       </button>
@@ -33,7 +37,7 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
         autoComplete="off"
         defaultValue={entry.username}
         placeholder="Username"
-        name={`${entry.id}:username`}
+        name={`${entry.id}/${entry.boss}/username`}
         onChange={e => handleChange(e)}
       />
       <input
@@ -42,7 +46,7 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
         autoComplete="off"
         defaultValue={entry.time}
         placeholder="Time"
-        name={`${entry.id}:time`}
+        name={`${entry.id}/${entry.boss}/time`}
         onChange={e => handleChange(e)}
       />
       <input
@@ -51,7 +55,7 @@ function TimeEntry({ entry, handleChange, handleRemove }: IProps) {
         autoComplete="off"
         defaultValue={entry.proof ? entry.proof : ''}
         placeholder="Proof"
-        name={`${entry.id}:proof`}
+        name={`${entry.id}/${entry.boss}/proof`}
         onChange={e => handleChange(e)}
       />
     </div>

@@ -9,7 +9,7 @@ interface IProps {
   entries: SpeedsLeaderboardEntry[];
   addTime: (boss: LeaderboardBoss, category: string | null) => void;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleRemove: (id: number, hardDelete: boolean) => void;
+  handleRemove: (id: number, boss: string, hardDelete?: boolean) => void;
 }
 
 function Category({ boss, entries, addTime, handleChange, handleRemove }: IProps) {

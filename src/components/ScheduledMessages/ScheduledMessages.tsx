@@ -1,4 +1,4 @@
-import { useState, MouseEvent, FormEvent, ChangeEvent } from 'react';
+import { useState, MouseEvent, FormEvent, ChangeEvent, useEffect } from 'react';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ScheduledMessages.css';
@@ -39,41 +39,59 @@ const darkMode = createTheme({
   }
 });
 
-function ScheduledMessages({
-  scheduledMessages,
-  guildChannels
-}: {
-  scheduledMessages: ScheduledMessageEntry[];
-  guildChannels: GuildChannelEntry[];
-}) {
+function ScheduledMessages({ guildChannels }: { guildChannels: GuildChannelEntry[] }) {
   interface T {
     [id: number]: ScheduledMessageEntry;
   }
 
-  const initialMessages: T = {};
-  const initialMessagesChanged: Record<number, boolean> = {};
-  scheduledMessages.forEach(m => {
-    const { content, embed } = JSON.parse(m.message);
-    const fields = embed.fields;
-    initialMessagesChanged[m.id] = false;
-
-    // Add a unique key to each field so that rendering them works properly
-    if (fields) {
-      fields.forEach((f: Record<string, string | boolean>) => {
-        if (f['key']) return; // There has to be a better way of doing this
-
-        f['key'] = uuidv4();
-      });
-      m.message = JSON.stringify({ content: content, embed: embed });
-    }
-    initialMessages[m.id] = m;
-  });
-
-  const [messages, setMessages] = useState<T>(initialMessages);
-  const [previousEmbeds, setPreviousMessages] = useState<T>(initialMessages);
-  const [messageChanged, setMessageChanged] = useState<Record<number, boolean>>(initialMessagesChanged);
+  const [messages, setMessages] = useState<T>({});
+  const [previousMessages, setPreviousMessages] = useState<T>({});
+  const [messageChanged, setMessageChanged] = useState<Record<number, boolean>>({});
   const [deleteModalOpen, setDeleteModelOpen] = useState<boolean>(false);
   const [deleteModalData, setDeleteModelData] = useState<DeleteModalOptions | undefined>();
+
+  async function getScheduledMessages() {
+    const scheduledMessagesUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/uncle/dashboard/scheduledmessages`;
+    const token = getStorage('access_token');
+    await fetch(`${scheduledMessagesUrl}?accessToken=${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then((data: ScheduledMessageEntry[]) => {
+        const initialMessages: T = {};
+        const initialMessagesChanged: Record<number, boolean> = {};
+        data.forEach(m => {
+          const { content, embed } = JSON.parse(m.message);
+          const fields = embed.fields;
+          initialMessagesChanged[m.id] = false;
+
+          // Add a unique key to each field so that rendering them works properly
+          if (fields) {
+            fields.forEach((f: Record<string, string | boolean>) => {
+              if (f['key']) return; // There has to be a better way of doing this
+
+              f['key'] = uuidv4();
+            });
+            m.message = JSON.stringify({ content: content, embed: embed });
+          }
+          initialMessages[m.id] = m;
+        });
+
+        setMessages(initialMessages);
+        setPreviousMessages(initialMessages);
+        setMessageChanged(initialMessagesChanged);
+      });
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getScheduledMessages();
+    };
+    fetchData();
+  }, []);
 
   function toggleDeleteModal() {
     setDeleteModelOpen(!deleteModalOpen);
@@ -255,7 +273,7 @@ function ScheduledMessages({
       [message.id]: updatedMessage
     });
 
-    const changed = JSON.stringify(updatedMessage) !== JSON.stringify(previousEmbeds[message.id]);
+    const changed = JSON.stringify(updatedMessage) !== JSON.stringify(previousMessages[message.id]);
 
     setMessageChanged({
       ...messageChanged,
