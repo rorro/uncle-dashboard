@@ -17,6 +17,11 @@
   border: 1px #2f2f2f solid;
   color: #ffffff;
   width: 30%;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .speed-time {
@@ -26,6 +31,8 @@
   border-left: none;
   color: #ffffff;
   width: 70px;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .speed-proof {
@@ -37,6 +44,8 @@
   border-left: none;
   color: #ffffff;
   width: 100px;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .speed-username:focus {
@@ -102,7 +111,7 @@
   padding: 0.2em;
   border: none;
   color: #ffffff;
-  width: 70px;
+  width: 75px;
 }
 #precise-time-input:focus,
 #precise-time-result:focus {
@@ -111,6 +120,10 @@
 
 .precise-time {
   align-self: flex-end;
+}
+
+.configs {
+  align-self: flex-start;
 }
 
 .update-discord {

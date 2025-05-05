@@ -13,8 +13,9 @@ interface IProps {
   data: SpeedsLeaderboardEntry[];
   saved: boolean;
   previewContent: APIEmbed;
+  showRemovedTimes: boolean;
   addTime: (boss: LeaderboardBoss, category: string | null) => void;
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleRemove: (id: number, boss: string, hardDelete?: boolean) => void;
   handleUpdate: (boss: LeaderboardBoss) => void;
   handleSave: (boss: LeaderboardBoss) => void;
@@ -26,6 +27,7 @@ function BossLine({
   data,
   saved,
   previewContent,
+  showRemovedTimes,
   addTime,
   handleChange,
   handleRemove,
@@ -69,25 +71,30 @@ function BossLine({
               <FontAwesomeIcon style={{ marginLeft: '5px' }} icon={faPlusSquare} />
             </button>
             <br />
-            {data.filter(e => e.removed).length > 0 && 'Removed Times'}
-            {data.map(e => {
-              return (
-                !!e.removed && (
-                  <TimeEntry
-                    entry={e}
-                    key={e.id}
-                    handleChange={handleChange}
-                    handleRemove={handleRemove}
-                  />
-                )
-              );
-            })}
+            {showRemovedTimes && (
+              <div style={{ backgroundColor: '#3f3636' }}>
+                {data.filter(e => e.removed).length > 0 && 'Removed Times'}
+                {data.map(e => {
+                  return (
+                    !!e.removed && (
+                      <TimeEntry
+                        entry={e}
+                        key={e.id}
+                        handleChange={handleChange}
+                        handleRemove={handleRemove}
+                      />
+                    )
+                  );
+                })}
+              </div>
+            )}
           </div>
         ) : (
           <Category
             boss={boss}
             entries={data}
             key={boss.boss}
+            showRemovedTimes={showRemovedTimes}
             addTime={addTime}
             handleChange={handleChange}
             handleRemove={handleRemove}

@@ -31,6 +31,7 @@ function SpeedsLeaderboard() {
   const [previousLeaderBoards, setpreviousLeaderBoards] = useState<FetchedSpeedLeaderboard>({});
   const [changedLeaderboards, setchangedLeaderboards] = useState<FetchedSpeedLeaderboard>({});
   const [deletedTimes, setDeletedTimes] = useState<DeletedSpeedBoardEntry>({});
+  const [showRemovedTimes, setShowRemovedTimes] = useState<boolean>(false);
 
   const timeRegex: RegExp = /^(?:(?:[1-9]\d*:)?(?:[0-5]?\d:[0-5]?\d\.\d{1,2})|(?:[0-5]?\d\.\d{1,2}))$/;
   const nonPreciseTimeRegex: RegExp = /^(?:(?:\d+):)?(?:[0-5]?\d:)?(?:[0-5]?\d)$/;
@@ -102,7 +103,7 @@ function SpeedsLeaderboard() {
     setleaderBoards({ ...leaderBoards, [boss]: { board: tempBoard } });
   }
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const [id, boss, field] = e.currentTarget.name.split('/');
     const value = e.currentTarget.value;
 
@@ -354,6 +355,15 @@ function SpeedsLeaderboard() {
   return (
     <>
       <div className="wrap">
+        <div className="configs">
+          <input
+            id="show-removed-times"
+            type="checkbox"
+            defaultChecked={showRemovedTimes}
+            onChange={e => setShowRemovedTimes(e.currentTarget.checked)}
+          />
+          <label htmlFor="show-removed-times">Show removed times</label>
+        </div>
         <div className="precise-time">
           <label htmlFor="precise-time-input">Time to Precise time</label>
           <input
@@ -392,6 +402,7 @@ function SpeedsLeaderboard() {
                 b,
                 leaderBoards[b.boss]?.board.filter(e => !e.removed) ?? []
               )}
+              showRemovedTimes={showRemovedTimes}
               key={b.boss}
               addTime={addTime}
               handleChange={handleChange}

@@ -76,21 +76,20 @@ export function buildBoardMessage(boss: LeaderboardBoss, entries: SpeedsLeaderbo
 }
 
 export function getTopThree(boss: LeaderboardBoss, data: SpeedsLeaderboardEntry[]) {
-  const topThree: AllTopInterface = {};
-
   const bossTop3: BoardInterface[] = [];
   const entries = data.filter(e => e.boss === boss.boss && !e.removed);
+
   if (!boss.categories) {
     if (!entries.length) {
       for (let i = 0; i < 3; i++) {
-        topThree[boss.boss].push({ name: null, time: null });
+        bossTop3.push({ name: null, time: null });
       }
     } else {
       const { values, indexes, top } = getTopSpeedIndexes(entries, 3);
 
       for (let i = 0; i < 3; i++) {
         if (top[i] === undefined) {
-          topThree[boss.boss].push({ name: null, time: null });
+          bossTop3.push({ name: null, time: null });
         } else {
           for (let j in indexes[top[i]]) {
             const index = indexes[top[i]][j];
