@@ -199,6 +199,7 @@ export interface PetLeaderboardEntry {
   the_hueycoatl: number;
   amoxliatl: number;
   the_royal_titans: number;
+  yama: number;
 }
 
 export interface SpeedsLeaderboardEntry {
